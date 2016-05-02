@@ -1,0 +1,108 @@
+
+This file is loaded from init.el after any .org files in extras/ This
+is because we want to be able to use libraries from there in this
+file. Elisp code is extracted by init.el and executed from top to
+bottom.
+
+* Set up package system
+
+  Emacs 24 ships with a package system, which is great.
+  Let's enable it:
+
+#+begin_src emacs-lisp
+(package-initialize)
+#+end_src
+
+   and add some more repositories:
+
+#+begin_src emacs-lisp
+(add-to-list 'package-archives
+             '("marmalade" . "http://marmalade-repo.org/packages/"))
+
+(add-to-list 'package-archives
+             '("melpa"     . "http://melpa.milkbox.net/packages/"))
+#+end_src
+
+* Set up the theme
+** Emacs solarize theme
+
+#+begin_src emacs-lisp
+(load-theme 'solarized-dark t)
+#+end_src
+
+* Set up basic modes, commands
+** Emacs server mode
+   Let's support emacsclient. For that to work, we'll need to start the server.
+   Unless, of course, it's already running.
+
+#+begin_src emacs-lisp
+(require 'server)
+(unless (server-running-p) (server-start))
+#+end_src
+
+** Web-mode
+   An actual major mode that works html and templates? Let's get
+   that!
+
+#+BEGIN_SRC emacs-lisp
+
+(require 'web-mode)
+
+(add-to-list 'auto-mode-alist '("\\.erb$" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.html$" . web-mode))
+
+(define-key web-mode-map (kbd "C-n") 'web-mode-tag-match)
+(define-key web-mode-map (kbd "C-f") 'web-mode-fold-or-unfold)
+(define-key web-mode-map (kbd "C-'") 'web-mode-mark-and-expand)
+
+(set-face-attribute 'web-mode-html-tag-face nil :foreground "DarkViolet")
+
+#+END_SRC
+** YASnippet
+
+#+begin_src emacs-lisp
+(add-to-list 'load-path
+             "~/.emacs.d/elpa/yasnippet-0.6.1")
+(require 'yasnippet)
+;; (yas/initialize)
+(yas/load-directory "~/.emacs.d/snippets")
+
+#+end_src
+
+Make yasnippet play nice with org-mode
+
+#+begin_src emacs-lisp
+  (add-hook 'org-mode-hook
+                    (lambda ()
+                      (org-set-local 'yas/trigger-key [tab])
+                      (define-key yas/keymap [tab] 'yas/next-field-or-maybe-expand)))
+
+(defun yas/org-very-safe-expand ()
+   (let ((yas/fallback-behavior 'return-nil)) (yas/expand)))
+
+(add-hook 'org-mode-hook
+                    (lambda ()
+                        (make-variable-buffer-local 'yas/vtrigger-key)
+                        (setq yas/trigger-key [tab])
+                        (add-to-list 'org-tab-first-hook 'yas/org-very-safe-expand)
+                        (define-key yas/keymap [tab] 'yas/next-field)))
+#+end_src
+
+* Keybindings
+** Misc custom keybindings
+I try to just use custom keybindings as far as possible, so I won't be
+completely lost when I have to sit down in a non-/differently
+configured Emacs session. Some personal convenience keybindings,
+however:
+
+
+
+#+begin_src emacs-lisp
+(global-set-key [S-f1] 'switch-to-next-buffer)
+(global-set-key [C-f1] 'switch-to-previous-buffer)
+(global-set-key [\e c] 'copy-region-as-kill)
+
+(fset 'kill-buffer-noprompt
+   [24 107 return])
+(global-set-key [f3] 'kill-buffer-noprompt)
+#+end_src
