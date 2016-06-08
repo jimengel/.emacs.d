@@ -49,3 +49,44 @@ code blocks which can be tangled"
 ;; load up all literate org-mode files in this directory
 (mapc #'org-babel-load-file (directory-files dotfiles-dir t "\\.org$"))
 (put 'upcase-region 'disabled nil)
+
+
+;;  (custom-set-variables
+;;   ;; custom-set-variables was added by Custom.
+;;   ;; If you edit it by hand, you could mess it up, so be careful.
+;;   ;; Your init file should contain only one such instance.
+;;   ;; If there is more than one, they won't work right.
+;;   '(display-time-mode t)
+;;   '(show-paren-mode t)
+;;   '(tool-bar-mode nil)
+;;   '(transient-mark-mode 1))
+;;  (custom-set-faces
+;;   ;; custom-set-faces was added by Custom.
+;;   ;; If you edit it by hand, you could mess it up, so be careful.
+;;   ;; Your init file should contain only one such instance.
+;;   ;; If there is more than one, they won't work right.
+;;   '(ediff-fine-diff-B ((t (:background "blue"))))
+;;   '(org-table ((((class color) (min-colors 88) (background dark)) (:foreground "gray16"))))
+;;   '(region ((t (:foreground "firebrick4" :inverse-video t :slant italic :weight extra-bold :height 1.1))))
+;;   '(web-mode-html-tag-face ((t (:foreground "cyan")))))
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(diary-show-holidays-flag nil)
+ '(doc-view-continuous t)
+ '(doc-view-ghostscript-program "/usr/local/bin/gs")
+ '(gnus-default-nntp-server "nntp.aioe.org")
+ '(package-selected-packages
+   (quote
+    (workgroups2 esup ztree moz-controller yasnippet web-mode w3m solarized-theme pdf-tools neotree muse jabber info+ helm-swoop helm-dash google-maps e2wm dash-at-point color-theme-sanityinc-solarized cl-lib-highlight auto-complete adoc-mode ac-js2))))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(ediff-fine-diff-B ((t (:background "blue"))))
+ '(org-table ((((class color) (min-colors 88) (background dark)) (:foreground "gray16"))))
+ '(region ((t (:foreground "firebrick4" :inverse-video t :slant italic :weight extra-bold :height 1.1))))
+ '(web-mode-html-tag-face ((t (:foreground "cyan")))))
