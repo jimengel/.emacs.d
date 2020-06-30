@@ -1,0 +1,4907 @@
+Y PROJECTS -*- mode: org; -*-
+
+* Emacs
+** rmail
+   to use rmail in emacs make sure there is write access to the usr/spool/mail directory
+** fonts
+   to get a list of fonts
+   (insert (prin1-to-string (x-list-fonts "*")))then do  ^x ^e
+** Calc func
+   d n  display normal
+   d e  display eng.
+   d s  display scientific
+   d 0  display base 10
+   d 2  display base 2
+   d 6  display base 16
+   d 8  display base 8
+   s s #  save in #
+   s f #  recall #
+   d f # display fixed x
+   d o  for fractions  +1:/
+   Meta # :  sum columns
+   Meta-x write region
+   Meta-x set-fill-col  Meta q  ^u 1 Meta q
+** To hide/show ifdefs in a c program
+   show_ifdefs           ^c @ s
+   hide_ifdefs           ^c @ h
+   hide_ifdefs-define    ^c @ d
+   hide_ifdefs-undefine  ^c @ u
+   set-variable hide-ifdef-lines 1
+   load-lib hideif
+** Dired
+*** Modify files directly in dired
+    wdired-change-to-wdired-mode  Use this to update file names directly in dired
+*** relative syn link 
+    dired-do-relsymlink
+** c++ mode
+*** Taking 100% of the cpu
+    	   A quick fix is to set the Emacs variable
+           semantic-idle-scheduler-idle-time to a large number
+	   (by default it is 2 seconds) so that the idle scheduler
+	   does not kick in (which is what is using all the CPU)!
+** Jump to anything
+   http://www.emacswiki.org/cgi-bin/wiki/Anything
+** To sort an uniquify
+   select region  then   C-u M-| sort -u
+** To re-create scratch
+   Cntl-x b *scratch*
+** Create org snippet 
+   C-c C-v C-d
+* Einstimer
+** Clk limiting description
+	I explained how this was caused when a test such as setup was failed at the latch feeding the path which was being
+	traced.  We looked at the report but there was not any failure at this point.  So we called Alex for assistance.
+	He agreed with my description of what caused Clk Limited and looked at the reports.  He couldn't find the cause.
+	Alex then consulted Krishna who explained that there are two causes of Clk Limited the first one which we knew about	
+	(arrival time limited) and a second which is RAT limited.  This is when there is a test at the sink latch which is 
+	failing.  In this case the RAT is set by the test at the sink latch and not the conditions at the source latch.  So
+	they say Clk Limited.  
+	I wondered if they could specify them as different things since when debugging a timing problem they are two very
+	different causes.
+** Commands
+*** Adding a wireload model to the DCMinterface
+	The following einstimer command will add wire load models to the ndr, of cource the values are fake.
+	All three lists must be of the same length. First item in the list should always be zero (0),
+	unless you think that there should be some wire capacitance for zero fanout.
+	The position in the list is the fanout. As the example below shows that for a fanout of 2 the resistance is 3
+	the capacitance is 3 and the length is 2.
+	
+	tcl
+	add_wire_load_model -model_name xxx -extrapolation_constant 5 -resistance {1 2 3} -capacitance {1 2 3} -fanout_lengths {0 1 2}
+	To find out the values of what you added use the following command.
+	
+	get_wire_load_model -model_name "xxx"
+	
+*** Misc old commands
+	(read-wire-load-file "file name") reads wire load file. For specifying which wire load model to use
+	(timer-pest-import "PEST_FILE(<name of file>) RC_FILE(<name of file>) NETCAP_FILE(<name of file>)" )
+	(timer-generate-rc-file "filename" "")
+	export WIZEXEC=WIZmain+
+	(timer-sdf-export "file" "PINPREFIX(TRUEANDNOTPRIMARY)" "VERSION(1.0)" "TIMINGCHECK(ON)")
+	(timer-power-calculator  "<outfile>" "SWITCHFILE(<char*>) DETAIL(ON/OFF)")
+	calculate_power -file "/afs/btv/u/jenricgel/epic1/einstimer/test.pw.all" -switch_file "/afs/btv/u/jengel/epic1/einstimer/test.sw" -detail "ON"
+** To compare checks reports
+   /afs/eda/u/gmschaef/bin/checks_rpt_compare.pl TEST.checks.flat TEST.checks.LBModLib > flatVsLbModLib.checks.diff
+* General system stuff
+** Map an afs directory in windows
+   net use x: \\samba.btv\afshome * /user:"jengel"
+** XMX info
+*** To fix the fonts
+    xmxfp
+** Old printer info
+	smit lsvirprt
+	      mZ=+                       for automatic queue switching
+	       d=a                       for automatic conversion of ascii files to postscript and printing 
+	                                 on the postscript queue.
+	
+	qprt -Pjohnyma -c filename                       the -c makes a local non AFS copy of the file
+	qprt -P bsc -N number_of_copies -c -T bin532 filename              printing to printer in 862 for postscript file
+	qprt -P bsc -da -c -T bin532 filename          printing to printer in 862 for ascii file
+	enscript -f"Courier4" -p"test.ps" file name      create ps file small font
+	enscript -r -f"Courier4" -p"test.ps" file name      create ps file small font rotated
+	
+	unset LPDEST PRINTER; /usr/bin/enq  -# 'job_number' -a '30'
+	
+	psnup -c -nup 4 filein fileout
+** Get directory size statics.
+*** Stays at top level
+    du -h --max-depth=0 buildDir*
+*** Goes down one level
+   du -h --max-depth=1 buildDir*
+*** Size of specific files and summary total
+    du -hac *.rds
+** Determint local directory space used and max cap
+   df -Ph /<someDir>
+** Find a @sys name
+   use fs sysname
+** get afs backup
+   open ticket at http://w3.rchland.ibm.com/projects/ithelp/index.php
+** get .OldFiles
+   msitko@fshlnx09c) /afs/apd/u/msitko
+   $fs lq .
+   Volume Name                    Quota       Used %Used   Partition
+   usr.msitko                   8000000    3737779   47%         67%
+   (msitko@fshlnx09c) /afs/apd/u/msitko
+   $fs mkmount .OldFiles usr.msitko.backup
+   
+   you can remove it with
+   fs rmmount .OldFiles
+
+** to determine gsa 
+quota and space used.
+   gsa quota list --path /gsa/btvgsa/tdisk/2011-04-28/13/042811.135502.engelj_us
+** Getting more GSA space
+   New queue name GI_IP_STOR_GSA_OPS_S1
+
+   Please open a ticket in the GI_IP_STOR_GSA_OPS_S1 queue 
+   Please increase the quota of the following directories
+     /gsa/pokgsa/projects/a/alacrite_rules13 to 1TB, an increase of 950gb 
+
+
+
+   call help desk.. tell them your ticket if for the nus_n_udunx queue 
+   or when in chat.. tell them that same thing 
+   the queue will help them at the HelpLess desk 
+
+   This ticket if for the nus_n_udunx queue
+   Please increase the quota of the following
+   /gsa/pokgsa/projects/a/alacrite_rules1
+   to 800gb, an increase of 200gb
+   and
+   /gsa/pokgsa/projects/a/alacrite_rules3
+   to 800gb, an increase of 550gb
+
+   This ticket if for the nus_n_udunx queue 
+   Please increase the quota of the following directories
+     /gsa/pokgsa/projects/a/alacrite_rules5 to 700gb, an increase of 200gb 
+     /gsa/pokgsa/projects/a/alacrite_dev to 400gb, an increase of 150gb 
+
+   This ticket if for the nus_n_udunx queue 
+   Please increase the quota of the following directories
+     /gsa/pokgsa/projects/a/alacrite_rules6 to 900gb, an increase of 100gb 
+     /gsa/pokgsa/projects/a/alacrite_rules7 to 800gb, an increase of 200gb 
+     /gsa/pokgsa/projects/a/alacrite_rules8 to 800gb, an increase of 200gb 
+
+ w3.ibm.com/help/#/tickets/IN9782873
+
+   *******Problem Template*******
+   Operating system: OS-X
+   Laptop or Desktop: Laptop
+   Machine Type and model- example Lenovo T420: MBP
+   Is the system registered in ISAM: Y
+   Application and Version: na
+   Errors/Msgs received: This ticket if for the nus_n_udunx queue Please increase the quota of the following/gsa/pokgsa-p9/03/alacrite_rules4 to 600gb, an increase of 200gb
+   Connection Type - IBM LAN, IBM LAN-to-LAN, or AT&T client (from home: broadband or dial-up?) SINE: IBM LAN
+   Location - Country/City: Williston, VT United States
+   Building / Floor / Room Number: Building: 862 | Floor: 2 | Office: 2I0218
+   Preferred Phone Number: 1-802-769-5644
+   Pathname to the problem area (i.e.: /gsa/pokgsa/projects/g/gsa. The customer can use the file spec from the address bar): /gsa/pokgsa-p9/03/alacrite_rules4
+   If AIX, the GSA client level (AIX command: lslpp -l | grep gsa): na
+
+
+   Thanks
+
+w3.ibm.com/help/solutions/TicketList
+
+ ticket IN6387519 SR13735905 IN7584061 SR14867337 IN7686623 SR15038691 SR15085217 SR15750299 (IN8495242) SR16890637 brandon.hanshew@ibm.com IN9326501 IN9885623  IN9896778 INC2930859
+ w3.ibm.com/help/#/tickets/INC3341861   INC3627952 INC4106120  INC4294246
+
+** to determine when the password for an afs id expires
+   kas examine <id>
+   But you must have a token for the id you want to examine.
+** to determine when the password for an gsa id expires
+   gsa account showpwdate
+** afs cellDB loc
+   It is located in /usr/vice/etc
+* Shipping instructions
+** https://pdcas400.btv.ibm.com/BTV/SI/si50.nsf
+   Under: Create Shipping Request -> Create new Inter-Building Move Request
+   Ship to 971-1 loading doc.
+   Attach the request now form
+   Dump machines at 863-1   this will goto 971 then on to Endicott
+* Programming
+** How to handle core files
+*** Linux
+**** Steps
+    ulimit -c 50000
+    gdb executableName coreName
+    backtrace
+    q
+*** AIX
+**** Steps
+    ulimit -c 50000
+    dbx executableName
+    where
+    quit
+
+** crontab info
+   0,5,10,15,20,25,30,35,40,45,50,55 * * * * /usr/bin/qadm -U'asc' 2>/dev/console
+   0,5,10,15,20,25,30,35,40,45,50,55 * * * * /usr/bin/qadm -U'ps' 2>/dev/console
+   0 5 * * * /usr/bin/sed -e "s!carl k wong!The Nil Team!" /etc/passwd > /etc/passwd.new; mv /etc/passwd.new /etc/passwd
+
+*** DCL
+**** History
+***** Files
+****** lht.r
+	/************************************************************************
+	** Exercise GET_LOAD_HISTORY()
+	** PCE
+	************************************************************************/
+	tech_family(GENERIC) main;
+	
+	/************************************************************************
+	** Test with a subrule in same tech.
+	************************************************************************/
+	subrule(lht2): control_parm('control parm for lht2');
+	
+	/************************************************************************
+	** Test with a subrule in different tech.
+	************************************************************************/
+	subrule(lht3): control_parm('control parm for lht3');
+	
+	
+	     
+	/************************************************************************
+	** Start a table with lht2 will override.
+	************************************************************************/
+	export tabledef(t1): qualifiers(CELL) data(number);
+	
+	table(t1):
+	A: 1;
+	B: 2;
+	end;
+	
+	
+	/************************************************************************
+	** dynamic table.
+	************************************************************************/
+	export tabledef(td1) dynamic: qualifiers(CELL) data(number);
+	load_table(ltd1): tabledef(td1) file('td1.lht');
+	
+	
+	forward calc(printRule) impure:
+	     passed(HISTORY_TYPE: rht & integer:expand)
+	     result(integer);
+	     
+	forward calc(printTable) impure:
+	     passed(HISTORY_TYPE: tht & integer:expand)
+	     result(integer);
+	     
+	
+	/************************************************************************
+	** Handy strings for action codes.
+	************************************************************************/
+	%{
+	static char *actions[] = {
+	  "DCM_HISTORY_ACTION_ROOT_RULE",
+	  "DCM_HISTORY_ACTION_MAIN_PROGRAM",
+	  "DCM_HISTORY_ACTION_C_RULE",
+	  "DCM_HISTORY_ACTION_SUBRULE",
+	
+	  "DCM_HISTORY_ACTION_LOAD_TABLE",
+	  "DCM_HISTORY_ACTION_LOAD_TABLE_DEFERRED",
+	  "DCM_HISTORY_ACTION_LOAD_TABLE_REPLACE",
+	
+	  "DCM_HISTORY_ACTION_LOAD_MODIFICATION_TABLE",
+	  "DCM_HISTORY_ACTION_LOAD_MODIFICATION_TABLE_DEFERRED",
+	
+	  "DCM_HISTORY_ACTION_MODIFIED_BY_TABLE",
+	  
+	  "DCM_HISTORY_ACTION_LOADED_BY",
+	  "DCM_HISTORY_ACTION_LOADS",
+	  NULL
+	  };
+	
+	}%;
+	
+	
+	%{
+	  static char indenter[] = "\0                                                                                                                                              ";
+	
+	  static int col=0;
+	  static const int delta=2;
+	}%;
+	
+	internal(indent) impure: result(string) 
+	%{
+	  indenter[col]=' ';
+	  col+= delta;
+	  indenter[col] = 0;
+	  DEFAULT_RESULT=indenter;
+	  return 0;
+	}%;
+	
+	internal(unindent) impure: result(string)
+	%{
+	  indenter[col]=' ';
+	  if(col >= delta)
+	    col -= delta;
+	  else
+	    col = 0;
+	  indenter[col] = 0;
+	  DEFAULT_RESULT = indenter;
+	  return 0;
+	}%;
+	
+	
+	/************************************************************************
+	** Print an ACTIVITY_HISTORY_TYPE chain.
+	************************************************************************/
+	calc(printActivity) impure:
+	       passed(ACTIVITY_HISTORY_TYPE:aht)
+	       local(ACTIVITY_HISTORY_TYPE: cursor = aht &
+		     integer :qq = 0 & string: swork=NIL &
+		     
+		     when(cursor != NIL)
+		       local(qq = ISSUE_MESSAGE(1,INFORM,
+					        '%s------------ ACTIONS -----------',
+						indent()) &
+		     
+			     repeat
+			       local(
+				     qq = ISSUE_MESSAGE(1,INFORM,
+							'%sAction Code: %s',
+							$indenter,
+						 $"actions["(cursor.activityCode)"]") &
+				     when(cursor.refObj==NIL)
+				       local(),
+				     when(cursor.refObj.kind == $DCM_HISTORY_TYPE_IS_RULE)
+				       local(swork = indent() &
+					     qq = printRule(cursor.refObj,0) &
+					     swork = unindent()
+					     ),
+				     otherwise
+				       local(swork = indent() &
+					     qq = printTable(cursor.refObj,0) &
+					     swork = unindent()
+					     )
+				     &
+				     qq = ISSUE_MESSAGE(1,INFORM,' ') &
+				     cursor = cursor.next
+				     )
+			     until(cursor == NIL) &
+			     qq = ISSUE_MESSAGE(1,INFORM,
+						'%s--------------------------',
+						unindent())
+			     ),
+		     otherwise local()
+		)
+	       result(integer:0);
+	     
+	
+	/************************************************************************
+	** Print one table in a technology.
+	************************************************************************/
+	calc(printTable) impure: 
+	     passed(HISTORY_TYPE: tht & integer: expand)
+	     local(integer: j=0, qq=0 &
+		   STRING[*] :info = tht.info &
+			   
+		   j = $DCM_HISTORY_TABLE_NAME_INDEX &
+		   qq = ISSUE_MESSAGE(1,INFORM,'%sTD Name: %s', $indenter,
+				      info[j]) &
+		   
+		   j = $DCM_HISTORY_TABLE_FILE_PATH_INDEX &
+		   qq = ISSUE_MESSAGE(1,INFORM,'%sTD File: %s', $indenter,
+				      info[j]) &
+		   
+		   j = $DCM_HISTORY_TABLE_TECH_FAMILY_INDEX &
+		   qq = ISSUE_MESSAGE(1,INFORM,'%sTD Tech: %s', $indenter,
+				      info[j]) &
+		   
+		   j = $DCM_HISTORY_TABLE_TIMESTAMP_INDEX &
+		   qq = ISSUE_MESSAGE(1,INFORM,'%sTD Stamp: %s', $indenter,
+				      info[j]) &
+		   
+	
+		   when(expand == 0)
+		     local(),
+		   otherwise
+		     local(qq = printActivity(tht.activity))
+		   &		   
+		   
+		   qq = ISSUE_MESSAGE(1,INFORM,
+				      '%s------------------------------',
+				      $indenter)	   
+		   )
+	     result(integer:0);
+	
+	     
+	/************************************************************************
+	** Print all table data in a technology.
+	************************************************************************/
+	calc(printTables) impure: 
+	     passed(HISTORY_TYPE[*]: thtv)
+	     local(integer: tableCnt = NUM_ELEMENTS(thtv,0) &
+		   integer: i=0, qq=0 &
+		   qq = ISSUE_MESSAGE(1,INFORM,'%s------------ TABLES -----------',
+				      indent()) &
+		   repeat
+		     local(HISTORY_TYPE: tht = thtv[i] &
+			   qq = printTable(tht,1) &
+			   i=i+1
+			   )
+		   until(i >= tableCnt) &
+		   qq = ISSUE_MESSAGE(1,INFORM,'%s------ END OF TABLES ----------',
+				      unindent())
+		   )
+	     result(integer:0);
+	
+	     
+	/************************************************************************
+	** Print one rule.
+	************************************************************************/
+	calc(printRule) impure:
+	     passed(HISTORY_TYPE: rht & integer:expand)
+	     local(
+		   integer :qq = 0, j=0 &
+		   STRING[*]:info = rht.info &
+			      
+		   j = $DCM_HISTORY_RULE_NAME_INDEX &
+		   qq = ISSUE_MESSAGE(1,INFORM,'%sRule Name: %s', 
+				      $indenter,info[j]) &
+			      
+		   j = $DCM_HISTORY_RULE_LOAD_PATH_INDEX &
+		   qq = ISSUE_MESSAGE(1,INFORM,'%sRule Load: %s', 
+				      $indenter, info[j]) &
+		   
+		   j = $DCM_HISTORY_RULE_TECH_FAMILY_INDEX &
+		   qq = ISSUE_MESSAGE(1,INFORM,'%sRule Tech: %s', 
+				      $indenter, info[j]) &
+		   
+		   j = $DCM_HISTORY_RULE_TIMESTAMP_INDEX &
+		   qq = ISSUE_MESSAGE(1,INFORM,'%sRule Time: %s', 
+				      $indenter, info[j]) &
+		   
+		   j = $DCM_HISTORY_RULE_CONTROL_PARM_INDEX &
+		   qq = ISSUE_MESSAGE(1,INFORM,'%sRule Parm: %s', 
+				      $indenter, info[j]) &
+		   
+		   j = $DCM_HISTORY_RULE_SOURCE_NAME_INDEX &
+		   qq = ISSUE_MESSAGE(1,INFORM,'%sRule Srce: %s', 
+				      $indenter, info[j]) &
+	
+		   when(expand == 0)
+		     local(),
+		   otherwise
+		     local(qq = printActivity(rht.activity))
+		   &		   
+		   qq = ISSUE_MESSAGE(1,INFORM,
+				      '%s------------------------------', 
+				      $indenter) 
+		   )
+	     result(integer:0);
+	       
+	
+	/************************************************************************
+	** Print all rule data in a technology.
+	************************************************************************/
+	calc(printRules) impure:
+	     passed(HISTORY_TYPE[*]: rhtv)
+	     local(
+		   integer :qq = 0, i=0, ruleCnt=0 &
+		   integer: ruleCnt = NUM_ELEMENTS(rhtv,0) &
+		   qq = ISSUE_MESSAGE(1,INFORM,'%s------------ RULES -----------',
+				      indent()) &
+		      repeat
+		        local(HISTORY_TYPE: rht = rhtv[i] &
+			      qq = printRule(rht,1) &
+			      i=i+1
+			      )
+		      until(i >= ruleCnt) &
+		   
+		   qq = ISSUE_MESSAGE(1,INFORM,'%s------- END OF RULES ---------',
+				      unindent())
+		   )
+	     result(integer:0);
+	     
+	
+	/************************************************************************
+	** Print data for each technology.
+	************************************************************************/
+	calc(printTech) impure:
+	     passed(LOAD_HISTORY_TYPE: lht)
+	     local(integer:qq = 0 &
+		   qq = ISSUE_MESSAGE(1,INFORM,
+	       '-------------------------- TECHNOLOGY: %s--------------------------',
+				      lht.techName) &
+		   qq = printRules(lht.ruleHistory) &
+		   qq = printTables(lht.tableHistory) &
+		   qq = ISSUE_MESSAGE(1,INFORM,
+	       '-------------------------------------------------------------------\n')
+		   )
+	     result(integer:0);
+	
+	     
+	/************************************************************************
+	** Exercise GET_LOAD_HISTORY()
+	************************************************************************/
+	calc(LATENT_EXPRESSION):
+		local(integer:qq=0 &
+		      integer: argc = NUM_ELEMENTS(ARGV,0) &
+		      when((argc > 1) && (ARGV[1] == 'd'))
+		        local(qq = CHANGE_DEBUG_LEVEL(4)),
+		      otherwise
+		        local(qq = CHANGE_DEBUG_LEVEL(0))
+		      &
+		      qq = ltd1())
+	         result(integer:0);
+	
+	expose(MAIN):
+	            local(integer:qq=0 &
+		      LOAD_HISTORY_TYPE[*]: lhtv = GET_LOAD_HISTORY().loadHistory &
+		      integer: count = NUM_ELEMENTS(lhtv,0), i=0 &
+		      repeat
+		        local(integer: qq = printTech(lhtv[i]) &
+			      i = i+1
+			      )
+		      until(i == count)
+		      )
+		result(integer:0);
+	
+	/************************************************************************
+	** END
+	************************************************************************/
+	
+****** lht2.r
+	import tabledef(t1) override: qualifiers(CELL) data(number);
+	
+	table(t1):
+	A: 10;
+	C: 3;
+	end;
+	
+	
+	import tabledef(td1) dynamic: qualifiers(CELL) data(number);
+	load_table(ltd1) replace: tabledef(td1) file('td1.lht2');
+	
+	calc(LATENT_EXPRESSION):
+	  result(integer: ltd1());
+	
+****** lht3.r
+	tech_family(TROUT);
+	subrule(lht4):;
+	
+	import tabledef(t1) defer override: passed(string:s) qualifiers(s) data(number);
+	
+	table(t1):
+	A: 10;
+	C: 3;
+	end;
+	
+	
+	tabledef(td1) dynamic: qualifiers(CELL) data(number);
+	load_table(ltd1) replace: tabledef(td1) file('td1.lht3');
+	
+	calc(LATENT_EXPRESSION):
+	  result(number: ltd1());
+	
+****** lht4.r
+	tech_family(TROUT);
+	
+	export tabledef(t1) defer: passed(string:s) qualifiers(s) data(number);
+	table(t1):
+	end;
+	
+	calc(LATENT_EXPRESSION):
+	  result(number: t1('A'));
+	
+****** structs
+	/************************************************************************
+	** Detailed description of an individual activity.
+	************************************************************************/
+	typedef struct dcm_T_ACTIVITY_HISTORY_TYPE {
+	  struct dcm_T_ACTIVITY_HISTORY_TYPE *next; /* Next description.       */
+	  struct dcm_T_HISTORY_TYPE          *refObj; /* referenced object.    */
+	  DCM_VOID	reserved;              /* reserved.                    */
+	  DCM_INTEGER	activityCode;          /* Activity code.               */
+	} dcm_T_ACTIVITY_HISTORY_TYPE;
+	
+	/************************************************************************
+	** Descrption for rule/table processing history.
+	************************************************************************/
+	struct dcm_T_HISTORY_TYPE {
+	  DCM_ARRAY    *info;                  /* STRING information, or NIL.  */
+	  struct dcm_T_ACTIVITY_HISTORY_TYPE *activity; /* Detailed descriptions.*/
+	  DCM_VOID	reserved;              /* Reserved.                    */
+	  DCM_INTEGER   kind;                  /* zero for rule, one for table.*/
+	};
+	
+	#define DCM_HISTORY_TYPE_IS_RULE  0
+	#define DCM_HISTORY_TYPE_IS_TABLE 1
+	
+	/************************************************************************
+	** Rule and Table history per technology.
+	************************************************************************/
+	typedef struct dcm_T_LOAD_HISTORY_TYPE {
+	  DCM_ARRAY  *ruleHistory;             /* Rule histories.              */
+	  DCM_ARRAY  *tableHistory;            /* Table histories.             */
+	  DCM_STRING  techName;                /* Technology name.             */
+	  DCM_VOID    reserved;                /* reserved.                    */
+	} dcm_T_LOAD_HISTORY_TYPE;
+	
+	
+	/************************************************************************
+	** This is the structure result of the BIF.
+	************************************************************************/
+	typedef struct dcm_T_GET_LOAD_HISTORY {
+	  DCM_ARRAY *loadHistory;              /* -> LOAD_HISTORY by TF.       */
+	  DCM_VOID	reserved;              /* reserved.                    */
+	} dcm_T_GET_LOAD_HISTORY;
+	
+	typedef dcm_T_GET_LOAD_HISTORY dcm_T_get_load_history;
+	
+	/************************************************************************
+	** BIF interface.
+	************************************************************************/
+	DCM_XC int dcmGetLoadHistory_BIF(DCM_STD_STRUCT         *std_struct, 
+					 dcm_T_GET_LOAD_HISTORY *rtn,
+					 DCM_StructWizard        lht_wiz,
+					 DCM_StructWizard        ht_wiz,
+					 DCM_StructWizard        aht_wiz,
+					 const char             *stmtName,
+					 const DCM_RuleScope    *rs);
+	
+	/************************************************************************
+	** Information indices for "info" field of TABLE_HISTORY_TYPE.
+	************************************************************************/
+	#define DCM_HISTORY_TABLE_NAME_INDEX         0
+	#define DCM_HISTORY_TABLE_FILE_PATH_INDEX    1
+	#define DCM_HISTORY_TABLE_TECH_FAMILY_INDEX  2
+	#define DCM_HISTORY_TABLE_TIMESTAMP_INDEX    3
+	#define DCM_HISTORY_TABLE_MAX_INDEX          3
+	
+	/************************************************************************
+	** Information indices for "info" field of RULE_HISTORY_TYPE
+	************************************************************************/
+	#define DCM_HISTORY_RULE_NAME_INDEX         0
+	#define DCM_HISTORY_RULE_LOAD_PATH_INDEX    1
+	#define DCM_HISTORY_RULE_TECH_FAMILY_INDEX  2
+	#define DCM_HISTORY_RULE_TIMESTAMP_INDEX    3
+	#define DCM_HISTORY_RULE_CONTROL_PARM_INDEX 4
+	#define DCM_HISTORY_RULE_SOURCE_NAME_INDEX  5
+	#define DCM_HISTORY_RULE_MAX_INDEX          5
+	
+	/************************************************************************
+	** Activity codes.
+	************************************************************************/
+	#define DCM_HISTORY_ACTION_ROOT_RULE            0
+	#define DCM_HISTORY_ACTION_MAIN_PROGRAM         1
+	#define DCM_HISTORY_ACTION_C_RULE               2
+	#define DCM_HISTORY_ACTION_SUBRULE              3
+	
+	#define DCM_HISTORY_ACTION_LOAD_TABLE           4
+	#define DCM_HISTORY_ACTION_LOAD_TABLE_DEFERRED  5
+	#define DCM_HISTORY_ACTION_LOAD_TABLE_REPLACE   6
+	
+	#define DCM_HISTORY_ACTION_LOAD_MODIFICATION_TABLE 7
+	#define DCM_HISTORY_ACTION_LOAD_MODIFICATION_TABLE_DEFERRED 8
+	
+	#define DCM_HISTORY_ACTION_MODIFIED_BY_TABLE    9
+	
+	#define DCM_HISTORY_ACTION_LOADED_BY           10
+	#define DCM_HISTORY_ACTION_LOADS               11
+****** log
+	PZV: Version of <May  7 1998 09:21:58>.
+	DCL-512 I: DCL Runtime Environment Version 3.1  <<OLA EARLY CODE SPECIAL EDITION>>
+	           Last compiled on Jan 11 1999 at 12:07:24.
+	DCL-642 I: I am running in process ID 34700
+	DCL-2062 I: Phase 1 initialization of DCM loaded from <lht>,
+	            processed by <DCL Delay Calculator Compiler Version 3, Level 1 compiled file <../lht.r> on Mon Jan 11 12:06:44 1999>.
+	DCL-2062 I: Phase 1 initialization of DCM loaded from <./lht2/lht2>,
+	            processed by <DCL Delay Calculator Compiler Version 3, Level 1 compiled file <../lht2.r> on Mon Jan 11 12:06:48 1999>.
+	DCL-2062 I: Phase 1 initialization of DCM loaded from <./lht3/lht3>,
+	            processed by <DCL Delay Calculator Compiler Version 3, Level 1 compiled file <../lht3.r> on Mon Jan 11 12:06:51 1999>.
+	DCL-2062 I: Phase 1 initialization of DCM loaded from <./lht4/lht4>,
+	            processed by <DCL Delay Calculator Compiler Version 3, Level 1 compiled file <../lht4.r> on Mon Jan 11 12:06:55 1999>.
+	DCL-2062 I: Phase 2 initialization of DCM loaded from <lht>,
+	            processed by <DCL Delay Calculator Compiler Version 3, Level 1 compiled file <../lht.r> on Mon Jan 11 12:06:44 1999>.
+	DCL-2062 I: Phase 2 initialization of DCM loaded from <./lht2/lht2>,
+	            processed by <DCL Delay Calculator Compiler Version 3, Level 1 compiled file <../lht2.r> on Mon Jan 11 12:06:48 1999>.
+	DCL-2062 I: Phase 2 initialization of DCM loaded from <./lht3/lht3>,
+	            processed by <DCL Delay Calculator Compiler Version 3, Level 1 compiled file <../lht3.r> on Mon Jan 11 12:06:51 1999>.
+	DCL-2062 I: Phase 2 initialization of DCM loaded from <./lht4/lht4>,
+	            processed by <DCL Delay Calculator Compiler Version 3, Level 1 compiled file <../lht4.r> on Mon Jan 11 12:06:55 1999>.
+	DPCM-10001 I: -------------------------- TECHNOLOGY: GENERIC--------------------------
+	DPCM-10001 I:   ------------ RULES -----------
+	DPCM-10001 I:   Rule Name: lht
+	DPCM-10001 I:   Rule Load: lht
+	DPCM-10001 I:   Rule Tech: GENERIC
+	DPCM-10001 I:   Rule Time: DCL Delay Calculator Compiler Version 3, Level 1 compiled file <../lht.r> on Mon Jan 11 12:06:44 1999
+	DPCM-10001 I:   Rule Parm: 
+	DPCM-10001 I:   Rule Srce: ../lht.r
+	DPCM-10001 I:     ------------ ACTIONS -----------
+	DPCM-10001 I:     Action Code: DCM_HISTORY_ACTION_MAIN_PROGRAM
+	DPCM-10001 I:  
+	DPCM-10001 I:     Action Code: DCM_HISTORY_ACTION_LOADS
+	DPCM-10001 I:       Rule Name: lht2
+	DPCM-10001 I:       Rule Load: ./lht2/lht2
+	DPCM-10001 I:       Rule Tech: GENERIC
+	DPCM-10001 I:       Rule Time: DCL Delay Calculator Compiler Version 3, Level 1 compiled file <../lht2.r> on Mon Jan 11 12:06:48 1999
+	DPCM-10001 I:       Rule Parm: control parm for lht2
+	DPCM-10001 I:       Rule Srce: ../lht2.r
+	DPCM-10001 I:       ------------------------------
+	DPCM-10001 I:  
+	DPCM-10001 I:     Action Code: DCM_HISTORY_ACTION_LOADS
+	DPCM-10001 I:       Rule Name: lht3
+	DPCM-10001 I:       Rule Load: ./lht3/lht3
+	DPCM-10001 I:       Rule Tech: TROUT
+	DPCM-10001 I:       Rule Time: DCL Delay Calculator Compiler Version 3, Level 1 compiled file <../lht3.r> on Mon Jan 11 12:06:51 1999
+	DPCM-10001 I:       Rule Parm: control parm for lht3
+	DPCM-10001 I:       Rule Srce: ../lht3.r
+	DPCM-10001 I:       ------------------------------
+	DPCM-10001 I:  
+	DPCM-10001 I:   --------------------------
+	DPCM-10001 I:   ------------------------------
+	DPCM-10001 I:   Rule Name: lht2
+	DPCM-10001 I:   Rule Load: ./lht2/lht2
+	DPCM-10001 I:   Rule Tech: GENERIC
+	DPCM-10001 I:   Rule Time: DCL Delay Calculator Compiler Version 3, Level 1 compiled file <../lht2.r> on Mon Jan 11 12:06:48 1999
+	DPCM-10001 I:   Rule Parm: control parm for lht2
+	DPCM-10001 I:   Rule Srce: ../lht2.r
+	DPCM-10001 I:     ------------ ACTIONS -----------
+	DPCM-10001 I:     Action Code: DCM_HISTORY_ACTION_SUBRULE
+	DPCM-10001 I:  
+	DPCM-10001 I:   --------------------------
+	DPCM-10001 I:   ------------------------------
+	DPCM-10001 I: ------- END OF RULES ---------
+	DPCM-10001 I:   ------------ TABLES -----------
+	DPCM-10001 I:   TD Name: t1
+	DPCM-10001 I:   TD File: ./lht2/t1.table
+	DPCM-10001 I:   TD Tech: GENERIC
+	DPCM-10001 I:   TD Stamp: DCL Delay Calculator Compiler Version 3, Level 1 compiled file <../lht2.r> on Mon Jan 11 12:06:48 1999
+	              
+	              
+	              
+	              DCL Delay Calculator Compiler V3 L1
+	              Compiled table <t1> from file <../lht2.r> on Mon Jan 11 12:06:48 1999
+	              
+	              
+	              Table data format (C) Copyright IBM Corp 1993, 1994, 1995, 1996, 1997.
+	              
+	              All rights reserved.
+	              
+	DPCM-10001 I:     ------------ ACTIONS -----------
+	DPCM-10001 I:     Action Code: DCM_HISTORY_ACTION_LOAD_MODIFICATION_TABLE
+	DPCM-10001 I:       Rule Name: lht2
+	DPCM-10001 I:       Rule Load: ./lht2/lht2
+	DPCM-10001 I:       Rule Tech: GENERIC
+	DPCM-10001 I:       Rule Time: DCL Delay Calculator Compiler Version 3, Level 1 compiled file <../lht2.r> on Mon Jan 11 12:06:48 1999
+	DPCM-10001 I:       Rule Parm: control parm for lht2
+	DPCM-10001 I:       Rule Srce: ../lht2.r
+	DPCM-10001 I:       ------------------------------
+	DPCM-10001 I:  
+	DPCM-10001 I:   --------------------------
+	DPCM-10001 I:   ------------------------------
+	DPCM-10001 I:   TD Name: t1
+	DPCM-10001 I:   TD File: ./lht/t1.table
+	DPCM-10001 I:   TD Tech: GENERIC
+	DPCM-10001 I:   TD Stamp: DCL Delay Calculator Compiler Version 3, Level 1 compiled file <../lht.r> on Mon Jan 11 12:06:44 1999
+	              
+	              
+	              
+	              DCL Delay Calculator Compiler V3 L1
+	              Compiled table <t1> from file <../lht.r> on Mon Jan 11 12:06:44 1999
+	              
+	              
+	              Table data format (C) Copyright IBM Corp 1993, 1994, 1995, 1996, 1997.
+	              
+	              All rights reserved.
+	              
+	DPCM-10001 I:     ------------ ACTIONS -----------
+	DPCM-10001 I:     Action Code: DCM_HISTORY_ACTION_LOAD_TABLE
+	DPCM-10001 I:       Rule Name: lht
+	DPCM-10001 I:       Rule Load: lht
+	DPCM-10001 I:       Rule Tech: GENERIC
+	DPCM-10001 I:       Rule Time: DCL Delay Calculator Compiler Version 3, Level 1 compiled file <../lht.r> on Mon Jan 11 12:06:44 1999
+	DPCM-10001 I:       Rule Parm: 
+	DPCM-10001 I:       Rule Srce: ../lht.r
+	DPCM-10001 I:       ------------------------------
+	DPCM-10001 I:  
+	DPCM-10001 I:     Action Code: DCM_HISTORY_ACTION_MODIFIED_BY_TABLE
+	DPCM-10001 I:       TD Name: t1
+	DPCM-10001 I:       TD File: ./lht2/t1.table
+	DPCM-10001 I:       TD Tech: GENERIC
+	DPCM-10001 I:       TD Stamp: DCL Delay Calculator Compiler Version 3, Level 1 compiled file <../lht2.r> on Mon Jan 11 12:06:48 1999
+	              
+	              
+	              
+	              DCL Delay Calculator Compiler V3 L1
+	              Compiled table <t1> from file <../lht2.r> on Mon Jan 11 12:06:48 1999
+	              
+	              
+	              Table data format (C) Copyright IBM Corp 1993, 1994, 1995, 1996, 1997.
+	              
+	              All rights reserved.
+	              
+	DPCM-10001 I:       ------------------------------
+	DPCM-10001 I:  
+	DPCM-10001 I:   --------------------------
+	DPCM-10001 I:   ------------------------------
+	DPCM-10001 I:   TD Name: td1
+	DPCM-10001 I:   TD File: td1.lht2.table
+	DPCM-10001 I:   TD Tech: GENERIC
+	DPCM-10001 I:   TD Stamp: Dynamic table read from table file <td1.lht2.table>.
+	              Processed on Mon Jan 11 12:07:46 1999
+	DPCM-10001 I:     ------------ ACTIONS -----------
+	DPCM-10001 I:     Action Code: DCM_HISTORY_ACTION_LOAD_TABLE
+	DPCM-10001 I:       Rule Name: lht
+	DPCM-10001 I:       Rule Load: lht
+	DPCM-10001 I:       Rule Tech: GENERIC
+	DPCM-10001 I:       Rule Time: DCL Delay Calculator Compiler Version 3, Level 1 compiled file <../lht.r> on Mon Jan 11 12:06:44 1999
+	DPCM-10001 I:       Rule Parm: 
+	DPCM-10001 I:       Rule Srce: ../lht.r
+	DPCM-10001 I:       ------------------------------
+	DPCM-10001 I:  
+	DPCM-10001 I:     Action Code: DCM_HISTORY_ACTION_LOAD_TABLE_REPLACE
+	DPCM-10001 I:       Rule Name: lht2
+	DPCM-10001 I:       Rule Load: ./lht2/lht2
+	DPCM-10001 I:       Rule Tech: GENERIC
+	DPCM-10001 I:       Rule Time: DCL Delay Calculator Compiler Version 3, Level 1 compiled file <../lht2.r> on Mon Jan 11 12:06:48 1999
+	DPCM-10001 I:       Rule Parm: control parm for lht2
+	DPCM-10001 I:       Rule Srce: ../lht2.r
+	DPCM-10001 I:       ------------------------------
+	DPCM-10001 I:  
+	DPCM-10001 I:   --------------------------
+	DPCM-10001 I:   ------------------------------
+	DPCM-10001 I: ------ END OF TABLES ----------
+	DPCM-10001 I: -------------------------------------------------------------------
+	DPCM-10001 I: -------------------------- TECHNOLOGY: TROUT--------------------------
+	DPCM-10001 I:   ------------ RULES -----------
+	DPCM-10001 I:   Rule Name: lht3
+	DPCM-10001 I:   Rule Load: ./lht3/lht3
+	DPCM-10001 I:   Rule Tech: TROUT
+	DPCM-10001 I:   Rule Time: DCL Delay Calculator Compiler Version 3, Level 1 compiled file <../lht3.r> on Mon Jan 11 12:06:51 1999
+	DPCM-10001 I:   Rule Parm: control parm for lht3
+	DPCM-10001 I:   Rule Srce: ../lht3.r
+	DPCM-10001 I:     ------------ ACTIONS -----------
+	DPCM-10001 I:     Action Code: DCM_HISTORY_ACTION_SUBRULE
+	DPCM-10001 I:  
+	DPCM-10001 I:     Action Code: DCM_HISTORY_ACTION_LOADS
+	DPCM-10001 I:       Rule Name: lht4
+	DPCM-10001 I:       Rule Load: ./lht4/lht4
+	DPCM-10001 I:       Rule Tech: TROUT
+	DPCM-10001 I:       Rule Time: DCL Delay Calculator Compiler Version 3, Level 1 compiled file <../lht4.r> on Mon Jan 11 12:06:55 1999
+	DPCM-10001 I:       Rule Parm: 
+	DPCM-10001 I:       Rule Srce: ../lht4.r
+	DPCM-10001 I:       ------------------------------
+	DPCM-10001 I:  
+	DPCM-10001 I:   --------------------------
+	DPCM-10001 I:   ------------------------------
+	DPCM-10001 I:   Rule Name: lht4
+	DPCM-10001 I:   Rule Load: ./lht4/lht4
+	DPCM-10001 I:   Rule Tech: TROUT
+	DPCM-10001 I:   Rule Time: DCL Delay Calculator Compiler Version 3, Level 1 compiled file <../lht4.r> on Mon Jan 11 12:06:55 1999
+	DPCM-10001 I:   Rule Parm: 
+	DPCM-10001 I:   Rule Srce: ../lht4.r
+	DPCM-10001 I:     ------------ ACTIONS -----------
+	DPCM-10001 I:     Action Code: DCM_HISTORY_ACTION_SUBRULE
+	DPCM-10001 I:  
+	DPCM-10001 I:   --------------------------
+	DPCM-10001 I:   ------------------------------
+	DPCM-10001 I: ------- END OF RULES ---------
+	DPCM-10001 I:   ------------ TABLES -----------
+	DPCM-10001 I:   TD Name: t1
+	DPCM-10001 I:   TD File: ./lht4/t1.table
+	DPCM-10001 I:   TD Tech: TROUT
+	DPCM-10001 I:   TD Stamp: DCL Delay Calculator Compiler Version 3, Level 1 compiled file <../lht4.r> on Mon Jan 11 12:06:55 1999
+	              
+	              
+	              
+	              DCL Delay Calculator Compiler V3 L1
+	              Compiled table <t1> from file <../lht4.r> on Mon Jan 11 12:06:55 1999
+	              
+	              
+	              Table data format (C) Copyright IBM Corp 1993, 1994, 1995, 1996, 1997.
+	              
+	              All rights reserved.
+	              
+	DPCM-10001 I:     ------------ ACTIONS -----------
+	DPCM-10001 I:     Action Code: DCM_HISTORY_ACTION_LOAD_TABLE_DEFERRED
+	DPCM-10001 I:       Rule Name: lht4
+	DPCM-10001 I:       Rule Load: ./lht4/lht4
+	DPCM-10001 I:       Rule Tech: TROUT
+	DPCM-10001 I:       Rule Time: DCL Delay Calculator Compiler Version 3, Level 1 compiled file <../lht4.r> on Mon Jan 11 12:06:55 1999
+	DPCM-10001 I:       Rule Parm: 
+	DPCM-10001 I:       Rule Srce: ../lht4.r
+	DPCM-10001 I:       ------------------------------
+	DPCM-10001 I:  
+	DPCM-10001 I:     Action Code: DCM_HISTORY_ACTION_LOAD_TABLE
+	DPCM-10001 I:       Rule Name: lht4
+	DPCM-10001 I:       Rule Load: ./lht4/lht4
+	DPCM-10001 I:       Rule Tech: TROUT
+	DPCM-10001 I:       Rule Time: DCL Delay Calculator Compiler Version 3, Level 1 compiled file <../lht4.r> on Mon Jan 11 12:06:55 1999
+	DPCM-10001 I:       Rule Parm: 
+	DPCM-10001 I:       Rule Srce: ../lht4.r
+	DPCM-10001 I:       ------------------------------
+	DPCM-10001 I:  
+	DPCM-10001 I:     Action Code: DCM_HISTORY_ACTION_MODIFIED_BY_TABLE
+	DPCM-10001 I:       TD Name: t1
+	DPCM-10001 I:       TD File: ./lht3/t1.table
+	DPCM-10001 I:       TD Tech: TROUT
+	DPCM-10001 I:       TD Stamp: DCL Delay Calculator Compiler Version 3, Level 1 compiled file <../lht3.r> on Mon Jan 11 12:06:51 1999
+	              
+	              
+	              
+	              DCL Delay Calculator Compiler V3 L1
+	              Compiled table <t1> from file <../lht3.r> on Mon Jan 11 12:06:51 1999
+	              
+	              
+	              Table data format (C) Copyright IBM Corp 1993, 1994, 1995, 1996, 1997.
+	              
+	              All rights reserved.
+	              
+	DPCM-10001 I:       ------------------------------
+	DPCM-10001 I:  
+	DPCM-10001 I:   --------------------------
+	DPCM-10001 I:   ------------------------------
+	DPCM-10001 I:   TD Name: t1
+	DPCM-10001 I:   TD File: ./lht3/t1.table
+	DPCM-10001 I:   TD Tech: TROUT
+	DPCM-10001 I:   TD Stamp: DCL Delay Calculator Compiler Version 3, Level 1 compiled file <../lht3.r> on Mon Jan 11 12:06:51 1999
+	              
+	              
+	              
+	              DCL Delay Calculator Compiler V3 L1
+	              Compiled table <t1> from file <../lht3.r> on Mon Jan 11 12:06:51 1999
+	              
+	              
+	              Table data format (C) Copyright IBM Corp 1993, 1994, 1995, 1996, 1997.
+	              
+	              All rights reserved.
+	              
+	DPCM-10001 I:     ------------ ACTIONS -----------
+	DPCM-10001 I:     Action Code: DCM_HISTORY_ACTION_LOAD_MODIFICATION_TABLE_DEFERRED
+	DPCM-10001 I:       Rule Name: lht3
+	DPCM-10001 I:       Rule Load: ./lht3/lht3
+	DPCM-10001 I:       Rule Tech: TROUT
+	DPCM-10001 I:       Rule Time: DCL Delay Calculator Compiler Version 3, Level 1 compiled file <../lht3.r> on Mon Jan 11 12:06:51 1999
+	DPCM-10001 I:       Rule Parm: control parm for lht3
+	DPCM-10001 I:       Rule Srce: ../lht3.r
+	DPCM-10001 I:       ------------------------------
+	DPCM-10001 I:  
+	DPCM-10001 I:     Action Code: DCM_HISTORY_ACTION_LOAD_MODIFICATION_TABLE
+	DPCM-10001 I:       Rule Name: lht3
+	DPCM-10001 I:       Rule Load: ./lht3/lht3
+	DPCM-10001 I:       Rule Tech: TROUT
+	DPCM-10001 I:       Rule Time: DCL Delay Calculator Compiler Version 3, Level 1 compiled file <../lht3.r> on Mon Jan 11 12:06:51 1999
+	DPCM-10001 I:       Rule Parm: control parm for lht3
+	DPCM-10001 I:       Rule Srce: ../lht3.r
+	DPCM-10001 I:       ------------------------------
+	DPCM-10001 I:  
+	DPCM-10001 I:   --------------------------
+	DPCM-10001 I:   ------------------------------
+	DPCM-10001 I:   TD Name: td1
+	DPCM-10001 I:   TD File: td1.lht3.table
+	DPCM-10001 I:   TD Tech: TROUT
+	DPCM-10001 I:   TD Stamp: Dynamic table read from table file <td1.lht3.table>.
+	              Processed on Mon Jan 11 12:07:46 1999
+	DPCM-10001 I:     ------------ ACTIONS -----------
+	DPCM-10001 I:     Action Code: DCM_HISTORY_ACTION_LOAD_TABLE_REPLACE
+	DPCM-10001 I:       Rule Name: lht3
+	DPCM-10001 I:       Rule Load: ./lht3/lht3
+	DPCM-10001 I:       Rule Tech: TROUT
+	DPCM-10001 I:       Rule Time: DCL Delay Calculator Compiler Version 3, Level 1 compiled file <../lht3.r> on Mon Jan 11 12:06:51 1999
+	DPCM-10001 I:       Rule Parm: control parm for lht3
+	DPCM-10001 I:       Rule Srce: ../lht3.r
+	DPCM-10001 I:       ------------------------------
+	DPCM-10001 I:  
+	DPCM-10001 I:   --------------------------
+	DPCM-10001 I:   ------------------------------
+	DPCM-10001 I: ------ END OF TABLES ----------
+	DPCM-10001 I: -------------------------------------------------------------------
+	DCL-2106 I: Terminating DCM loaded from <lht>,
+	            processed by <DCL Delay Calculator Compiler Version 3, Level 1 compiled file <../lht.r> on Mon Jan 11 12:06:44 1999>.
+	DCL-2106 I: Terminating DCM loaded from <./lht3/lht3>,
+	            processed by <DCL Delay Calculator Compiler Version 3, Level 1 compiled file <../lht3.r> on Mon Jan 11 12:06:51 1999>.
+	DCL-2106 I: Terminating DCM loaded from <./lht4/lht4>,
+	            processed by <DCL Delay Calculator Compiler Version 3, Level 1 compiled file <../lht4.r> on Mon Jan 11 12:06:55 1999>.
+	DCL-2106 I: Terminating DCM loaded from <./lht2/lht2>,
+	            processed by <DCL Delay Calculator Compiler Version 3, Level 1 compiled file <../lht2.r> on Mon Jan 11 12:06:48 1999>.
+** Using Doxygen
+   Always remove the destination directories since previous errors mess things up.
+   Also put the path to dot into the Doxygen file under DOT_PATH
+* SVN commands
+** Admin commands  Use these commands to create, dump and load a repository.
+*** Create
+    Use this command to create a repository in a certain location svnadmin create /afs/btv/data/ECSM/svn/<someName>
+  
+*** Dump a repository
+    /usr/bin/svnadmin dump ./csmgen > csmgen.dump
+  
+*** Load a dumped repository
+    Create the repository with the create command first
+    svnadmin load /afs/btv/data/ECSM/svn/csmgen < csmgen.dump
+  
+** SVN Regular use
+   These commands are the general commands to checkin, checkout and view the repository
+*** To Checkout a repositiory
+    Be in the directory you want to put the data in
+    Use svn checkout file:///afs/btv/data/ECSM/svn/lib2ndrChecker .
+ï¿¼  
+*** To Commit or check in your changes
+    Use this command to commit (check in) changes to the repository. svn commit -m "some message"
+    svn commit -m "some message" --file <file1> <file2>...
+  
+*** To Update your local copy from the repository
+    Use this command to update the local copy with the repository changes. svn update
+  
+*** To Add new stuff to the repository
+    Use this command to add files/directories to the repository. svn add <file1>
+    To add new files when other files exist.
+    svn status | grep '?' | awk '{print $2}' | xargs svn add
+  
+*** To list what is in a repository
+    Use svn list -v -R file:///afs/btv/data/ECSM/svn/lib2ndrChecker/
+ï¿¼  
+*** To rsync a directory
+    rsync -avz /afs/btv/data/ECSM/tools_install/eqn2rules_v3/* . --dry-run remove the --dry-run when you are sure it is doing what you wanted.
+  
+*** To import data
+    Be in the directory
+    svn import -m "Initial import" . file:///afs/btv/data/ECSM/svn/lib2ndrChecker
+ï¿¼  
+*** To export the data
+    Be in the directory to export to
+    Use svn export --force file:///afs/btv/data/ECSM/svn/lib2ndrChecker/trunk .
+ï¿¼  
+*** To determine where you are use
+    svn info, look at the url:
+  
+*** To make a tag or branch use
+    svn copy file:///afs/btv.ibm.com/data/ECSM/svn/csmgen/trunk file:///afs/btv.ibm.com/data/ECSM/svn/csmgen/tags/avgMaxCapUpdate
+ï¿¼ï¿¼  
+*** Emacs svn excutable location
+    (defcustom svn-status-svn-executable "svn"
+    "*The name of the svn executable.
+    This can be either absolute or looked up on `exec-path'.
+* AWK
+** Argument parsing
+   for ( i=1; i < ARGC; i = i + 2) {
+     #print "ARGV[" i "]=" ARGV[i]
+     if (ARGV[i] == "-inLibFile") {
+         inLibFile = ARGV[i+1]
+     } else if (ARGV[i] == "-outLibFile") {
+         outLibFile = ARGV[i+1]
+     } else if (ARGV[i] == "-delayScalar") {
+         delayScalar = ARGV[i+1]
+     } else if (ARGV[i] == "-slewScalar") {
+        slewScalar = ARGV[i+1]
+     } else if (ARGV[i] == "-holdScalar") {
+        holdScalar = ARGV[i+1]
+     } else if (ARGV[i] == "-setupScalar") {
+        setupScalar = ARGV[i+1]
+     } else if (ARGV[i] == "-minPulseScalar") {
+        minPulseScalar = ARGV[i+1]
+     } else if (ARGV[i] == "-minPulseFile") {
+        minPulseFile = ARGV[i+1]
+        usePulseValue = 1
+     } else if (ARGV[i] == "-capLimitFile") {
+        capLimitFile = ARGV[i+1]
+        useCapLimitValue = 1
+     } else {
+        print "ERROR: I do not understand the option: " ARGV[i]
+        exit
+     }
+   }
+   ARGC = 1
+   if ( minPulseFile != "" ) {
+      ARGV[ARGC] = minPulseFile
+      ARGC = ARGC + 1
+   }
+   if ( capLimitFile != "" ) {
+      ARGV[ARGC] = capLimitFile
+      ARGC = ARGC + 1
+   }
+   if ( inLibFile != "" ) {
+      ARGV[ARGC] = inLibFile
+      ARGC = ARGC + 1
+   } else {
+      print "ERROR: You must specify a lib file with -inLibFile <libFileName>"
+      exit
+   }
+** Directing output
+   if ( outLibFile == "" ) {
+      outFile = "/dev/stdout"
+   } else {
+      outFile = outLibFile
+      system( "rm -f " outFile )
+   }
+** Pattern/Action examples
+ARGIND == 1 && /#/ && usePulseValue == 1 { next
+}
+ARGIND == 1 && usePulseValue == 1 { pulseValue[$1 $2 $3 $4 $5] = $6
+#print "reading in " $0 next
+}
+ARGIND == 1 && /#/ && useCapLimitValue == 1 { next
+}
+
+** For loop examples
+*** Loop over index
+    for ( i = 1; i<= numValues; i++) {    }
+*** Loop over array hash names
+    for ( var in DBvars ) {
+
+** Get UID and date
+"date +%Y:%m:%d:%H:%M:%S" | getline theDate
+uid = ENVIRON["USER"]
+** Test if value in array
+if ( cellPin in capLimitMin ) {   }
+** Using getline
+   while ( index($0, ");") == 0 ) {
+      valueLine = valueLine " " $0
+      getline
+   }
+   Variant               Variables Set
+   -------               -------------
+   getline              $0, ${1...NF}, NF, FNR, NR, FILENAME
+   getline var          var, FNR, NR, FILENAME
+   getline < file       $0, ${1...NF}, NF
+   getline var < file   var
+   command | getline    $0, ${1...NF}, NF
+   command | getline    var 
+   command |& getline   $0, ${1...NF}, NF
+   command |& getline   var var
+    
+   if/while ( (getline var < file) > 0)
+   if/while ( (command | getline var) > 0) 
+   if/while ( (command |& getline var) > 0)
+
+** Extract filename from path
+   c = split(FILENAME,arr,"\\"} f = arr[c]
+   print f
+      or:
+   f = FILENAME sub(/.*[\\]/,"",f) print f
+
+* KSH
+** Parse parameters
+# parse through the input parameters
+while [[ $1 = -* ]]; do
+case $1 in
+  -tol )  tolerance=$2
+          shift;;
+  -cf )   craftFile=$2
+          shift ;;
+  -cr )   craftRunsFile=$2
+          shift ;;
+  -e* )   env=$2
+          shift ;;
+  -t* )   testcase=$2
+          shift ;;
+  -p* )   process=$2
+          shift ;;
+  -noEcsm )  ecsm="false"
+          ;;
+  -noDlb  )  dlb="false"
+          ;;
+  -noCraft ) craft="false"
+          ;;
+  -noScale ) scaleLib="false"
+          ;;
+  -noDlVerify ) dlVerify="false"
+          ;; 
+  -noDb )  modSim="false"
+          ;;
+  -noGw ) gateWidth="false"
+          ;;
+  -batch ) runBatch="-qman"
+           ;;
+  -cell ) cell=$2
+          shift;;
+  -bhc )  bhc=$2
+          shift;;
+  -outDir )  outdir=$2
+            shift;;
+  -gwFile )  gwFile=$2
+             shift;;
+  -dbFile )  dbFile=$2
+             shift;;
+  -cirVimDir )  cirVimDir=$2
+                shift;;
+  -*)        rest="$rest $1"
+       if [[[[ $2 != -* ]]]];then
+          rest="$rest $2"
+          shift
+       fi;;
+
+  *)   rest="$rest $2"
+       shift;;
+
+ esac
+ shift
+done
+
+** Read input from command
+   echo $theLibName | awk ' { gsub(/Bestcase/, "Typical", $0); gsub(/PbcV105T25 /,"PnomV095T85", $0); print $0 }' | read newLibNamec
+** Read multi line input from a process
+   llq -u $uid | {
+   while read line;do
+   # Ignore the junk
+   if [[ $line == *Owner* ]]; then
+      continue 
+   fi
+   if [[ $line == *-----* ]]; then
+      continue 
+   fi
+   if [[ $line == *step\(s\)* ]]; then
+      continue 
+   fi
+   if [[ $line == "" ]]; then
+      continue 
+   fi
+   set -A jobAry $line
+   print "Canceling job ${jobAry[0]}"
+   llcancel ${jobAry[0]}
+   done }
+** Read input from multi line file
+  while read line do
+   # Ignore the comments 
+   if [[[[ $line == *#* ]]]]; then
+     continue 
+   fi
+  done < $pinsFile
+** Number of args
+numArgs=$#
+
+if [ $numArgs -ne 8 ]; then
+    echo "CJS-ERROR Incorrect number of arguments"
+    help
+    exit
+fi
+** Check args
+if [[[[ $server == "" ]]]]; then
+    echo "CJS-ERROR: You must specify a server with the -server option"
+    exit 99
+
+fi
+if [[ $newStatus != "created" && $newStatus != "running" && $newStatus != "hold" && $newStatus != "failed" && $newStatus != "submitted" ]]; then
+    echo "CJS-ERROR: -newStatus must be one of created, running, hold, failed, submitted"
+    exit 99
+
+fi
+
+** Associated arrays
+   typeset -A libFiles
+   # Save the noise lib files
+   libFiles[${lineAry[3]}]=${lineAry[3]}
+** Split line into array
+   # Split the line into an array 
+   set -A lineAry $line
+
+   # Ignore blank lines
+   if [[ ${lineAry[0]} == "" ]]; then
+     continue
+   fi
+
+** if else elif fi
+if
+  [[[[ Condition1]] ]]; then
+      block A1
+elif  [ Condition2 ]
+  block A2
+elif  [ Condition3 ]
+  block A3     ...
+elif  [ Condition i-1 ]
+  block Ai-1
+else      block Ai
+fi
+
+** Test if file exists
+if ![ -e $inputLib ]; then
+   echo "ERROR: Cannot find input lib file <$inputLib>"
+   exit
+fi
+** Find name of script
+Either prog=`basename $0` echo "1- $prog"
+or
+prog=${0##*/} echo "2- $prog"
+** Turn tracing on
+   #set -x # Uncomment to turn tracing on
+   Use : for comments instead of # and these will only print when tracing is turned on.
+** To find files and read into a variable
+   find $1 -name $2 -printf "%h/%f " | read allLibFiles
+   for theFile in $allLibFiles 
+     do
+      #echo ".. $theFile "
+      theFileName=`basename $theFile` 
+     done
+** To pass something unexpanded double quote it
+   #The function createBundleFile sees the match as *asyn unexpanded
+
+   findLoc=$synLoc/ASYN/
+   match="*asyn"
+   createBundleFile $findLoc $match "ASYN"
+** Functions
+   Define a function as below.
+   $1 is the parameters to the function not the script
+
+   minimizeBundleFile () { 
+     #echo $1
+   }
+** Local varables in a function use typeset
+   subfunc(){
+       typeset var
+       echo sub: var starts as $var '(empty)'
+       var=2
+       echo sub: var is now $var
+   }
+** Use return to return from a function
+   A return code of 0 is good. All others is bad.
+
+   someFunction () { 
+     return 0;
+   }
+* ERLANG
+** Comments
+   Comments start with %, convention seems to be use %% though
+** Lists
+*** Looks like 
+    List = [ a, b, c, d]
+*** length
+    length( listName )  return a number
+* ELISP
+** How to get a password
+#+begin_src elisp
+(read-passwd "Enter your password " )
+#+end_src
+
+#+results:
+: TestThis1
+
+* C++
+** Good video
+   Caleb Curry https://eee.youtube.com/watch?v=_bYfu9mBnr4
+** data types
+   (unsigned|signed) char
+   (unsigned|signed) short
+   (unsigned|signed) int
+   (unsigned|signed) long
+   (unsigned|signed) long long
+   bool
+   void
+   float
+   double
+   long double
+   struct
+   class
+
+*** to find a specific size of these 
+    cout << sizeof( short|int|long.... ) << std::endl;
+*** to find largest value in each of these
+    #include <climits>
+    for signed cout << SHRT_MAX|MIN << std::endl;
+    for unsigned cout << USHRT_MAX|MIN << std::endl;
+    for cout << INT_MAX|MIN << std::endl;
+    for cout << LONG_MAX|MIN << std::endl;
+    for cout << LLONG_MAX|MIN << std::endl;
+
+*** To print floats with cout with some formatting    
+    cout << std::fixed << a << std::endl;
+*** To find out how many sig digits are trust worthy for float double use
+    std::cout << FLT_DIG << std::endl;
+    std::cout << DBL_DIG << std::endl;
+
+** Numeric functions
+*** fmax/fmin  find max/min of numbers
+    std::cout << fmax( 10, 2.5) << std::endl;
+** bool print out true/false instead of 0/1
+   cout << std::boolalpha << theBoolVar << std::endl;
+** strings
+*** concatination
+    x = "www" + "yyy"
+*** append to a string
+    x += "!";
+*** size
+    x.length()
+    x.size()
+*** insert a string into another string
+    x.insert( 3, "theString" )    insert at index 3 theString
+*** remove stuff from a string
+    x.erase( 3, 4)  remove 4 characters starting at index 3 
+*** Find string in string
+    string.fing( "search" );
+*** Grab part of string
+    string.substr( startPos, numChars);
+*** Find first of set of chars
+    string.find_first_of( "aeiou" )  // returns npos if not found or -1
+*** Compare strings
+    Use ==
+      or
+    string.compare( "theString" ) == 0
+** Literals
+*** constants
+    'a' and "a"
+** Branching
+*** if else
+
+    for someExpression.
+    0 == false
+    !0 == true
+
+    if ( someExpression) {
+      /some code
+    } else if ( some other expression ) {
+      /some code
+    } else {
+      /some code
+    }
+**** if test prog
+#+begin_src C++  :includes '( "<iostream>" "<stdlib.h>" ) :results output replace
+  int i = 5;
+  int j = 0;
+  int k = -1;
+
+  if ( i ) {
+    std::cout << "I tests true" << std::endl;
+  }
+  if ( j ) {
+    std::cout << "J tests true" << std::endl;
+  }
+  if ( k ) {
+    std::cout << "K tests true" << std::endl;
+  }
+
+#+end_src
+
+#+results:
+: I tests true
+: K tests true
+
+** Looping
+*** breaking out of a loop
+    break;
+    continue;
+*** while loop
+  while ( test ) {
+    // some code
+
+  }
+*** for loop
+**** normal
+  for ( int i = 0; i <10; i++ ) {
+
+  }
+**** like a foreach
+     Use this only for local C arrays ( not passed to function)
+     Will work fine for STL vector and array
+
+  int data{} = {1,2,3,4,5};
+  std::vector<int> data = {1,2,3,4,5};
+  std::array<int, 5> data = {1,2,3,4,5};
+
+  for ( int n : data ) {
+    cout << n << endl;
+  }
+***** Example
+#+begin_src C++  :includes '( "<iostream>" "<stdlib.h>" "<vector>" "<array>" ) :results output replace
+using namespace std;
+
+//void test( int data[] ) {   // this will not work.
+void test( std::vector<int> data ) {
+//void test( std::array<int, 5> data ) {
+
+   for ( int n : data ) {
+    cout << "---- " << n << endl;
+   }
+
+}
+
+int main () {
+  //int data[] = {1,2,3,4,5};
+  std::vector<int> data = {1,2,3,4,5};
+  //std::array<int, 5> data = {1,2,3,4,5};
+
+  for ( int n : data ) {
+    cout << n << endl;
+  }
+
+  test( data );
+
+}
+#+end_src
+
+#+results:
+#+begin_example
+1
+2
+3
+4
+5
+---- 1
+---- 2
+---- 3
+---- 4
+---- 5
+#+end_example
+
+*** do while
+   Important,  vars declared inside of the do are not accessable in the while
+
+    int x = 1;
+    do {
+      std::cout << "values are " << x << std::endl;
+      x++;
+    } while ( x < 10 );
+*** Factorial test
+#+begin_src C++  :includes '( "<iostream>" "<stdlib.h>" ) :results output replace
+
+int factorial = 1;
+for ( int i = 1; i <= 5; i++ ) {
+  factorial = factorial * i;
+}
+std::cout << "Factorial = " << factorial << std::endl;
+
+int i = 1;
+factorial = 1;
+while ( i <= 5 ) {
+  factorial = factorial * i;
+  i++;
+} 
+std::cout << "Factorial = " << factorial << std::endl;
+
+    int x = 1;
+    do {
+      std::cout << "values are " << x << std::endl;
+      x++;
+    } while ( x < 10 );
+
+#+end_src
+
+#+results:
+#+begin_example
+Factorial = 120
+Factorial = 120
+values are 1
+values are 2
+values are 3
+values are 4
+values are 5
+values are 6
+values are 7
+values are 8
+values are 9
+#+end_example
+
+** Read in info from command line
+*** Will read in all the data on the line as opposed to first space delimited data
+   getline( std::cin, varName)
+*** Read in data and check it's value
+   if( std::cin >> someAry[i] ) {
+     // do something it worked
+   } else {
+     // Data is invalid
+     break;
+   }
+**** Using above you will have stuff left over from stdin like the last charater. To clear it
+     std::cin.clear();
+     std::cin.ignore( std::numeric_limits<std::streamsize>::max(), '\n'); // will need #include <limits> 
+     
+** C arrays vs STL arrays vs STL vectors
+*** You cannot assign a normal array variable to another array variable.
+    You can by using STL arrays
+*** C arrays are passed by reference,
+    STL arrays and vectors are passed by value, so pass them with &arrar and $vector
+*** STL array and vector have a size() method
+*** Summary
+|            | C array            | STL array         | STL vector       |
+|------------+--------------------+-------------------+------------------|
+| Allocation | static             | static            | dynaminic        |
+| Passed how | decays to pointer  | pass by value     | pass by value    |
+| how big    | Must keep track    | xxx.size()        | xxx.size()       |
+| transfer   | Must copy manually | simple assignment | simple assigment |
+|            |                    |                   |                  |
+** STL Vectors
+#+begin_src C++  :includes '( "<iostream>" "<stdlib.h>" "<vector>" ) :results output replace :cmdline -std=c++11
+using namespace std;
+
+void print_vector( std::vector<int> &junk) {
+   
+   junk.push_back( 22 );
+   for ( int i = 0; i < junk.size(); i++) {
+     cout << "Value at index " << i << " is " << junk[i] << endl;
+   }
+   cout << endl;
+}
+
+ int main() {
+ 
+  std::vector<int> someData = {10, 20, 30, 40};
+   someData.push_back( 50 );
+   cout << someData[2] << endl;
+   cout << someData[ someData.size() - 1 ] << endl;
+   someData.pop_back();
+   cout << someData[ someData.size() - 1 ] << endl;
+   print_vector( someData );
+   print_vector( someData );
+   print_vector( someData );
+
+}
+#+end_src
+
+#+results:
+#+begin_example
+30
+50
+40
+Value at index 0 is 10
+Value at index 1 is 20
+Value at index 2 is 30
+Value at index 3 is 40
+Value at index 4 is 22
+
+Value at index 0 is 10
+Value at index 1 is 20
+Value at index 2 is 30
+Value at index 3 is 40
+Value at index 4 is 22
+Value at index 5 is 22
+
+Value at index 0 is 10
+Value at index 1 is 20
+Value at index 2 is 30
+Value at index 3 is 40
+Value at index 4 is 22
+Value at index 5 is 22
+Value at index 6 is 22
+#+end_example
+
+*** vector allocation time
+#+begin_src C++  :includes '( "<iostream>" "<stdlib.h>" "<vector>" "<chrono>" ) :results output replace :cmdline -std=c++11
+
+using std::vector; 
+using std::cout; 
+using namespace std::chrono; 
+  
+int main() 
+{ 
+    // No of charactes 
+    int N = (int)1e6; 
+  
+    vector<int> v1, v2; 
+  
+    // Reserve space in v2 
+    v2.reserve(N); 
+  
+    // Start filling up elements in v1 
+    // To measure execution time in C++, refer below 
+    // https://www.geeksforgeeks.org/measure-execution-time-function-cpp/ 
+  
+    auto start = high_resolution_clock::now(); 
+    for (int i = 0; i < N; ++i) 
+        v1.push_back(i); 
+    auto stop = high_resolution_clock::now(); 
+    auto duration = duration_cast<microseconds>(stop - start); 
+  
+    cout << "Method I took " << duration.count() << " microseconds\n"; 
+  
+    // Start filling up elements in v2 
+    start = high_resolution_clock::now(); 
+    for (int i = 0; i < N; ++i) 
+        v2.push_back(i); 
+    stop = high_resolution_clock::now(); 
+    duration = duration_cast<microseconds>(stop - start); 
+  
+    cout << "Method II took " << duration.count()  
+         << " microseconds \n"; 
+  
+    return 0; 
+} 
+
+
+
+#+end_src
+
+#+results:
+: Method I took 30726 microseconds
+: Method II took 36347 microseconds
+
+** STL Arrays
+#+begin_src C++  :includes '( "<iostream>" "<stdlib.h>" "<vector>"  "<array>" ) :results output replace :cmdline -std=c++11
+using namespace std;
+
+
+void print_ary( std::array<int, 5> junk) {
+   
+   for ( int i = 0; i < junk.size(); i++) {
+     cout << "Value at index " << i << " is " << junk[i] << endl;
+   }
+   cout << endl;
+}
+
+ int main() {
+   std::array<int, 5> data = { 1, 2, 3 };
+   print_ary( data );
+ } 
+#+end_src
+
+#+results:
+: Value at index 0 is 1
+: Value at index 1 is 2
+: Value at index 2 is 3
+: Value at index 3 is 0
+: Value at index 4 is 0
+
+** Streams
+*** file streams
+**** write files
+#+begin_src C++  :includes '( "<iostream>" "<stdlib.h>" "<vector>" "<array>" "<fstream>" ) :results output replace :cmdline -std=c++11  :var input=input
+
+  std::string fileName = input;
+
+  std::ofstream file;
+  //file.open( "out.txt", std::ios::app );
+  file.open( fileName, std::ios::app );
+
+  if ( file.is_open() ) {
+    std::cout << "I can write\n";
+  } else {
+    std::cout << "I cannot write\n";
+  }
+
+  std::vector<std::string> names;
+
+  names.push_back( "john" );
+  names.push_back( "nancy" );
+  names.push_back( "bob" );
+
+  file << "Some text is here";
+  for ( std::string name : names ) {
+    file << name << std::endl;
+    }
+#+end_src
+
+#+results:
+: I can write
+
+**** read files
+#+begin_src C++  :includes '( "<iostream>" "<stdlib.h>" "<vector>" "<array>" "<fstream>" ) :results output replace :cmdline -std=c++11  :var input=input
+
+std::string fileName = input;
+
+std::ifstream file( fileName );
+
+std::string line;
+ if ( file.is_open() ) {
+   while ( file >> line ) {
+    std::cout << line << std::endl;
+   }
+ } else {
+   std::cout << "File " << fileName << " not found" << std::endl;
+
+ }
+#+end_src
+
+#+results:
+: 88.5
+: 22.1
+: 95.8
+: 100.0
+: 95.6
+
+** test progs
+*** Hello World
+#+begin_src C++ :includes <iostream>
+  std::cout << "Hello world\n";
+#+end_src
+
+#+results:
+: Hello world
+
+*** decimal, hex, octal, operators
+#+begin_src C++  :includes '( "<iostream>" "<stdlib.h>" ) :results output replace
+
+   int dec = 20;
+   int hex = 0x20;
+   int oct = 020;
+
+   std::cout << "dec = " << dec << std::endl;
+   std::cout << "hex = " << hex << std::endl;
+   std::cout << "oct = " << oct << std::endl;
+
+   std::cout << "convert dec to hex = " << std::hex << dec << std::endl;
+   std::cout << "convert dec to oct = " << std::oct << dec << std::endl;
+   
+   double intDiv = 10 / 4;
+   double floatDiv = 10. / 4;
+   
+   std::cout << "intDiv = " << intDiv << std::endl;
+   std::cout << "floatDiv = " << floatDiv << std::endl;
+
+
+#+end_src
+
+#+results:
+: dec = 20
+: hex = 32
+: oct = 16
+: convert dec to hex = 14
+: convert dec to oct = 24
+: intDiv = 2
+: floatDiv = 2.5
+
+*** Pointers
+**** address of
+#+begin_src C++  :results output replace :includes <iostream>
+  int number = 250;
+  int* numPtr;        // The datatypes must be of the same type
+  numPtr = &number;
+  double num2 = 1.1;
+  double* numPtr2;
+  numPtr2 = &num2;
+  std::cout << "The address of number is " << numPtr  << std::endl;
+  std::cout << "The address of num2   is " << numPtr2 << std::endl;
+#+end_src
+
+#+results:
+: The address of number is 0x3fffc03b05700x3fffc03b0578
+: The address of num2   is 0x3fffc03b0578
+**** size of
+#+begin_src C++ :includes <iostream> :results output replace
+        using namespace std;
+
+	cout << "Size of boolean: " << sizeof(bool) << endl;
+	cout << "Size of char: " << sizeof(char) << endl;
+	cout << "Size of int: " << sizeof(int) << endl;
+	cout << "Size of float: " << sizeof(float) << endl;
+	cout << "Size of long: " << sizeof(long) << endl;
+	cout << "Size of double: " << sizeof(double) << endl;
+
+	bool* pBool;
+	char* pChar;
+	int* pInt;
+	cout << "Size of boolean ptr: " << sizeof(pBool) << endl;
+	cout << "Size of char ptr: " << sizeof(pChar) << endl;
+	cout << "Size of int ptr: " << sizeof(pInt) << endl;
+#+end_src
+
+#+results:
+: Size of boolean: 1
+: Size of char: 1
+: Size of int: 4
+: Size of float: 4
+: Size of long: 8
+: Size of double: 8
+: Size of boolean ptr: 8
+: Size of char ptr: 8
+: Size of int ptr: 8
+
+**** array pointer
+#+begin_src C++ :includes <iostream> :results output replace
+        using namespace std;
+	double values[10];	 //declare an array values with 10 elements
+	double* pValue = values; //define a pointer to the array
+	cout << "value array address: "<< values << endl;	
+	cout << "pValues: " << pValue << endl;
+	
+	for( int i=0; i < 10; i++) {
+	   cout << "Address of  " << i << " " << pValue + i << endl;
+        }
+
+
+#+end_src
+
+#+results:
+#+begin_example
+value array address: 0x3fffdf31cbb0
+pValues: 0x3fffdf31cbb0
+Address of  0 0x3fffdf31cbb0
+Address of  1 0x3fffdf31cbb8
+Address of  2 0x3fffdf31cbc0
+Address of  3 0x3fffdf31cbc8
+Address of  4 0x3fffdf31cbd0
+Address of  5 0x3fffdf31cbd8
+Address of  6 0x3fffdf31cbe0
+Address of  7 0x3fffdf31cbe8
+Address of  8 0x3fffdf31cbf0
+Address of  9 0x3fffdf31cbf8
+#+end_example
+
+**** character pointer
+#+name: input
+#+begin_src elisp
+(completing-read "Enter a number: " nil)
+#+end_src
+
+#+results: input
+: 5
+
+#+begin_src C++ :includes '( "<iostream>" "<stdlib.h>" ) :results output replace :var input=input
+        using namespace std;
+	char initial = 'P';
+	char* pInitial = &initial;
+	cout << "Memory address for initial P: " << (void *)pInitial<<endl;
+	cout << "Memory address for initial P: " << static_cast <void *>(pInitial) << endl;
+
+	const char* pans1{ "Absolutely yes" };
+	const char* pans2{ "Absolutely no" };
+	const char* pans3{ "The oracle is out, please try again later" };
+	const char* pans4{ "Outlook is good" };
+	const char* pans5{ "Today is your lucky day, yes" };
+	const char* pans6{ "Try again tomorrow" };
+	const char* pans7{ "Most certainly" };
+	const char* pans8{ "The answer is unclear" };
+	const char* pans{ "The oracle says... " };
+//	int choice{};
+
+	cout << "Think of a yes/no question, then ask the oracle" << endl;
+	cout << "Enter a number between 1 and 8: ";
+	//cin >> choice;
+	int choice = atoi(input);
+	switch (choice)
+	{
+	case 1:
+		cout << pans << pans1 << endl;
+		break;
+	case 2:
+		cout << pans << pans2 << endl;
+		break;
+	case 3:
+		cout << pans << pans3 << endl;
+		break;
+	case 4:
+		cout << pans << pans4 << endl;
+		break;
+	case 5:
+		cout << pans << pans5 << endl;
+		break;
+	case 6:
+		cout << pans << pans6 << endl;
+		break;
+	case 7:
+		cout << pans << pans7 << endl;
+		break;
+	case 8:
+		cout << pans << pans8 << endl;
+		break;
+	default:
+		cout << "Sorry, you didn't choose a number between 1 and 8." << endl;
+	}
+
+
+#+end_src
+
+#+results:
+: Memory address for initial P: 0x3fffe04b11e4
+: Memory address for initial P: 0x3fffe04b11e4
+: Think of a yes/no question, then ask the oracle
+: Enter a number between 1 and 8: The oracle says... Absolutely yes
+
+**** dereferencing
+#+begin_src C++ :includes '( "<iostream>" "<stdlib.h>" ) :results output replace :cmdline < in.txt
+
+        using namespace std;
+
+	double testScores[5], sum=0;
+	double* pTestScores;
+	pTestScores = testScores;
+	for (int i = 0; i < 5; i++)
+	{
+	    cin >> *(pTestScores + i);
+	    cout << "Enter the test score: " << *(pTestScores + i) << endl;
+	    sum += *(pTestScores + i);
+	}
+	cout << "testScores: "<<testScores<<endl;
+	cout << "Total for all students: " << sum << endl;
+	cout << "Average score: " << sum / 5 << endl;
+
+	
+
+#+end_src
+
+#+results:
+: Enter the test score: 88.5
+: Enter the test score: 22.1
+: Enter the test score: 95.8
+: Enter the test score: 100
+: Enter the test score: 95.6
+: testScores: 0x3fffdfc71c08
+: Total for all students: 402
+: Average score: 80.4
+**** ptrToPtr
+#+begin_src C++ :includes '( "<iostream>" "<stdlib.h>" ) :results output replace
+   using namespace std;
+
+   int num = 10;
+   int *pNum = &num;
+   int **p2Num = &pNum;
+
+   cout << "address of num   " << &num << endl;
+   cout << "address in pNum  " << pNum << endl;
+   cout << "address of pNum  " << &pNum << endl;
+   cout << "address in p2Num " << p2Num << endl;
+
+   int testScores[5] = { 100, 95, 99, 85,83};
+   int *ptrAry[5];
+   for (int i = 0; i < 5; i++ ) {
+     ptrAry[i] = &( testScores[i] );
+     cout << ptrAry[i] << endl;
+     cout << *ptrAry[i] << endl;
+     cout << *(ptrAry + i) << endl;
+     cout << **(ptrAry + i) << endl;
+   }
+
+
+#+end_src
+
+#+results:
+#+begin_example
+address of num   0x3fffdae59000
+address in pNum  0x3fffdae59000
+address of pNum  0x3fffdae59008
+address in p2Num 0x3fffdae59008
+0x3fffdae59010
+100
+0x3fffdae59010
+100
+0x3fffdae59014
+95
+0x3fffdae59014
+95
+0x3fffdae59018
+99
+0x3fffdae59018
+99
+0x3fffdae5901c
+85
+0x3fffdae5901c
+85
+0x3fffdae59020
+83
+0x3fffdae59020
+83
+#+end_example
+a
+**** passing pointers
+#+begin_src C++  :includes '( "<iostream>" "<stdlib.h>" ) :results output replace
+using namespace std;
+
+double averageCost(double* priceArray, int *count)
+{
+	double sum = 0;
+	for(int i = 0; i < *count; i++)
+	{
+		sum += *(priceArray + i);
+	}
+
+	double avg = sum / *count;
+
+	*count += 5;
+
+	return avg;
+
+}
+int main()
+{
+	double prices[5]{ 5.00, 4.50, 3.75, 3.10, 6.75 };
+	int num = 5;
+	double average = averageCost(prices, &num);
+	cout << "$" << average << endl;
+	cout << "Count is now " << num << endl;
+    return 0;
+}
+
+#+end_src
+
+#+results:
+: $4.62
+: Count is now 10
+**** passing pointers2
+#+begin_src C++  :includes '( "<iostream>" "<stdlib.h>" ) :results output replace
+using namespace std;
+
+
+void swap( int &a, int &b) {
+
+  int tmp = a;
+  a = b;
+  b = tmp;
+
+  cout << a << " " << b << endl;
+
+}
+
+int main()
+{
+  //double prices[5]{ 5.00, 4.50, 3.75, 3.10, 6.75 };
+  //int num = 5;
+  //double average = averageCost(prices, &num);
+  //cout << "$" << average << endl;
+  //cout << "Count is now " << num << endl;
+
+  int a = 10;
+  int b = 20;
+
+  swap( a, b );
+  cout << a << " " << b << endl;
+
+  
+
+  return 0;
+}
+
+#+end_src
+
+#+results:
+: 20 10
+: 20 10
+
+**** Overloading with struct
+#+begin_src C++  :includes '( "<iostream>" "<stdlib.h>" ) :results output replace
+using namespace std;
+
+struct Rectangle {
+   double length;
+   double width;
+};
+
+double area ( Rectangle r ) {
+  return( r.length * r.width );
+}
+
+double area ( double length, double width  ) {
+  return( length * width );
+}
+
+double area ( double length ) {
+  return( length * length );
+}
+
+int main () {
+
+  Rectangle R;
+  R.length = 10;
+  R.width = 20;
+  cout << area( R ) << endl;
+  cout << area( R.length, R.width ) << endl;
+  cout << area( R.length ) << endl;
+
+ return 0;
+}
+
+
+#+end_src
+
+#+results:
+: 200
+: 200
+: 100
+
+**** Classes
+#+begin_src C++  :includes '( "<iostream>" "<stdlib.h>" "<vector>" ) :results output replace
+using namespace std;
+
+class User {
+  std::string status = "gold";
+
+ public:
+     std::string first;
+     std::string last;
+     static int usr_count;
+     std::string get_status() {
+       return status;
+     }
+     User () {
+	std::cout << "In constructor" << " Adding " << first << " " << last << "\n";
+	usr_count++;
+     }
+     User ( std::string fName, std::string last ) {
+	std::cout << "In constructor" << " Adding " << fName << " " << last << "\n";
+        //cout << "Made a new user \n";
+	first = fName;
+	this->last = last;
+	usr_count++;
+     }
+     ~User () {
+       //usr_count--;
+       //std::cout << "In destructor" << " removing " << first << " " << last << "\n";
+     }
+
+};
+  
+int add_user( std::vector<User> &users, User user ) {
+
+  for( int i=0; i < users.size(); i++) {
+
+    if ( users[i].first == user.first && users[i].last == user.last ) {
+      return i;
+    }
+
+    users.push_back( user );
+    return users.size() -1;
+  }
+}
+
+int User::usr_count = 0;
+
+int main () { 
+
+    std::vector<User> users;
+
+    //cout << "b1\n";
+    User user1( "joe", "blow");
+    //cout << "a1\n";
+    //cout << "b2\n";
+    User user2( "johny", "rotten");
+    //cout << "a3\n";
+    //cout << "b3\n";
+    User user3( "mary", "bligh");
+    //cout << "a3\n";
+
+    //cout << "b pb 1\n";
+    users.push_back( user1 );
+    //cout << "b pb 2\n";
+    users.push_back( user2 );
+    //cout << "b pb 3\n";
+    users.push_back( user3 );
+
+    //cout << "b nu 1\n";
+    User newUser( "jane", "doe");
+    //cout << "a nu 1\n";
+
+    cout << "User count = " << User::usr_count << "\n";
+
+    cout << add_user ( users, user3 ) << std::endl;
+    cout << add_user ( users, newUser ) << std::endl;
+
+
+}
+#+end_src
+
+#+results:
+: In constructor Adding joe blow
+: In constructor Adding johny rotten
+: In constructor Adding mary bligh
+: In constructor Adding jane doe
+: User count = 4
+: 3
+: 4
+
+using namespace std;
+**** Operator overloading
+#+begin_src C++  :includes '( "<iostream>" "<stdlib.h>" "<vector>" ) :results output replace
+using namespace std;
+
+class Position {
+
+    public:
+      int x = 10;
+      int y = 20;
+
+      //Position operator + ( Position pos) {
+      //  x = x + pos.x;
+      //  y = y + pos.y;
+      //}
+      Position operator + ( Position pos) {
+        Position newPos;
+	newPos.x = x + pos.x;
+        newPos.y = y + pos.y;
+	return newPos;
+      }
+      bool operator == ( Position pos) {
+        if ( x == pos.x && y == pos.y ) {
+	   return true;
+	}
+      }
+      friend void print_out( Position pos);
+      friend std::ostream &operator << ( std::ostream& out, Position pos );
+
+};
+
+void print_out( Position pos ) {
+   cout << "The friend values are " << pos.x << " " << pos.y << endl;
+}
+
+std::ostream &operator << ( std::ostream& out, Position pos ) {
+  out << "The values are " << pos.x << " " << pos.y;
+  return out;
+}
+
+
+int main () {
+
+   Position pos1, pos2;
+   Position pos3 = pos1 + pos2;
+
+   //cout << pos1.x << endl;
+   //cout << pos1.y << endl;
+   cout << pos3.x << endl;
+   cout << pos3.y << endl;
+
+   if ( pos1 == pos2 ) {
+     cout << "the positions are the same" << endl;
+   } else {
+     cout << "the positions are NOT the same" << endl;
+   }
+   if ( pos1 == pos3 ) {
+     cout << "the positions are the same" << endl;
+   } else {
+     cout << "the positions are NOT the same" << endl;
+   }
+
+   cout << pos3 << endl;
+   print_out( pos3 );
+   cout << pos3 << endl;
+}
+
+
+#+end_src
+
+#+results:
+: 20
+: 40
+: the positions are the same
+: the positions are the same
+: The values are 20 40
+: The friend values are 20 40
+: The values are 20 40
+
+**** New/Delete
+#+begin_src C++  :includes '( "<iostream>" "<stdlib.h>" ) :results output replace
+using namespace std;
+
+   int theVar = 50;
+   int *ptr = new int(25);
+   cout << "ptr address = " << ptr << endl;
+   cout << "ptr value   = " << *ptr << endl;
+
+   cout << "theVar address = " << &theVar << endl;
+   cout << "theVar value   = " << theVar << endl;
+
+   delete ptr;
+   cout << "ptr address = " << ptr << endl;
+   cout << "ptr value   = " << *ptr << endl;
+
+   int *pary = new int[5]{ 100, 200, 300, 400, 500 };
+
+   *(pary + 2) = 25;
+   *(pary + 4) = 50;
+
+   for ( int i = 0; i < 5; i++ ) {
+     cout << "Index " << i << " value = " << *(pary + i )<< endl;
+     cout << "Index " << i << " value = " << pary[i] << endl;
+   }
+
+   delete pary;
+
+   for ( int i = 0; i < 5; i++ ) {
+     cout << "d Index " << i << " value = " << *(pary + i )<< endl;
+     cout << "d Index " << i << " value = " << pary[i] << endl;
+   }
+
+#+end_src
+
+#+results:
+#+begin_example
+ptr address = 0x1002edc0010
+ptr value   = 25
+theVar address = 0x3fffe4fcabb8
+theVar value   = 50
+ptr address = 0x1002edc0010
+ptr value   = 0
+Index 0 value = 100
+Index 0 value = 100
+Index 1 value = 200
+Index 1 value = 200
+Index 2 value = 25
+Index 2 value = 25
+Index 3 value = 400
+Index 3 value = 400
+Index 4 value = 50
+Index 4 value = 50
+d Index 0 value = 0
+d Index 0 value = 0
+d Index 1 value = 0
+d Index 1 value = 0
+d Index 2 value = 25
+d Index 2 value = 25
+d Index 3 value = 400
+d Index 3 value = 400
+d Index 4 value = 50
+d Index 4 value = 50
+#+end_example
+
+*** Advanced c++
+**** const
+#+begin_src C++  :includes <iostream> :results output replace
+
+class A {
+    int _value = 0;
+public:
+    void setv ( const int a ) { 
+      _value = a;
+    };
+    int  getv () { 
+       return _value;
+    };
+    int  getv () const { 
+       return _value;
+    };
+};
+
+int main() {
+    A a;
+    a.setv(42);
+    std::cout << "a is " << a.getv() << std::endl;
+
+    const A b = a;
+    std::cout << "b is " << b.getv() << std::endl;
+
+    return 0;
+}
+
+
+#+end_src
+
+#+results:
+: a is 42
+: b is 42
+
+**** Constructors
+#+begin_src C++  :includes <iostream> :results output replace
+
+#include <cstdio>
+#include <string>
+using namespace std;
+
+const string unk = "unknown";
+const string clone_prefix = "clone-";
+
+// -- interface --
+class Animal {
+    string _type = "";
+    string _name = "";
+    string _sound = "";
+public:
+    Animal();   // default constructor
+    Animal(const string & type, const string & name, const string & sound);
+    Animal(const Animal &); // copy constructor
+    Animal & operator = (const Animal &); // copy operator
+    ~Animal();  // destructor
+    
+    void print() const;
+};
+
+// -- implementation --
+Animal::Animal() : _type(unk), _name(unk), _sound(unk) {
+    puts("default constructor");
+}
+
+Animal::Animal(const string & type, const string & name, const string & sound)
+: _type(type), _name(name), _sound(sound) {
+    puts("constructor with arguments");
+}
+
+Animal::Animal(const Animal & rhs) {
+    puts("copy constructor");
+    _name = clone_prefix + rhs._name;
+    _type = rhs._type;
+    _sound = rhs._sound;
+}
+
+Animal::~Animal() {
+    printf("destructor: %s the %s\n", _name.c_str(), _type.c_str());
+}
+
+void Animal::print () const {
+    printf("%s the %s says %s\n", _name.c_str(), _type.c_str(), _sound.c_str());
+}
+
+Animal & Animal::operator = (const Animal & rhs) {
+    puts("copy operator");
+    if(this != &rhs) {
+        _name = clone_prefix + rhs._name;
+        _type = rhs._type;
+        _sound = rhs._sound;
+    }
+    return *this;
+}
+
+int main() {
+    Animal a;
+    a.print();
+    
+    const Animal b("cat", "fluffy", "meow");
+    b.print();
+    
+    const Animal c = b;
+    c.print();
+    
+    a = c;
+    a.print();
+    
+    return 0;
+}
+
+
+#+end_src
+*** Perl test
+#+begin_src perl :results output replace
+my $abc = 12345;
+print "Some perl code $abc\n";
+
+my $match = "Job~~~.*(!)?ff_ext_none_0p00v_85c(!)?.*~netlist~CW_AOI21_X0P5M_A9TL.*";
+
+my $jobName = "Job~~~ff_ext_none_0p00v_85c_child_0~netlist~CW_AOI21_X0P5M_A9TL.nominal.60kPOH_85C.spice";
+
+if ( $jobName =~ $match ) {
+   print "We have a match\n";
+}
+
+my @xyz = (1,2, 3, 5);
+
+print @xyz;
+@xyz = ();
+print @xyz;
+
+#+end_src
+
+#+results:
+: Some perl code 12345
+: We have a match
+: 1235
+
+* javaScript
+** Conventions
+I started to modify the present javaScript for Nilesh's desires and started to think it is hard to tell
+what the type of any particular "var" is. So I was thinking that maybe we name the vars with a convention.
+
+Like:
+var s_someName  for strings
+var a_someName for arrays
+var n_someName for numbers
+var h_someName for hashes
+var o_someName for objects
+var b_someName for booleans
+
+and the someName will be camel case
+
+* MLSA
+** Owners
+   Sunil Konanki, Ron Rose, Sanjay Upreti(former)
+** Watson location to place files
+   /afs/watson/projects/vlsi/cte/tools/harmony/vol16/ncsm
+** Machines to compile on for 13.1
+   SSH/telnet to these machines
+*** For Linux
+    edal64op8f.fishkill.ibm.com   
+*** For Aix
+    ndpaixd1
+** My working copy
+   /afs/btv/data/ECSM/tools_install/mlsa/13.1
+   /afs/btv/data/ECSM/tools_install/mlsa/13.1/ncsm
+** To compile 
+   cd to /afs/btv/data/ECSM/tools_install/mlsa/13.1
+   type compileNcsm
+** To clean up the last compile 
+   cd to /afs/btv/data/ECSM/tools_install/mlsa/13.1
+   type compileClean
+* Version control
+** CMVC
+*** General info
+	Set family first
+	Family cmos5s, cmos5x, cmos6
+	
+	windows
+	   files
+		file-openlist
+		      path names   like   %preamble%
+			mongoose.ndr for component
+			otter.ndr for component
+			catamount.ndr for component
+	   	show-change history
+			give tree struct of releases/tracking numbers.c
+	
+	
+	create file with list of files you want to check in.
+	go into cmvc and lock the files you want to check in.
+	
+	". setupCmvc otter"
+	"export CMVCDEV=/afs/btv/data/dcm_preamble/otter"
+	" CreateFeature otter.ndr"
+		create issue number.
+	        add Dxxxx to the reference number.
+	
+	
+	"accept tracking number."
+	"fix -l vx.x track_number"
+	"checkout -f (file name of list of files to be checked out) track_number...... must be preamble directory"
+	"checkin -f (file name of list of files to be checked out) track_number"
+	
+	"integrate track_number"     do at the very end.
+
+
+** SVN
+*** Regular use
+**** To rsync a directory
+     rsync -avz /afs/btv/data/ECSM/tools_install/eqn2rules_v3/* . --dry-run
+     remove the --dry-run when you are sure it is doing what you wanted.
+**** To Checkout a repositiory
+     Be in the directory you want to put the data in
+     Use svn checkout file:///afs/btv/data/ECSM/svn/lib2ndrChecker .
+**** To Commit or check in your changes
+     Use this command to commit (check in) changes to the repository. 
+     svn commit -m "some message"
+     svn commit -m "some message" --file <file1> <file2>...
+**** To Update your local copy from the repository
+     Use this command to update the local copy with the repository changes.
+     svn update 
+**** To Add new stuff to the repository
+     Use this command to add files/directories to the repository.
+     svn add <file1>
+     To add new files when other files exist.
+     svn status | grep '?' | awk '{print $2}' | xargs svn add
+**** To import data
+     Be in the directory
+     svn import -m "Initial import" . file:///afs/btv/data/ECSM/svn/lib2ndrChecker
+**** To list what is in a repository
+     Use svn list -v -R file:///afs/btv/data/ECSM/svn/lib2ndrChecker/
+       or
+     svn ls file:///afs/btv/data/ECSM/svn/rulesRelease/trunk
+**** To export the data
+
+     Be in the directory to export to
+     Use svn export --force file:///afs/btv/data/ECSM/svn/lib2ndrChecker/trunk .
+**** To determine where you are use
+     svn info, look at the url:
+**** To make a tag or branch use
+     svn copy file:///afs/btv.ibm.com/data/ECSM/svn/csmgen/trunk file:///afs/btv.ibm.com/data/ECSM/svn/csmgen/tags/avgMaxCapUpdate
+**** Emacs svn excutable location
+     (defcustom svn-status-svn-executable "svn"
+     "*The name of the svn executable.
+     This can be either absolute or looked up on `exec-path'."
+*** Admin use
+**** Create
+     Use this command to create a repository in a certain location
+     svnadmin create  /afs/btv/data/ECSM/svn/<someName>
+** CVS
+   Use tkcvs in $HOME/bin
+** ClearCase
+*** To find the dip location use
+    umask 007; /afs/btv/data/aes/prod/bin/ccFindDip -t CU32HP -d  sram2s -vob -pvob -path
+* Lotus notes info
+** How to kill notes if it hangs
+   Kill_ln jengel
+
+* Phone info
+** phone message number
+   4-0061  or 769-0061
+   769-5644   65644#  pw#
+** Conference callin number
+		  Reservationless Conference Information
+Audio Conference   
+
+
+Primary Access Information
+
+USA Toll-Free:		      888-426-6840
+USA Caller Paid:	      215-861-6239
+For Other Countries:	      Click Here to View Global Conference Access Numbers
+From Office Dial-In Numbers:  Click Here to View Company On-Net Access Numbers
+Host Code:		      34166462
+Participant Code:	      33415203
+
+
+
+Conference Options
+
+		Conference Continuation without Host
+		Audio-Only Recording
+		Global Access
+
+
+Host and Arranger Information
+
+Host:		JAMES ENGEL
+Phone Number:		(802)769-5644 
+		
+Arranger:		JAMES ENGEL
+Phone Number:		(802)769-5644 
+
+
+Support Tips
+
+Should you need assistance during your conference, 
+   please press *# for a list of menu options including Specialist assistance.
+Please note that you may also dial an Office Dial-In Number to join an audio conference. 
+Please review this information and contact TeleConference Services if there are any changes.
+For each country, the Customer Care numbers can be found at: https://www.teleconference.att.com/global 
+If your individual TeleConference account is not used within a six month period, deactivation will occur.
+If you record your conference, you may order recording services at https://www.teleconference.att.com/conferencerecord.
+For your protection, do not publish your conference Access Information (e.g., Dial In Number, Access Codes.).
+
+To Attend an Audio Conference
+
+1. Dial the Conference Bridge.
+2. Enter Access Code 34166462#
+
+Quick Tip - hit # to bypass announcements
+
+
+Special Announcements
+
+AT&T audio conferencing provides an ITN number (ITN=IP Telephone Number),
+referred to as 'from office dial in number' in this email.
+
+The ITN 2650 6840
+
+Important: ITN is always the cheapest option when calling from international
+IBM locations. 
+
+Thank you for registering with AT&T TeleConference Services!
+
+* RTP directories
+  /afs/rtp/projects/eclipz/mpg/usr/watkins/pdd1
+  /afs/rtp/u0/watkins/veena/hkp/pd_files
+
+* Eclipz
+** IBM Tech control facility info
+   file:///afs/btv/data/vlsi/cte/tech/common/ibmtech/6.3.OA6/doc/html/cf/cfTop.html
+** DCMinterface location
+   /afs/apd/func/vlsi/eclipz/mpgcommon/integration/timing/dcltop
+* CRAFT info
+** How to dump an SRF file
+   /afs/awd/projects/cte/tools/bin/srf ./cw_lcbe_d.bestcase.best.srf > ~/srf
+* Cadence
+** Bring up tool
+    Be in a cte window on aix
+    Then enter cteCds
+** Schematic extraction
+   In the main console window.
+    Select "CTE Tools" -> "Library tools" -> LNL
+    LNL comes up.
+     Enter library name in "Search library" field
+     Enter a reg exp in the "Match cell" field
+     Check the "first display for selection"
+     Click on "place in -->"
+     Click on "select" on the "limit search to view(s)"
+      Select the view, like schematic"
+     Your List A should have the cells you selected.
+     The select "Tools" -> "Netlist"
+     Change the "Export Dir" if desired.
+     Click on the things you desire to extract. Like "ASX export" and "vim/DEF"
+   If all goes well you should see the asx and vim directores in you "Export dir"
+* Loadleveler
+** get a machine to debug with
+getllmach -class debug -machine <foo>
+** get job status
+    llq -u jengel -X btv.grid
+** get overall status like machine names, os levels,,,,
+    llstatus -X btv.grid
+** Start up ALSO
+   in /afs/btv/u/jengel/public/ALSO there is a script called start_AIX_ALSO.ksh
+   Run this script and leave it running
+   Look in the same directory and you should see a currentAIXllsessioninfo.txt
+   This will tell you the machine you are running on. You can telnet or ssh in
+** Get a fishkill LL machine
+   telnet to lightyear.fishkill.ibm.com or yukon
+   once there issue a get_ll_mach command
+   it will submit a load leveler job and tie up that window until the job starts
+   once you get confirmation that the job has started on a server machine,
+   I'd suggest using Exceed On Demand to open a window on the server machine.  I've used ssh to log onto the server, but got bounced because I didn't set some magic "I'm using the box dammit" flag to keep me from getting thrown off.
+   After you're finished with the server, I think you're supposed to run a ll_cancel to terminate the server job
+   /usr/prod/local/bin/getllmach -class imagetest -memory 800 -account sse -group circ -opsys Linux
+   https://w3-connections.ibm.com/wikis/home?lang=en#!/wiki/Wfaf39e696284_4659_be69_f13f6f361a1a/page/LLweb+Server
+* LSF
+** code location
+    /afs/btv/data/grid/lsf/9.1
+** web information
+   https://w3-connections.ibm.com/communities/service/html/communityoverview?communityUuid=8c8938ff-3e9f-4f75-9fc5-ae7c2ad2e191
+** Is machine an LSF machine
+   Check if $LSF_BINDIR is set
+** Projects
+   btvtest edatest
+   http://awdlsfutil.austin.ibm.com/grid/lsfProjects.php
+** Groups
+   desktop  lsftest
+   bugroup -w
+** find queues
+   qstat
+   bqueues -u jengel
+   busers jengel
+   lsload
+   lsload -l   all resources for the different machines
+** machine
+   getllmach2.pok.ibm.com
+   edamach2.pok.ibm.com
+** When will my job expire
+   bjobs -WL  <jobid>
+** To get to a specific mache for debug
+   bsub -Is -q debug -J debugSession -G lsftest -P btvtest -n 1 -M 1 -m machineName /bin/ksh
+   bsub -Is -q dtws -J edachar -G lsftest -P btvtest -n 1 -M 1 -W 719:00 -R "select[(type==X86_64)]" /bin/ksh
+   bsub -Is -q lowpriority -J edachar -G lsftest -P btvtest -n 1 -M 1 -W 719:00 -R "select[(type==X86_64)]" /bin/ksh
+
+
+   bsub -Is -q debug        -J debugSession -G sse_circ -P btvtest -n 1 -M 1 -m machineName /bin/ksh
+   bsub -Is -q lowpriority -J jengel -G sse_circ -P btvtest -n 1 -M 1 -W 719:00 -R "select[(type==X86_64)]" -R "select[(osrel==rh56)]" /bin/ksh
+   bsub -Is -q dtws        -J jengel -G sse_circ -P fx14 -n 1 -M 1 -W 719:00 -R "select[(type==X86_64)]" /bin/ksh
+
+   bsub -Is -q dtws        -J jengel -G eda_libchar -P fx14 -n 1 -M 1 -W 719:00 -R "select[(type==X86_64)]" /bin/ksh
+
+   bsub -Is -q dtws        -J edachar -G sse_circ -P fx14 -n 1 -M 1 -W 719:00 -R "select[(type==X86_64)]" /bin/ksh
+   bsub -Is -q lowpriority -J edachar -G sse_circ -P fx14 -n 1 -M 1 -W 719:00 -R "select[(type==X86_64)]" /bin/ksh
+
+
+   bsub -Is -q desktop  -J jengel -G eda_libchar -P EDA -n 1 -M 1 -W 719:00 -R "select[(osrel==rh56)]" /bin/ksh 
+   bsub -Is -q debug    -J debugSession -G eda_libchar -P EDA -n 1 -M 1 -m gridl048.pok.ibm.com /bin/ksh
+
+   ssh getllmach2.btv.ibm.com
+
+   ssh getllmach2.fishkill.ibm.com
+   . /home/lsf/conf/profile.lsf 
+   bsub -Is -q imagetest -J jengel -G lsftest -P edatest -n 1 -M 1  -W 200:00 -m p750cs11a.fishkill.ibm.com /bin/ksh
+   
+   edagl10u.fishkill.ibm.com
+** Find out why a job is suspended
+   bjobs -p3 jobId
+
+* Diff options
+** To diff 22sc.X with build.svn
+   Be in build.svn and then diff -r --brief --exclude='.svn' --exclude='compare' . ../../../c22sc.5/ > ~/aaa 2>&1
+* SUT Sametime unified telephone
+You have been provisioned for Sametime Unified Telephony. SUT is a replacement for Voicesuite and the offering extends the value of Lotus Sametime software as a platform for communications by providing a rich, unified communication and collaboration experience. 
+
+You should first upgrade your Sametime Client to 8.5.1.  Packages are available on ISSI.   Once you complete your Sametime installation do the following:
+
+Enabling Sametime Unified Telephony (SUT):
+On the Tools menu, you will find an option for "Enable/Disable SUT Features".
+Please click this option to enable Sametime Unified Telephony (SUT) on your system. When prompted, click the button to restart the client.
+
+Please read on how to set up your SUT offering.  SUT ITHC Information.  Look for the  SUT quick reference guide. It is quite helpful. Enclosed is your SUT telephone number. For the best experience you should post the new telephone number in bluepages as your primary number. 
+
+Telephone Numbers Listed Here
+Email	                SUT Unified Number	SUT ITN	        Voice Mail
+
+engelj@us.ibm.com	1-720-342-4852	        29634852	
+jabuckler@us.ibm.com	1-720-342-4853	        29634853	27317591
+
+Regards,
+Mike Kremer
+Voice Suite Development and Support
+Voice Rite, Inc
+(804) 417-4335
+* Customer compiler / Asic connect
+** Website
+   https://www-309.ibm.com/technologyconnect/sd/EdesignMainMenuServlet.wss?linkid=111000&sub_func=products
+** what to place in front of array names
+   For RA's use WRAPT6C_MVT_T09_
+   For others use WRAPT2C_MVT_T09_
+* SVN
+** Repo URLs
+*** https://bluejiffium.btv.ibm.com/eda/dscrt/cdk_dev/trunk
+*** https://greenjiffy.fishkill.ibm.com/eda/tk/alacrite/trunk
+*** https://greenjiffy.fishkill.ibm.com/eda/tk/alacriteCloud/trunk
+
+** Getting SVN history and info
+*** To get the files that changed between any 2 revisions
+    svn diff https://greenjiffy.fishkill.ibm.com/eda/tk/alacrite/trunk -r 3607 --summarize
+*** To get the log history 
+    svn log https://greenjiffy.fishkill.ibm.com/eda/tk/alacrite/trunk
+*** To get svn revision info
+    svn info https://greenjiffy.fishkill.ibm.com/eda/tk/alacrite/trunk -R
+   
+* To reset user account use
+/sbin/pam_tally --user <uid> --reset
+* Gives list of locked users
+/sbin/pam_takky 
+
+* RTC info
+** For a command line interface to workItems see https://w3-connections.ibm.com/wikis/home?lang=en-us#!/wiki/Wc81535b497b4_4f3a_8250_45c558f66d91/page/rtcwicli
+
+* GDB
+** Cteate all buffs/windows for debugging
+   gdb-many-windows
+** Allows for tool tips
+   M-x gud-tooltip-mode
+** info
+*** sources
+*** variables
+*** scope function_name
+*** info functions
+*** maint print synbols <fileNameToStore>
+    
+* Binary file commands
+** objcopy
+   --only-keep-debug <binaryFile> <newDebugFile>
+   --add-gnu-debuglink
+** strip
+   --strip-debug --strip-unneeded <binaryToStrip>
+
+* XMIT
+** How to probably old
+	Remove asictools directory for each platform.....
+	
+	
+	
+	stream from last checkin.
+	
+	
+	Current value for $CMVC_RELEASE is [NIL.0701]: 
+	
+	>>> Press ENTER to accept current value, or type in new value and press ENTER.
+	>>> Type a "?" to show legal values at prompt
+	*********************************************************************
+	* If this is a problem reported by a customer, you are requested    *
+	* to set the PREFIX to the customer location reporting the problem. *
+	*********************************************************************
+	Current value for PREFIX is [BTV]: 
+	Current value for SEVERITY is [3]: 
+	Current value for SYMPTOM is [function_needed]: 
+	Current value for PHASE is [development]: 
+	
+	The ve editor is being invoked so you can enter the defect text....
+	ve: cannot connect to X server 
+	
+	Text required.  I quit!
+	What is the defect number? 
+	mogul.fishkill.ibm.com$        
+	mogul.fishkill.ibm.com$ export DISPLAY=ndpaixd1.btv.ibm.com:6
+	mogul.fishkill.ibm.com$ /afs/btv/u/jengel/xmit
+	
+	>>> Press ENTER to accept current value, or type in new value and press ENTER.
+	Current value for $CMVC_COMPONENT is [ASICtools]: 
+	Current value for $CMVC_RELEASE is [NIL.0701]: 
+	
+	>>> Press ENTER to accept current value, or type in new value and press ENTER.
+	>>> Type a "?" to show legal values at prompt
+	*********************************************************************
+	* If this is a problem reported by a customer, you are requested    *
+	* to set the PREFIX to the customer location reporting the problem. *
+	*********************************************************************
+	Current value for PREFIX is [BTV]: 
+	Current value for SEVERITY is [3]: 
+	Current value for SYMPTOM is [function_needed]: 
+	Current value for PHASE is [development]: 
+	
+	The ve editor is being invoked so you can enter the defect text....
+	Xlib: connection to "ndpaixd1.btv.ibm.com:6.0" refused by server
+	Xlib: Client is not authorized to connect to Server
+	ve: cannot connect to X server ndpaixd1.btv.ibm.com:6
+	
+	Text required.  I quit!
+	What is the defect number? 
+	mogul.fishkill.ibm.com$ /afs/btv/u/jengel/xmit
+	
+	>>> Press ENTER to accept current value, or type in new value and press ENTER.
+	Current value for $CMVC_COMPONENT is [ASICtools]: 
+	Current value for $CMVC_RELEASE is [NIL.0701]: 
+	
+	>>> Press ENTER to accept current value, or type in new value and press ENTER.
+	>>> Type a "?" to show legal values at prompt
+	*********************************************************************
+	* If this is a problem reported by a customer, you are requested    *
+	* to set the PREFIX to the customer location reporting the problem. *
+	*********************************************************************
+	Current value for PREFIX is [BTV]: 
+	Current value for SEVERITY is [3]: 
+	Current value for SYMPTOM is [function_needed]: 
+	Current value for PHASE is [development]: 
+	
+	The ve editor is being invoked so you can enter the defect text....
+	Xlib: connection to "ndpaixd1.btv.ibm.com:6.0" refused by server
+	Xlib: Client is not authorized to connect to Server
+	ve: cannot connect to X server ndpaixd1.btv.ibm.com:6
+	
+	Text required.  I quit!
+	What is the defect number? 
+	mogul.fishkill.ibm.com$ export DISPLAY=gromit.btv.ibm.com:0
+	mogul.fishkill.ibm.com$ /afs/btv/u/jengel/xmit
+	
+	>>> Press ENTER to accept current value, or type in new value and press ENTER.
+	Current value for $CMVC_COMPONENT is [ASICtools]: 
+	
+	Current value for $CMVC_RELEASE is [NIL.0701]: 
+	>>> Press ENTER to accept current value, or type in new value and press ENTER.
+	>>> Type a "?" to show legal values at prompt
+	*********************************************************************
+	* If this is a problem reported by a customer, you are requested    *
+	* to set the PREFIX to the customer location reporting the problem. *
+	*********************************************************************
+	Current value for PREFIX is [BTV]: 
+	Current value for SEVERITY is [3]: 
+	Current value for SYMPTOM is [function_needed]: 
+	Current value for PHASE is [development]: 
+	
+	The ve editor is being invoked so you can enter the defect text....
+	ve: font 'Rom14' is invalid.  Using fixed instead
+	Defect -op -rema - < /tmp/defect.022911543 -comp ASICtools -f eda@edacmvc.fishkill.ibm.com@1601 -pre BTV -se 3 -sy function_needed -phaseF development -verb 
+	A new defect was opened successfully.
+	The new defect number is 104559.
+	
+	>>> Type a "?" to show legal values at prompt
+	Current value for ANSWER is [other]: 
+	
+	...Querying CMVC for owner of 104559
+	Defect -as 104559 -ow jengel
+	Defect -ac 104559 -f eda@edacmvc.fishkill.ibm.com@1601 -an other -verb
+	The state of defect 104559 was changed successfully.
+	
+	Specify what release(s) to create the track in.
+	NOTE: To create tracks in multiple releases, list each release
+	      separated by a space.  A "+" (without quotes) will be
+	      replaced by the default release shown within the []s.
+	Specify release(s) [NIL.0701]: 
+	Track -cr -d 104559 -r NIL.0701  -o jengel -ve
+	A new track was created successfully and associated with release
+	NIL.0701 and defect 104559.
+	
+	...Adding the release to the defect
+	Defect -m 104559 -rel NIL.0701 -verb
+	Defect 104559 was modified successfully.
+	What is the defect number? 104559
+	The Defect Number is: 104559
+	
+	relfix:  104559 in release NIL.0701 is now ready for PI&R
+	Use this: NIL.0701.hpux11_64 with DEFECT #: 104559
+	
+	Enter product identification in the form "name.vvrr.plat" or transmittal name
+	in the form "name.vvrr.plat.listnnnn" if processing an existing transmittal.
+	        ==> NIL.0701.hpux11_64
+	
+	
+	Optional starting point directory needed to offset to any relative
+	directories identified in your directory search.
+	        ==> /afs/btv/data/sitools/extra/XMIT   (Enter for current default)
+	        ==> 
+	
+	
+	Identify one or more file names and or directories names to be searched
+	recursively. The default is the starting point directory.
+	        ==> 
+	
+	
+	Identify the reason codes to be applied to this transmittal by entering
+	one or more of the following:
+	        - Defect/Feature reason codes
+	        - Name of a file containing one or more Defect/Feature reason codes on
+	               one or more lines, entered here in the form
+	               "file=File_Name"
+	        - Name of a file containing results of a CMVC query or track/level list
+	               with a column identifying Defect/Feature reason codes entered as
+	               "file=File_Name"
+	        ==> 104559
+	
+	
+	Process the transmittal in the following manner:
+	        h - sendxmit online help
+	        p - optional file name prefix, current value:'NONE'
+	        v - display/verify distributed file names, includes prefix
+	        c - syntax check it and ensure reason codes are in the correct state
+	        b - browse it
+	        e - edit it, (e emacs, e INed, e e3, ...), default is $EDITOR then vi
+	        f - assign sendxmit processing flags, current value 'NONE'
+	        Q - Query integration for an 'ls' listing of your component
+	        s - show sendxmit command
+	        r - run sendxmit
+	        q - quit
+	    ==> r
+	Transmittal NIL.0701.hpux11_64.list0001 and 4081 data files successfully
+	received.
+	mogul.fishkill.ibm.com$ /afs/btv/u/jengel/xmit
+	
+	>>> Press ENTER to accept current value, or type in new value and press ENTER.
+	Current value for $CMVC_COMPONENT is [ASICtools]: 
+	Current value for $CMVC_RELEASE is [NIL.0701]: 
+	
+	>>> Press ENTER to accept current value, or type in new value and press ENTER.
+	>>> Type a "?" to show legal values at prompt
+	*********************************************************************
+	* If this is a problem reported by a customer, you are requested    *
+	* to set the PREFIX to the customer location reporting the problem. *
+	*********************************************************************
+	Current value for PREFIX is [BTV]: 
+	Current value for SEVERITY is [3]: 
+	Current value for SYMPTOM is [function_needed]: 
+	Current value for PHASE is [development]: 
+	
+	The ve editor is being invoked so you can enter the defect text....
+	ve: font 'Rom14' is invalid.  Using fixed instead
+	Defect -op -rema - < /tmp/defect.022911626 -comp ASICtools -f eda@edacmvc.fishkill.ibm.com@1601 -pre BTV -se 3 -sy function_needed -phaseF development -verb 
+	A new defect was opened successfully.
+	The new defect number is 104564.
+	
+	>>> Type a "?" to show legal values at prompt
+	Current value for ANSWER is [other]: 
+	
+	...Querying CMVC for owner of 104564
+	Defect -as 104564 -ow jengel
+	Defect -ac 104564 -f eda@edacmvc.fishkill.ibm.com@1601 -an other -verb
+	The state of defect 104564 was changed successfully.
+	
+	Specify what release(s) to create the track in.
+	NOTE: To create tracks in multiple releases, list each release
+	      separated by a space.  A "+" (without quotes) will be
+	      replaced by the default release shown within the []s.
+	Specify release(s) [NIL.0701]: 
+	Track -cr -d 104564 -r NIL.0701  -o jengel -ve
+	A new track was created successfully and associated with release
+	NIL.0701 and defect 104564.
+	
+	...Adding the release to the defect
+	Defect -m 104564 -rel NIL.0701 -verb
+	Defect 104564 was modified successfully.
+	What is the defect number? 104564
+	The Defect Number is: 104564
+	
+	relfix:  104564 in release NIL.0701 is now ready for PI&R
+	Use this: NIL.0701.hpux11_64 with DEFECT #: 104564
+	
+	Enter product identification in the form "name.vvrr.plat" or transmittal name
+	in the form "name.vvrr.plat.listnnnn" if processing an existing transmittal.
+	        ==> NIL.0701.aix51_64
+	
+	
+	Optional starting point directory needed to offset to any relative
+	directories identified in your directory search.
+	        ==> /afs/btv/data/sitools/extra/XMIT   (Enter for current default)
+	        ==> 
+	
+	
+	Identify one or more file names and or directories names to be searched
+	recursively. The default is the starting point directory.
+	        ==> 
+	
+	
+	Identify the reason codes to be applied to this transmittal by entering
+	one or more of the following:
+	        - Defect/Feature reason codes
+	        - Name of a file containing one or more Defect/Feature reason codes on
+	               one or more lines, entered here in the form
+	               "file=File_Name"
+	        - Name of a file containing results of a CMVC query or track/level list
+	               with a column identifying Defect/Feature reason codes entered as
+	               "file=File_Name"
+	        ==> 104564
+	
+	
+	Process the transmittal in the following manner:
+	        h - sendxmit online help
+	        p - optional file name prefix, current value:'NONE'
+	        v - display/verify distributed file names, includes prefix
+	        c - syntax check it and ensure reason codes are in the correct state
+	        b - browse it
+	        e - edit it, (e emacs, e INed, e e3, ...), default is $EDITOR then vi
+	        f - assign sendxmit processing flags, current value 'NONE'
+	        Q - Query integration for an 'ls' listing of your component
+	        s - show sendxmit command
+	        r - run sendxmit
+	        q - quit
+	    ==> r
+	Transmittal NIL.0701.aix51_64.list0001 and 4551 data files successfully
+	received.
+	You have mail in /usr/spool/mail/jengel
+	mogul.fishkill.ibm.com$ mail
+	Mail [5.2 UCB] [AIX 4.1]  Type ? for help.
+	"/var/spool/mail/jengel": 10 messages 10 new
+	>N  1 MAILER-DAEMON@ed  Fri Sep 24 08:04  60/2194 "Returned mail: User unknown"
+	 N  2 integ@edamail.fi  Fri Mar 22 13:38  14/901  "NIL.0701.aix43.list0001 inte"
+	 N  3 integ@edamail.fi  Fri Mar 22 13:43  14/901  "NIL.0701.aix43.list0002 inte"
+	 N  4 integ@edamail.fi  Fri Mar 22 13:45  14/907  "NIL.0701.aix43_64.list0001 i"
+	 N  5 integ@edamail.fi  Fri Mar 22 13:51  14/899  "NIL.0701.sol7.list0001 integ"
+	 N  6 integ@edamail.fi  Fri Mar 22 13:51  14/900  "NIL.0701.aix43_64.list0002 i"
+	 N  7 integ@edamail.fi  Fri Mar 22 13:57  14/905  "NIL.0701.sol7_64.list0001 in"
+	 N  8 integ@edamail.fi  Fri Mar 22 14:05  14/905  "NIL.0701.sol7_64.list0002 in"
+	 N  9 integ@edamail.fi  Fri Mar 22 14:06  14/903  "NIL.0701.hpux11.list0001 int"
+	 N 10 integ@edamail.fi  Fri Oct 18 16:28  14/903  "NIL.0701.hpux11_64.list0001 "
+	? x
+	mogul.fishkill.ibm.com$ 
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	log into mogul.fishkill
+	
+	comment/uncomment the defect part if a track is needed.
+	
+	run xmit from /afs/btv/u/jengel/notes
+	
+	you must be in the .../XMIT/aix../asictools/nil.sscontrol to send control files.
+	you must be in the .../XMIT/aix.. directory to sent the nil files
+	
+	
+	
+	Latest run for 0901
+	
+	
+	
+	
+	
+	mogul.fishkill.ibm.com$ /afs/btv/u/jengel/notes/xmit
+	Use this: NIL.0901.aix43 with DEFECT #: 
+	Use this: NIL.0901.aix43_64 with DEFECT #: 
+	Use this: NIL.0901.aix51_64 with DEFECT #: 
+	Use this: NIL.0901.sol7_64 with DEFECT #: 
+	Use this: NIL.0901.hpux11_64 with DEFECT #: 
+	
+	Enter product identification in the form "name.vvrr.plat" or transmittal name
+	in the form "name.vvrr.plat.listnnnn" if processing an existing transmittal.
+	        ==> NIL.0901.aix43 _64
+	
+	
+	Optional starting point directory needed to offset to any relative
+	directories identified in your directory search.
+	        ==> /afs/btv/u/jengel   (Enter for current default)
+	        ==> /afs/btv/data/sitools/extra/XMIT/aix43 _64 _c/asictools/nil.sscontrol
+	
+	
+	Identify one or more file names and or directories names to be searched
+	recursively. The default is the starting point directory.
+	        ==>               
+	
+	
+	Identify the reason codes to be applied to this transmittal by entering
+	one or more of the following:
+	        - Defect/Feature reason codes
+	        - Name of a file containing one or more Defect/Feature reason codes on
+	               one or more lines, entered here in the form
+	               "file=File_Name"
+	        - Name of a file containing results of a CMVC query or track/level list
+	               with a column identifying Defect/Feature reason codes entered as
+	               "file=File_Name"
+	        ==> 106861
+	
+	
+	Process the transmittal in the following manner:
+	        h - sendxmit online help
+	        p - optional file name prefix, current value:'NONE'
+	        v - display/verify distributed file names, includes prefix
+	        c - syntax check it and ensure reason codes are in the correct state
+	        b - browse it
+	        e - edit it, (e emacs, e INed, e e3, ...), default is $EDITOR then vi
+	        f - assign sendxmit processing flags, current value 'NONE'
+	        Q - Query integration for an 'ls' listing of your component
+	        s - show sendxmit command
+	        r - run sendxmit
+	        q - quit
+	    ==> f
+	
+	Enter the following letters, with or without blanks, that represent the
+	sendxmit processing actions desired:
+	        (d) delete, (c) control, (u) urgent fix, (r) total product replace,
+	        (P) Do NOT Package component following integration of this transmittal
+	        ==> c
+	
+	Process the transmittal in the following manner:
+	        h - sendxmit online help
+	        p - optional file name prefix, current value:'NONE'
+	        v - display/verify distributed file names, includes prefix
+	        c - syntax check it and ensure reason codes are in the correct state
+	        b - browse it
+	        e - edit it, (e emacs, e INed, e e3, ...), default is $EDITOR then vi
+	        f - assign sendxmit processing flags, current value '-c'
+	        Q - Query integration for an 'ls' listing of your component
+	        s - show sendxmit command
+	        r - run sendxmit
+	        q - quit
+	    ==> b
+	 @/
+	  > Abstract 106861
+	  > README.NIL0901 106861
+	  > copyright 106861
+	  > postinstall 106861
+	(EOF)Press enter to page, -1 to back page, h for help, q to quitq
+	
+	Process the transmittal in the following manner:
+	        h - sendxmit online help
+	        p - optional file name prefix, current value:'NONE'
+	        v - display/verify distributed file names, includes prefix
+	        c - syntax check it and ensure reason codes are in the correct state
+	        b - browse it
+	        e - edit it, (e emacs, e INed, e e3, ...), default is $EDITOR then vi
+	        f - assign sendxmit processing flags, current value '-c'
+	        Q - Query integration for an 'ls' listing of your component
+	        s - show sendxmit command
+	        r - run sendxmit
+	        q - quit
+	    ==> r
+	Transmittal NIL.0901.aix43_64.list0001 and 4 data files successfully received.
+	mogul.fishkill.ibm.com$ /afs/btv/u/jengel/notes/xmit
+	Use this: NIL.0901.aix43 with DEFECT #: 
+	Use this: NIL.0901.aix43_64 with DEFECT #: 
+	Use this: NIL.0901.aix51_64 with DEFECT #: 
+	Use this: NIL.0901.sol7_64 with DEFECT #: 
+	Use this: NIL.0901.hpux11_64 with DEFECT #: 
+	
+	Enter product identification in the form "name.vvrr.plat" or transmittal name
+	in the form "name.vvrr.plat.listnnnn" if processing an existing transmittal.
+	        ==> NIL.0901.aix43 _64
+	
+	
+	Optional starting point directory needed to offset to any relative
+	directories identified in your directory search.
+	        ==> /afs/btv/u/jengel   (Enter for current default)
+	        ==> /afs/btv/data/sitools/extra/XMIT/aix43 _64
+	
+	
+	Identify one or more file names and or directories names to be searched
+	recursively. The default is the starting point directory.
+	        ==>               
+	
+	
+	Identify the reason codes to be applied to this transmittal by entering
+	one or more of the following:
+	        - Defect/Feature reason codes
+	        - Name of a file containing one or more Defect/Feature reason codes on
+	               one or more lines, entered here in the form
+	               "file=File_Name"
+	        - Name of a file containing results of a CMVC query or track/level list
+	               with a column identifying Defect/Feature reason codes entered as
+	               "file=File_Name"
+	        ==> 106861
+	
+	
+	Process the transmittal in the following manner:
+	        h - sendxmit online help
+	        p - optional file name prefix, current value:'NONE'
+	        v - display/verify distributed file names, includes prefix
+	        c - syntax check it and ensure reason codes are in the correct state
+	        b - browse it
+	        e - edit it, (e emacs, e INed, e e3, ...), default is $EDITOR then vi
+	        f - assign sendxmit processing flags, current value 'NONE'
+	        Q - Query integration for an 'ls' listing of your component
+	        s - show sendxmit command
+	        r - run sendxmit
+	        q - quit
+	    ==> r
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	stream as of 8/1/03
+	Trying...
+	Connected to mogul.fishkill.ibm.com.
+	Escape character is '^]'.
+	
+	
+	telnet (mogul.fishkill.ibm.com)
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	AIX Version 4
+	(C) Copyrights by IBM and by others 1982, 1996.
+	login: jengel
+	jengel's Password: 
+	*******************************************************************************
+	                                                                               
+	                  IBM EDA Information Technology Solutions                     
+	                                                                               
+	   Lou Biskup        2-4236 / 8-532-4236  Home: 724-5631  Cell: 914-204-9952   
+	   Scott Diamond     4-9815 / 8-533-9815                  Cell: 914-475-4999   
+	   Colleen Hayase    4-8976 / 8-533-8976                  Cell: 914-453-9997   
+	   Steve Murray      2-4198 / 8-532-4198                  Cell: 914-475-8799   
+	   Tom Stranko (mgr) 2-2672 / 8-532-2672  Home: 473-1415                       
+	                                                                               
+	*******************************************************************************
+	 
+	   Hostname: mogul   IP Address: 9.62.245.16  RISC/6000 Model: 43P-170
+	       AIX 4.3.3.0  Memory: 512MB  Page Space: 1024MB  /tmp: 512MB
+	      AFS Cell: eda.fishkill.ibm.com   AFS Level: 36_2.38    AFS Cache: 512MB
+	 
+	*******************************************************************************
+	                                                                               
+	    The highest classification allowed in this system is IBM Confidential.    
+	     IBM internal systems must only be used for conducting IBM business    
+	              or for purposes authorized by IBM management.                   
+	         Use is subject to audit at any time by IBM Management.              
+	                                                                               
+	*******************************************************************************
+	Last login: Wed Jan 15 09:39:59 EST 2003 on /dev/pts/2 from ndpaixd1.btv.ibm.com
+	
+	[YOU HAVE NEW MAIL]
+	/afs/eda/common/contrib/bin/get_tokens[63]: test: 0403-004 Specify a parameter with this command.
+	getting token for 
+	klog:  The field '-cell' isn't completed properly
+	mogul.fishkill.ibm.com$ klog -c btv
+	Password:
+	mogul.fishkill.ibm.com$ cd /afs/btv/data/sitools/extra/XMIT _SMALL
+	mogul.fishkill.ibm.com$ pwd
+	/afs/btv/data/sitools/extra/XMIT_SMALL
+	mogul.fishkill.ibm.com$ ls -al
+	total 32
+	drwx------   8 10807    3990        2048 Aug 01 09:11 .
+	drwxrwxrwx  10 root     system      2048 Aug 01 09:06 ..
+	drwx------   3 10807    3990        2048 Aug 01 09:06 aix43
+	drwxrwx---   3 10807    3990        2048 Aug 01 09:06 aix43_64
+	drwxrwx---   3 10807    3990        2048 Aug 01 09:06 aix51_64
+	drwx------   3 10807    3990        2048 Aug 01 09:06 hpux11_64
+	drwx------   3 10807    3990        2048 Aug 01 09:06 sol7
+	drwx------   3 10807    3990        2048 Aug 01 09:06 sol7_64
+	mogul.fishkill.ibm.com$ export DISPLAY=ndpaixd1.btv.ibm.com:8
+	mogul.fishkill.ibm.com$ /afs/btv/u/jengel/notes/xmit
+	
+	>>> Press ENTER to accept current value, or type in new value and press ENTER.
+	Current value for $CMVC_COMPONENT is [ASICtools]: 
+	Current value for $CMVC_RELEASE is [NIL.0901]: 
+	
+	>>> Press ENTER to accept current value, or type in new value and press ENTER.
+	>>> Type a "?" to show legal values at prompt
+	*********************************************************************
+	* If this is a problem reported by a customer, you are requested    *
+	* to set the PREFIX to the customer location reporting the problem. *
+	*********************************************************************
+	Current value for PREFIX is [BTV]:           
+	Current value for SEVERITY is [1]: ?
+	1|Wrong results or failure; critical to program execution
+	2|Wrong results; not critical to program execution
+	3|Unexpected behavior
+	4|Suggestion or enhancement request
+	Current value for SEVERITY is [1]: 
+	Current value for SYMPTOM is [HP64_core_dump]:     
+	Current value for PHASE is [development]: ?
+	beta_test|Beta Test
+	building|Building, Compiling or Module Integration Phase
+	development|Development Phase
+	documenting|Documentation or Publication Phase
+	early_code|Pre-production or field test - not Beta
+	integrate_test|Integration Test
+	maintenance|Maintenance Phase
+	new_tech|New Technology
+	qual_test|Qualification Test
+	regression_test|Regression Test
+	strategy|Inconsistent operation with other tools
+	system_test|System Test
+	unit_test|Unit Test
+	Current value for PHASE is [development]: 
+	
+	The /afs/btv.ibm.com/data/acts/emacs/emacs-21.1/bin/emacs editor is being invoked so you can enter the defect text....
+	Defect -op -rema - < /tmp/defect.032130921 -comp ASICtools -f eda@edacmvc.fishkill.ibm.com@1601 -pre BTV -se 1 -sy HP64_core_dump -phaseF development -verb 
+	0010-281 The name HP64_core_dump is not valid for type symptom.
+	0011-385 Following is a full list of the acceptable values for normal
+	         configuration type symptom. The choices that you may actually use
+	         may be restricted by dependencies on other parameter choices.
+	         build_failed core_dump design_wrong docs_incorrect function_needed
+	         incorrect_i/o install_failed intgr_problem license_error lost_data
+	         non-standard not_to_spec obsolete_code performance plans_incorrect
+	         prog_suspended program_defect reliability rule_defect test_failed
+	         usability
+	
+	*** Defect creation failed.  pd_defect is terminating.
+	*** Defect text you entered saved in: /tmp/defect.032130921
+	What is the defect number? 
+	mogul.fishkill.ibm.com$ whence emacs
+	/afs/eda/@sys/contrib/bin/emacs
+	mogul.fishkill.ibm.com$ /afs/btv/u/jengel/notes/xmit
+	
+	>>> Press ENTER to accept current value, or type in new value and press ENTER.
+	Current value for $CMVC_COMPONENT is [ASICtools]: 
+	Current value for $CMVC_RELEASE is [NIL.0901]: 
+	
+	>>> Press ENTER to accept current value, or type in new value and press ENTER.
+	>>> Type a "?" to show legal values at prompt
+	*********************************************************************
+	* If this is a problem reported by a customer, you are requested    *
+	* to set the PREFIX to the customer location reporting the problem. *
+	*********************************************************************
+	Current value for PREFIX is [BTV]:           
+	Current value for SEVERITY is [1]: 
+	Current value for SYMPTOM is [core_dump]: 
+	Current value for PHASE is [development]: 
+	
+	The /afs/btv.ibm.com/data/acts/emacs/emacs-21.1/bin/emacs editor is being invoked so you can enter the defect text....
+	Defect -op -rema - < /tmp/defect.032130927 -comp ASICtools -f eda@edacmvc.fishkill.ibm.com@1601 -pre BTV -se 1 -sy core_dump -phaseF development -verb 
+	A new defect was opened successfully.
+	The new defect number is 112366.
+	
+	>>> Type a "?" to show legal values at prompt
+	Current value for ANSWER is [other]: ?
+	coderevw|A code review should have been done
+	docnrevw|A field document review should have been done
+	dsgnrevw|A design review should have been done
+	impossbl|Impossible to detect with reasonable testing
+	inadsys|Inadequate system test, should have been found
+	inadunit|Inadequate unit test, should have been found
+	latent|Latent error in old code
+	nextspec|No external specification was written
+	ntobserv|Ran test, did not observe
+	other|Anything not covered, explain in CMVC remarks
+	poorreq|Requirements not properly stated
+	ruletest|Inadequate rules for specific test case
+	specific|Needed specific test case
+	Current value for ANSWER is [other]:     
+	
+	...Querying CMVC for owner of 112366
+	Defect -as 112366 -ow jengel
+	Defect -ac 112366 -f eda@edacmvc.fishkill.ibm.com@1601 -an other -verb
+	The state of defect 112366 was changed successfully.
+	
+	Specify what release(s) to create the track in.
+	NOTE: To create tracks in multiple releases, list each release
+	      separated by a space.  A "+" (without quotes) will be
+	      replaced by the default release shown within the []s.
+	Specify release(s) [NIL.0901]: 
+	Track -cre -de 112366 -rel NIL.0901  -o jengel -verb
+	A new track was created successfully and associated with release
+	NIL.0901 and defect 112366.
+	
+	...Adding the release to the defect
+	Defect -m 112366 -rel NIL.0901 -verb
+	Defect 112366 was modified successfully.
+	What is the defect number? 112366
+	The Defect Number is: 112366
+	
+	relfix:  112366 in release NIL.0901 is now ready for PI&R
+	Use this: NIL.0901.aix43 with DEFECT #: 112366
+	Use this: NIL.0901.aix43_64 with DEFECT #: 112366
+	Use this: NIL.0901.aix51_64 with DEFECT #: 112366
+	Use this: NIL.0901.sol7_64 with DEFECT #: 112366
+	Use this: NIL.0901.hpux11_64 with DEFECT #: 112366
+	
+	Enter product identification in the form "name.vvrr.plat" or transmittal name
+	in the form "name.vvrr.plat.listnnnn" if processing an existing transmittal.
+	        ==> NIL.0901.aix43
+	
+	
+	Optional starting point directory needed to offset to any relative
+	directories identified in your directory search.
+	        ==> /afs/btv/data/sitools/extra/XMIT_SMALL   (Enter for current default)
+	        ==> /afs/btv/data/sitools/extra/XMIT _SMALL/aix43
+	
+	
+	Identify one or more file names and or directories names to be searched
+	recursively. The default is the starting point directory.
+	        ==> 
+	
+	
+	Identify the reason codes to be applied to this transmittal by entering
+	one or more of the following:
+	        - Defect/Feature reason codes
+	        - Name of a file containing one or more Defect/Feature reason codes on
+	               one or more lines, entered here in the form
+	               "file=File_Name"
+	        - Name of a file containing results of a CMVC query or track/level list
+	               with a column identifying Defect/Feature reason codes entered as
+	               "file=File_Name"
+	        ==> 112366
+	
+	
+	Process the transmittal in the following manner:
+	        h - sendxmit online help
+	        p - optional file name prefix, current value:'NONE'
+	        v - display/verify distributed file names, includes prefix
+	        c - syntax check it and ensure reason codes are in the correct state
+	        b - browse it
+	        e - edit it, (e emacs, e INed, e e3, ...), default is $EDITOR then vi
+	        f - assign sendxmit processing flags, current value 'NONE'
+	        Q - Query integration for an 'ls' listing of your component
+	        s - show sendxmit command
+	        r - run sendxmit
+	        q - quit
+	    ==> v
+	/nil/nilcal
+	/nil/nilpath
+	/nil/nilplot
+	/nil/DCL_LIB/libcdc+.a
+	/nil/DCL_LIB/libcdc-appl+.a
+	/nil/DCL_LIB/libdcm+.a
+	/nil/DCL_LIB/libdcm-appl+.a
+	(EOF)Press enter to page, -1 to back page, h for help, q to quit
+	
+	Process the transmittal in the following manner:
+	        h - sendxmit online help
+	        p - optional file name prefix, current value:'NONE'
+	        v - display/verify distributed file names, includes prefix
+	        c - syntax check it and ensure reason codes are in the correct state
+	        b - browse it
+	        e - edit it, (e emacs, e INed, e e3, ...), default is $EDITOR then vi
+	        f - assign sendxmit processing flags, current value 'NONE'
+	        Q - Query integration for an 'ls' listing of your component
+	        s - show sendxmit command
+	        r - run sendxmit
+	        q - quit
+	    ==> b
+	 @/
+	 @/nil
+	  > nilcal 112366
+	  > nilpath 112366
+	  > nilplot 112366
+	 @/nil/DCL_LIB
+	  > libcdc+.a 112366
+	  > libcdc-appl+.a 112366
+	  > libdcm+.a 112366
+	  > libdcm-appl+.a 112366
+	(EOF)Press enter to page, -1 to back page, h for help, q to quit
+	
+	Process the transmittal in the following manner:
+	        h - sendxmit online help
+	        p - optional file name prefix, current value:'NONE'
+	        v - display/verify distributed file names, includes prefix
+	        c - syntax check it and ensure reason codes are in the correct state
+	        b - browse it
+	        e - edit it, (e emacs, e INed, e e3, ...), default is $EDITOR then vi
+	        f - assign sendxmit processing flags, current value 'NONE'
+	        Q - Query integration for an 'ls' listing of your component
+	        s - show sendxmit command
+	        r - run sendxmit
+	        q - quit
+	    ==> f
+	
+	Enter the following letters, with or without blanks, that represent the
+	sendxmit processing actions desired:
+	        (d) delete, (c) control, (u) urgent fix, (r) total product replace,
+	        (P) Do NOT Package component following integration of this transmittal
+	        ==> u
+	
+	Process the transmittal in the following manner:
+	        h - sendxmit online help
+	        p - optional file name prefix, current value:'NONE'
+	        v - display/verify distributed file names, includes prefix
+	        c - syntax check it and ensure reason codes are in the correct state
+	        b - browse it
+	        e - edit it, (e emacs, e INed, e e3, ...), default is $EDITOR then vi
+	        f - assign sendxmit processing flags, current value '-u'
+	        Q - Query integration for an 'ls' listing of your component
+	        s - show sendxmit command
+	        r - run sendxmit
+	        q - quit
+	    ==> r
+	Transmittal NIL.0901.aix43.list0004 and 7 data files successfully received.
+	mogul.fishkill.ibm.com$ /afs/btv/u/jengel/notes/xmit
+	Use this: NIL.0901.aix43 with DEFECT #: 
+	Use this: NIL.0901.aix43_64 with DEFECT #: 
+	Use this: NIL.0901.aix51_64 with DEFECT #: 
+	Use this: NIL.0901.sol7_64 with DEFECT #: 
+	Use this: NIL.0901.hpux11_64 with DEFECT #: 
+	
+	Enter product identification in the form "name.vvrr.plat" or transmittal name
+	in the form "name.vvrr.plat.listnnnn" if processing an existing transmittal.
+	        ==> NIL.0901.aix43 _64
+	
+	
+	Optional starting point directory needed to offset to any relative
+	directories identified in your directory search.
+	        ==> /afs/btv/data/sitools/extra/XMIT_SMALL   (Enter for current default)
+	        ==> /afs/btv/data/sitools/extra/XMIT _SMALL/aix43 _64
+	
+	
+	Identify one or more file names and or directories names to be searched
+	recursively. The default is the starting point directory.
+	        ==> 
+	
+	
+	Identify the reason codes to be applied to this transmittal by entering
+	one or more of the following:
+	        - Defect/Feature reason codes
+	        - Name of a file containing one or more Defect/Feature reason codes on
+	               one or more lines, entered here in the form
+	               "file=File_Name"
+	        - Name of a file containing results of a CMVC query or track/level list
+	               with a column identifying Defect/Feature reason codes entered as
+	               "file=File_Name"
+	        ==> 112366
+	
+	
+	Process the transmittal in the following manner:
+	        h - sendxmit online help
+	        p - optional file name prefix, current value:'NONE'
+	        v - display/verify distributed file names, includes prefix
+	        c - syntax check it and ensure reason codes are in the correct state
+	        b - browse it
+	        e - edit it, (e emacs, e INed, e e3, ...), default is $EDITOR then vi
+	        f - assign sendxmit processing flags, current value 'NONE'
+	        Q - Query integration for an 'ls' listing of your component
+	        s - show sendxmit command
+	        r - run sendxmit
+	        q - quit
+	    ==> v
+	/nil/nilcal
+	/nil/nilpath
+	/nil/nilplot
+	/nil/DCL_LIB/libcdc+.a
+	/nil/DCL_LIB/libcdc-appl+.a
+	/nil/DCL_LIB/libdcm+.a
+	/nil/DCL_LIB/libdcm-appl+.a
+	(EOF)Press enter to page, -1 to back page, h for help, q to quit
+	
+	Process the transmittal in the following manner:
+	        h - sendxmit online help
+	        p - optional file name prefix, current value:'NONE'
+	        v - display/verify distributed file names, includes prefix
+	        c - syntax check it and ensure reason codes are in the correct state
+	        b - browse it
+	        e - edit it, (e emacs, e INed, e e3, ...), default is $EDITOR then vi
+	        f - assign sendxmit processing flags, current value 'NONE'
+	        Q - Query integration for an 'ls' listing of your component
+	        s - show sendxmit command
+	        r - run sendxmit
+	        q - quit
+	    ==> f
+	
+	Enter the following letters, with or without blanks, that represent the
+	sendxmit processing actions desired:
+	        (d) delete, (c) control, (u) urgent fix, (r) total product replace,
+	        (P) Do NOT Package component following integration of this transmittal
+	        ==> u
+	
+	Process the transmittal in the following manner:
+	        h - sendxmit online help
+	        p - optional file name prefix, current value:'NONE'
+	        v - display/verify distributed file names, includes prefix
+	        c - syntax check it and ensure reason codes are in the correct state
+	        b - browse it
+	        e - edit it, (e emacs, e INed, e e3, ...), default is $EDITOR then vi
+	        f - assign sendxmit processing flags, current value '-u'
+	        Q - Query integration for an 'ls' listing of your component
+	        s - show sendxmit command
+	        r - run sendxmit
+	        q - quit
+	    ==> b
+	 @/
+	 @/nil
+	  > nilcal 112366
+	  > nilpath 112366
+	  > nilplot 112366
+	 @/nil/DCL_LIB
+	  > libcdc+.a 112366
+	  > libcdc-appl+.a 112366
+	  > libdcm+.a 112366
+	  > libdcm-appl+.a 112366
+	(EOF)Press enter to page, -1 to back page, h for help, q to quit
+	
+	Process the transmittal in the following manner:
+	        h - sendxmit online help
+	        p - optional file name prefix, current value:'NONE'
+	        v - display/verify distributed file names, includes prefix
+	        c - syntax check it and ensure reason codes are in the correct state
+	        b - browse it
+	        e - edit it, (e emacs, e INed, e e3, ...), default is $EDITOR then vi
+	        f - assign sendxmit processing flags, current value '-u'
+	        Q - Query integration for an 'ls' listing of your component
+	        s - show sendxmit command
+	        r - run sendxmit
+	        q - quit
+	    ==> r
+	Transmittal NIL.0901.aix43_64.list0003 and 7 data files successfully received.
+	mogul.fishkill.ibm.com$ /afs/btv/u/jengel/notes/xmit
+	Use this: NIL.0901.aix43 with DEFECT #: 
+	Use this: NIL.0901.aix43_64 with DEFECT #: 
+	Use this: NIL.0901.aix51_64 with DEFECT #: 
+	Use this: NIL.0901.sol7_64 with DEFECT #: 
+	Use this: NIL.0901.hpux11_64 with DEFECT #: 
+	
+	Enter product identification in the form "name.vvrr.plat" or transmittal name
+	in the form "name.vvrr.plat.listnnnn" if processing an existing transmittal.
+	        ==> NIL.0901.aix51 _64
+	
+	
+	Optional starting point directory needed to offset to any relative
+	directories identified in your directory search.
+	        ==> /afs/btv/data/sitools/extra/XMIT_SMALL   (Enter for current default)
+	        ==> /afs/btv/data/sitools/extra/XMIT _SMALL/aix51 _64
+	
+	
+	Identify one or more file names and or directories names to be searched
+	recursively. The default is the starting point directory.
+	        ==> 
+	
+	
+	Identify the reason codes to be applied to this transmittal by entering
+	one or more of the following:
+	        - Defect/Feature reason codes
+	        - Name of a file containing one or more Defect/Feature reason codes on
+	               one or more lines, entered here in the form
+	               "file=File_Name"
+	        - Name of a file containing results of a CMVC query or track/level list
+	               with a column identifying Defect/Feature reason codes entered as
+	               "file=File_Name"
+	        ==> 112366
+	
+	
+	Process the transmittal in the following manner:
+	        h - sendxmit online help
+	        p - optional file name prefix, current value:'NONE'
+	        v - display/verify distributed file names, includes prefix
+	        c - syntax check it and ensure reason codes are in the correct state
+	        b - browse it
+	        e - edit it, (e emacs, e INed, e e3, ...), default is $EDITOR then vi
+	        f - assign sendxmit processing flags, current value 'NONE'
+	        Q - Query integration for an 'ls' listing of your component
+	        s - show sendxmit command
+	        r - run sendxmit
+	        q - quit
+	    ==> v
+	/nil/nilcal
+	/nil/nilpath
+	/nil/nilplot
+	/nil/DCL_LIB/libcdc+.a
+	/nil/DCL_LIB/libcdc-appl+.a
+	/nil/DCL_LIB/libdcm+.a
+	/nil/DCL_LIB/libdcm-appl+.a
+	(EOF)Press enter to page, -1 to back page, h for help, q to quit
+	
+	Process the transmittal in the following manner:
+	        h - sendxmit online help
+	        p - optional file name prefix, current value:'NONE'
+	        v - display/verify distributed file names, includes prefix
+	        c - syntax check it and ensure reason codes are in the correct state
+	        b - browse it
+	        e - edit it, (e emacs, e INed, e e3, ...), default is $EDITOR then vi
+	        f - assign sendxmit processing flags, current value 'NONE'
+	        Q - Query integration for an 'ls' listing of your component
+	        s - show sendxmit command
+	        r - run sendxmit
+	        q - quit
+	    ==> f
+	
+	Enter the following letters, with or without blanks, that represent the
+	sendxmit processing actions desired:
+	        (d) delete, (c) control, (u) urgent fix, (r) total product replace,
+	        (P) Do NOT Package component following integration of this transmittal
+	        ==> u
+	
+	Process the transmittal in the following manner:
+	        h - sendxmit online help
+	        p - optional file name prefix, current value:'NONE'
+	        v - display/verify distributed file names, includes prefix
+	        c - syntax check it and ensure reason codes are in the correct state
+	        b - browse it
+	        e - edit it, (e emacs, e INed, e e3, ...), default is $EDITOR then vi
+	        f - assign sendxmit processing flags, current value '-u'
+	        Q - Query integration for an 'ls' listing of your component
+	        s - show sendxmit command
+	        r - run sendxmit
+	        q - quit
+	    ==> b
+	 @/
+	 @/nil
+	  > nilcal 112366
+	  > nilpath 112366
+	  > nilplot 112366
+	 @/nil/DCL_LIB
+	  > libcdc+.a 112366
+	  > libcdc-appl+.a 112366
+	  > libdcm+.a 112366
+	  > libdcm-appl+.a 112366
+	(EOF)Press enter to page, -1 to back page, h for help, q to quit
+	
+	Process the transmittal in the following manner:
+	        h - sendxmit online help
+	        p - optional file name prefix, current value:'NONE'
+	        v - display/verify distributed file names, includes prefix
+	        c - syntax check it and ensure reason codes are in the correct state
+	        b - browse it
+	        e - edit it, (e emacs, e INed, e e3, ...), default is $EDITOR then vi
+	        f - assign sendxmit processing flags, current value '-u'
+	        Q - Query integration for an 'ls' listing of your component
+	        s - show sendxmit command
+	        r - run sendxmit
+	        q - quit
+	    ==> r
+	Transmittal NIL.0901.aix51_64.list0003 and 7 data files successfully received.
+	mogul.fishkill.ibm.com$ /afs/btv/u/jengel/notes/xmit
+	Use this: NIL.0901.aix43 with DEFECT #: 
+	Use this: NIL.0901.aix43_64 with DEFECT #: 
+	Use this: NIL.0901.aix51_64 with DEFECT #: 
+	Use this: NIL.0901.sol7_64 with DEFECT #: 
+	Use this: NIL.0901.hpux11_64 with DEFECT #: 
+	
+	Enter product identification in the form "name.vvrr.plat" or transmittal name
+	in the form "name.vvrr.plat.listnnnn" if processing an existing transmittal.
+	        ==> NIL.0901.sol7 _64
+	
+	
+	Optional starting point directory needed to offset to any relative
+	directories identified in your directory search.
+	        ==> /afs/btv/data/sitools/extra/XMIT_SMALL   (Enter for current default)
+	        ==> /afs/btv/data/sitools/extra/XMIT _SMALL/sol7 _64
+	
+	
+	Identify one or more file names and or directories names to be searched
+	recursively. The default is the starting point directory.
+	        ==> 
+	
+	
+	Identify the reason codes to be applied to this transmittal by entering
+	one or more of the following:
+	        - Defect/Feature reason codes
+	        - Name of a file containing one or more Defect/Feature reason codes on
+	               one or more lines, entered here in the form
+	               "file=File_Name"
+	        - Name of a file containing results of a CMVC query or track/level list
+	               with a column identifying Defect/Feature reason codes entered as
+	               "file=File_Name"
+	        ==> 112366
+	
+	
+	Process the transmittal in the following manner:
+	        h - sendxmit online help
+	        p - optional file name prefix, current value:'NONE'
+	        v - display/verify distributed file names, includes prefix
+	        c - syntax check it and ensure reason codes are in the correct state
+	        b - browse it
+	        e - edit it, (e emacs, e INed, e e3, ...), default is $EDITOR then vi
+	        f - assign sendxmit processing flags, current value 'NONE'
+	        Q - Query integration for an 'ls' listing of your component
+	        s - show sendxmit command
+	        r - run sendxmit
+	        q - quit
+	    ==> v
+	/nil/nilcal
+	/nil/nilpath
+	/nil/nilplot
+	/nil/DCL_LIB/libcdc+.so
+	/nil/DCL_LIB/libcdc-appl+.a
+	/nil/DCL_LIB/libdcm+.so
+	/nil/DCL_LIB/libdcm-appl+.a
+	(EOF)Press enter to page, -1 to back page, h for help, q to quit
+	
+	Process the transmittal in the following manner:
+	        h - sendxmit online help
+	        p - optional file name prefix, current value:'NONE'
+	        v - display/verify distributed file names, includes prefix
+	        c - syntax check it and ensure reason codes are in the correct state
+	        b - browse it
+	        e - edit it, (e emacs, e INed, e e3, ...), default is $EDITOR then vi
+	        f - assign sendxmit processing flags, current value 'NONE'
+	        Q - Query integration for an 'ls' listing of your component
+	        s - show sendxmit command
+	        r - run sendxmit
+	        q - quit
+	    ==> f
+	
+	Enter the following letters, with or without blanks, that represent the
+	sendxmit processing actions desired:
+	        (d) delete, (c) control, (u) urgent fix, (r) total product replace,
+	        (P) Do NOT Package component following integration of this transmittal
+	        ==> u
+	
+	Process the transmittal in the following manner:
+	        h - sendxmit online help
+	        p - optional file name prefix, current value:'NONE'
+	        v - display/verify distributed file names, includes prefix
+	        c - syntax check it and ensure reason codes are in the correct state
+	        b - browse it
+	        e - edit it, (e emacs, e INed, e e3, ...), default is $EDITOR then vi
+	        f - assign sendxmit processing flags, current value '-u'
+	        Q - Query integration for an 'ls' listing of your component
+	        s - show sendxmit command
+	        r - run sendxmit
+	        q - quit
+	    ==> b
+	 @/
+	 @/nil
+	  > nilcal 112366
+	  > nilpath 112366
+	  > nilplot 112366
+	 @/nil/DCL_LIB
+	  > libcdc+.so 112366
+	  > libcdc-appl+.a 112366
+	  > libdcm+.so 112366
+	  > libdcm-appl+.a 112366
+	(EOF)Press enter to page, -1 to back page, h for help, q to quit
+	
+	Process the transmittal in the following manner:
+	        h - sendxmit online help
+	        p - optional file name prefix, current value:'NONE'
+	        v - display/verify distributed file names, includes prefix
+	        c - syntax check it and ensure reason codes are in the correct state
+	        b - browse it
+	        e - edit it, (e emacs, e INed, e e3, ...), default is $EDITOR then vi
+	        f - assign sendxmit processing flags, current value '-u'
+	        Q - Query integration for an 'ls' listing of your component
+	        s - show sendxmit command
+	        r - run sendxmit
+	        q - quit
+	    ==> r
+	Transmittal NIL.0901.sol7_64.list0003 and 7 data files successfully received.
+	mogul.fishkill.ibm.com$ /afs/btv/u/jengel/notes/xmit
+	Use this: NIL.0901.aix43 with DEFECT #: 
+	Use this: NIL.0901.aix43_64 with DEFECT #: 
+	Use this: NIL.0901.aix51_64 with DEFECT #: 
+	Use this: NIL.0901.sol7_64 with DEFECT #: 
+	Use this: NIL.0901.hpux11_64 with DEFECT #: 
+	
+	Enter product identification in the form "name.vvrr.plat" or transmittal name
+	in the form "name.vvrr.plat.listnnnn" if processing an existing transmittal.
+	        ==> NIL.0901.hpux11 _64
+	
+	
+	Optional starting point directory needed to offset to any relative
+	directories identified in your directory search.
+	        ==> /afs/btv/data/sitools/extra/XMIT_SMALL   (Enter for current default)
+	        ==> /afs/btv/data/sitools/extra/XMIT _SMALL/hpux11 _64
+	
+	
+	Identify one or more file names and or directories names to be searched
+	recursively. The default is the starting point directory.
+	        ==> 
+	
+	
+	Identify the reason codes to be applied to this transmittal by entering
+	one or more of the following:
+	        - Defect/Feature reason codes
+	        - Name of a file containing one or more Defect/Feature reason codes on
+	               one or more lines, entered here in the form
+	               "file=File_Name"
+	        - Name of a file containing results of a CMVC query or track/level list
+	               with a column identifying Defect/Feature reason codes entered as
+	               "file=File_Name"
+	        ==> 112366
+	
+	
+	Process the transmittal in the following manner:
+	        h - sendxmit online help
+	        p - optional file name prefix, current value:'NONE'
+	        v - display/verify distributed file names, includes prefix
+	        c - syntax check it and ensure reason codes are in the correct state
+	        b - browse it
+	        e - edit it, (e emacs, e INed, e e3, ...), default is $EDITOR then vi
+	        f - assign sendxmit processing flags, current value 'NONE'
+	        Q - Query integration for an 'ls' listing of your component
+	        s - show sendxmit command
+	        r - run sendxmit
+	        q - quit
+	    ==> v
+	/nil/nilcal
+	/nil/nilpath
+	/nil/nilplot
+	/nil/nilsh
+	/nil/DCL_LIB/libcdc+.sl
+	/nil/DCL_LIB/libcdc-appl+.a
+	/nil/DCL_LIB/libdcm+.sl
+	/nil/DCL_LIB/libdcm-appl+.a
+	(EOF)Press enter to page, -1 to back page, h for help, q to quit
+	
+	Process the transmittal in the following manner:
+	        h - sendxmit online help
+	        p - optional file name prefix, current value:'NONE'
+	        v - display/verify distributed file names, includes prefix
+	        c - syntax check it and ensure reason codes are in the correct state
+	        b - browse it
+	        e - edit it, (e emacs, e INed, e e3, ...), default is $EDITOR then vi
+	        f - assign sendxmit processing flags, current value 'NONE'
+	        Q - Query integration for an 'ls' listing of your component
+	        s - show sendxmit command
+	        r - run sendxmit
+	        q - quit
+	    ==> f
+	
+	Enter the following letters, with or without blanks, that represent the
+	sendxmit processing actions desired:
+	        (d) delete, (c) control, (u) urgent fix, (r) total product replace,
+	        (P) Do NOT Package component following integration of this transmittal
+	        ==> u
+	
+	Process the transmittal in the following manner:
+	        h - sendxmit online help
+	        p - optional file name prefix, current value:'NONE'
+	        v - display/verify distributed file names, includes prefix
+	        c - syntax check it and ensure reason codes are in the correct state
+	        b - browse it
+	        e - edit it, (e emacs, e INed, e e3, ...), default is $EDITOR then vi
+	        f - assign sendxmit processing flags, current value '-u'
+	        Q - Query integration for an 'ls' listing of your component
+	        s - show sendxmit command
+	        r - run sendxmit
+	        q - quit
+	    ==> b
+	 @/
+	 @/nil
+	  > nilcal 112366
+	  > nilpath 112366
+	  > nilplot 112366
+	  > nilsh 112366
+	 @/nil/DCL_LIB
+	  > libcdc+.sl 112366
+	  > libcdc-appl+.a 112366
+	  > libdcm+.sl 112366
+	  > libdcm-appl+.a 112366
+	(EOF)Press enter to page, -1 to back page, h for help, q to quit
+	
+	Process the transmittal in the following manner:
+	        h - sendxmit online help
+	        p - optional file name prefix, current value:'NONE'
+	        v - display/verify distributed file names, includes prefix
+	        c - syntax check it and ensure reason codes are in the correct state
+	        b - browse it
+	        e - edit it, (e emacs, e INed, e e3, ...), default is $EDITOR then vi
+	        f - assign sendxmit processing flags, current value '-u'
+	        Q - Query integration for an 'ls' listing of your component
+	        s - show sendxmit command
+	        r - run sendxmit
+	        q - quit
+	    ==> r
+	Transmittal NIL.0901.hpux11_64.list0003 and 8 data files successfully received.
+	You have mail in /usr/spool/mail/jengel
+	mogul.fishkill.ibm.com$ mail
+	Mail [5.2 UCB] [AIX 4.1]  Type ? for help.
+	"/var/spool/mail/jengel": 26 messages 13 new 26 unread
+	 U  1 MAILER-DAEMON@ed  Fri Sep 24 08:04  61/2204 "Returned mail: User unknown"
+	 U  2 integ@edamail.fi  Fri Mar 22 13:38  15/911  "NIL.0701.aix43.list0001 inte"
+	 U  3 integ@edamail.fi  Fri Mar 22 13:43  15/911  "NIL.0701.aix43.list0002 inte"
+	 U  4 integ@edamail.fi  Fri Mar 22 13:45  15/917  "NIL.0701.aix43_64.list0001 i"
+	 U  5 integ@edamail.fi  Fri Mar 22 13:51  15/909  "NIL.0701.sol7.list0001 integ"
+	 U  6 integ@edamail.fi  Fri Mar 22 13:51  15/910  "NIL.0701.aix43_64.list0002 i"
+	 U  7 integ@edamail.fi  Fri Mar 22 13:57  15/915  "NIL.0701.sol7_64.list0001 in"
+	 U  8 integ@edamail.fi  Fri Mar 22 14:05  15/915  "NIL.0701.sol7_64.list0002 in"
+	 U  9 integ@edamail.fi  Fri Mar 22 14:06  15/913  "NIL.0701.hpux11.list0001 int"
+	 U 10 integ@edamail.fi  Fri Oct 18 16:28  15/913  "NIL.0701.hpux11_64.list0001 "
+	 U 11 integ@edamail.fi  Wed Jan 15 11:06  14/987  "NIL.0901.aix43.list0001 inte"
+	 U 12 integ@edamail.fi  Wed Jan 15 11:59  14/993  "NIL.0901.aix43_64.list0001 i"
+	 U 13 integ@edamail.fi  Wed Jan 15 12:46  14/994  "NIL.0901.aix43.list0001 inte"
+	>N 14 integ@edamail.fi  Wed Jan 15 13:29  13/990  "NIL.0901.aix43_64.list0001 i"
+	 N 15 integ@edamail.fi  Wed Jan 15 13:35  13/983  "NIL.0901.aix43_64.list0002 i"
+	 N 16 integ@edamail.fi  Wed Jan 15 13:37  13/990  "NIL.0901.aix51_64.list0001 i"
+	 N 17 integ@edamail.fi  Wed Jan 15 13:42  13/990  "NIL.0901.aix51_64.list0002 i"
+	 N 18 integ@edamail.fi  Wed Jan 15 13:44  13/992  "NIL.0901.hpux11_64.list0001 "
+	 N 19 integ@edamail.fi  Wed Jan 15 13:49  13/992  "NIL.0901.hpux11_64.list0002 "
+	 N 20 integ@edamail.fi  Wed Jan 15 13:49  13/988  "NIL.0901.sol7_64.list0001 in"
+	? ?
+	Control Commands:
+	   q                       Quit - apply mailbox commands entered this session.
+	   x                       Quit - restore mailbox to original state.
+	   ! <cmd>                 Start a shell, run <cmd>, and return to mailbox.
+	   cd [<dir>]              Change directory to <dir> or $HOME.
+	Display Commands:
+	   t [<msg_list>]          Display messages in <msg_list> or current message.
+	   n                       Display next message.
+	   f [<msg_list>]          Display headings of messages.
+	   h [<num>]               Display headings of group containing message <num>.
+	Message Handling:
+	   e [<num>]               Edit message <num> (default editor is ex).
+	   d [<msg_list>]          Delete messages in <msg_list> or current message.
+	   u [<msg_list>]          Recall deleted messages.
+	   s [<msg_list>] <file>   Append messages (with headings) to <file>.
+	   w [<msg_list>] <file>   Append messages (text only) to <file>.
+	   pre [<msg_list>]        Keep messages in system mailbox.
+	Creating New Mail:
+	   m <addrlist>            Create/send new message to addresses in <addrlist>.
+	   r [<msg_list>]          Send reply to senders and recipients of messages.
+	   R [<msg_list>]          Send reply only to senders of messages.
+	   a                       Display list of aliases and their addresses.
+	=============================== Mailbox Commands ==============================
+	? 
+	Message 14:
+	From integ@solo.fishkill.ibm.com Wed Jan 15 13:29:03 2003
+	Date: Wed, 15 Jan 2003 13:29:03 -0500
+	From: Integration ID <integ@edamail.fishkill.ibm.com>
+	To: jengel@mogul.fishkill.ibm.com
+	Subject: NIL.0901.aix43_64.list0001 integ complete
+	
+	Integration completed successfully for NIL.0901.aix43_64.list0001
+	106861
+	
+	? l
+	Commands are:
+	next, alias, print, type, Type, Print, visual, top, touch, preserve, 
+	delete, dp, dt, undelete, unset, mail, mbox, more, page, More, Page, 
+	unread, Unread, new, New, !, copy, Copy, chdir, cd, save, Save, source, 
+	set, shell, pipe, |, version, group, write, from, file, followup, 
+	Followup, folder, folders, ?, z, headers, help, =, Reply, Respond, 
+	reply, respond, edit, echo, quit, list, local, xit, exit, size, hold, 
+	if, else, endif, alternates, ignore, discard, retain, unalias, #
+	? d
+	? d
+	? d
+	? d
+	? d
+	? d
+	? d
+	? d
+	? d
+	? d
+	? d
+	? d
+	? d
+	? d
+	? d
+	? 
+	Message 11:
+	From integ@solo.fishkill.ibm.com Wed Jan 15 11:06:14 2003
+	Date: Wed, 15 Jan 2003 11:06:13 -0500
+	From: Integration ID <integ@edamail.fishkill.ibm.com>
+	To: jengel@mogul.fishkill.ibm.com
+	Subject: NIL.0901.aix43.list0001 integ failed
+	
+	Integration ended with errors for NIL.0901.aix43.list0001
+	106858
+	
+	? 
+	Message 11:
+	From integ@solo.fishkill.ibm.com Wed Jan 15 11:06:14 2003
+	Date: Wed, 15 Jan 2003 11:06:13 -0500
+	From: Integration ID <integ@edamail.fishkill.ibm.com>
+	To: jengel@mogul.fishkill.ibm.com
+	Subject: NIL.0901.aix43.list0001 integ failed
+	
+	Integration ended with errors for NIL.0901.aix43.list0001
+	106858
+	
+	? d
+	? x
+	mogul.fishkill.ibm.com$ mail
+	Mail [5.2 UCB] [AIX 4.1]  Type ? for help.
+	"/var/spool/mail/jengel": 26 messages 13 new 26 unread
+	 U  1 MAILER-DAEMON@ed  Fri Sep 24 08:04  61/2204 "Returned mail: User unknown"
+	 U  2 integ@edamail.fi  Fri Mar 22 13:38  15/911  "NIL.0701.aix43.list0001 inte"
+	 U  3 integ@edamail.fi  Fri Mar 22 13:43  15/911  "NIL.0701.aix43.list0002 inte"
+	 U  4 integ@edamail.fi  Fri Mar 22 13:45  15/917  "NIL.0701.aix43_64.list0001 i"
+	 U  5 integ@edamail.fi  Fri Mar 22 13:51  15/909  "NIL.0701.sol7.list0001 integ"
+	 U  6 integ@edamail.fi  Fri Mar 22 13:51  15/910  "NIL.0701.aix43_64.list0002 i"
+	 U  7 integ@edamail.fi  Fri Mar 22 13:57  15/915  "NIL.0701.sol7_64.list0001 in"
+	 U  8 integ@edamail.fi  Fri Mar 22 14:05  15/915  "NIL.0701.sol7_64.list0002 in"
+	 U  9 integ@edamail.fi  Fri Mar 22 14:06  15/913  "NIL.0701.hpux11.list0001 int"
+	 U 10 integ@edamail.fi  Fri Oct 18 16:28  15/913  "NIL.0701.hpux11_64.list0001 "
+	 U 11 integ@edamail.fi  Wed Jan 15 11:06  14/987  "NIL.0901.aix43.list0001 inte"
+	 U 12 integ@edamail.fi  Wed Jan 15 11:59  14/993  "NIL.0901.aix43_64.list0001 i"
+	 U 13 integ@edamail.fi  Wed Jan 15 12:46  14/994  "NIL.0901.aix43.list0001 inte"
+	>N 14 integ@edamail.fi  Wed Jan 15 13:29  13/990  "NIL.0901.aix43_64.list0001 i"
+	 N 15 integ@edamail.fi  Wed Jan 15 13:35  13/983  "NIL.0901.aix43_64.list0002 i"
+	 N 16 integ@edamail.fi  Wed Jan 15 13:37  13/990  "NIL.0901.aix51_64.list0001 i"
+	 N 17 integ@edamail.fi  Wed Jan 15 13:42  13/990  "NIL.0901.aix51_64.list0002 i"
+	 N 18 integ@edamail.fi  Wed Jan 15 13:44  13/992  "NIL.0901.hpux11_64.list0001 "
+	 N 19 integ@edamail.fi  Wed Jan 15 13:49  13/992  "NIL.0901.hpux11_64.list0002 "
+	 N 20 integ@edamail.fi  Wed Jan 15 13:49  13/988  "NIL.0901.sol7_64.list0001 in"
+	? d
+	? d
+	? d
+	? d
+	? d
+	? d
+	? d
+	? d
+	? d
+	? d
+	? d
+	? d
+	? d
+	? d
+	? d
+	? d
+	? d
+	? d
+	? d
+	? d
+	? d
+	? d
+	? ? d
+	Control Commands:
+	   q                       Quit - apply mailbox commands entered this session.
+	   x                       Quit - restore mailbox to original state.
+	   ! <cmd>                 Start a shell, run <cmd>, and return to mailbox.
+	   cd [<dir>]              Change directory to <dir> or $HOME.
+	Display Commands:
+	   t [<msg_list>]          Display messages in <msg_list> or current message.
+	   n                       Display next message.
+	   f [<msg_list>]          Display headings of messages.
+	   h [<num>]               Display headings of group containing message <num>.
+	Message Handling:
+	   e [<num>]               Edit message <num> (default editor is ex).
+	   d [<msg_list>]          Delete messages in <msg_list> or current message.
+	   u [<msg_list>]          Recall deleted messages.
+	   s [<msg_list>] <file>   Append messages (with headings) to <file>.
+	   w [<msg_list>] <file>   Append messages (text only) to <file>.
+	   pre [<msg_list>]        Keep messages in system mailbox.
+	Creating New Mail:
+	   m <addrlist>            Create/send new message to addresses in <addrlist>.
+	   r [<msg_list>]          Send reply to senders and recipients of messages.
+	   R [<msg_list>]          Send reply only to senders of messages.
+	   a                       Display list of aliases and their addresses.
+	=============================== Mailbox Commands ==============================
+	? q
+	Held 4 messages in /var/spool/mail/jengel
+	mogul.fishkill.ibm.com$ mail
+	Mail [5.2 UCB] [AIX 4.1]  Type ? for help.
+	"/var/spool/mail/jengel": 4 messages 4 unread
+	>U  1 MAILER-DAEMON@ed  Fri Sep 24 08:04  61/2204 "Returned mail: User unknown"
+	 U  2 integ@edamail.fi  Fri Mar 22 13:38  15/911  "NIL.0701.aix43.list0001 inte"
+	 U  3 integ@edamail.fi  Fri Mar 22 13:43  15/911  "NIL.0701.aix43.list0002 inte"
+	 U  4 integ@edamail.fi  Fri Mar 22 13:45  15/917  "NIL.0701.aix43_64.list0001 i"
+	? d
+	? d
+	? d
+	? d
+	? d
+	No applicable messages
+	? d
+	No applicable messages
+	? q
+	mogul.fishkill.ibm.com$ mail
+	No mail for jengel
+	mogul.fishkill.ibm.com$ 
+	
+* SelfStore
+** Intsalling from
+	to install wizard from selfstore do the following:
+		 run ss from /afs/eda.fishkill/edadist/tools/install
+	/afs/eda.fishkill/edadist/tools/install
+	     for einsgen
+
+[[/afs/btv/u/jengel/asciidoctor-diagram-classes.png]]
+* CouchDB
+** Start
+    /afs/btv/data/alacrite/AlacCouchDB/runCouch
+** DB location
+    /afs/btv/data/alacrite/AlacCouchDB
+** Curl
+*** GET
+    curl -u alacrite:Glat0riaN -v -H \"Content-Type: application/json\" -X GET http://gridlnx180.btv.ibm.com:5984/couchapp-docs-master/_design/docs/maker | jq '.'
+**** To get a range
+    curl -vk -X GET "https://alacrite:Glat0riaN@methlnx002.btv.ibm.com:6984/server_stats/_design/serverStats/_view/statsView?startkey=%2220150331152448%22&endkey=%2220150331152531%22"
+**** Pass a value to match the key with
+curl -vk -X GET "http://methlnx002.btv.ibm.com:5984/alacrite_config_db_jengel1/_design/alacrite_config_db/_view/opcondTypeList?key=%22.lib%22"
+*** PUT
+    curl -k "$server/$database/$jobName" --upload-file CJStmpJobUpdate.json
+** Sample jsonDocs for our cell hier.
+    /afs/btv.ibm.com/u3/jengel/alacrite/couchDbTest
+** couchapp
+*** code location
+    /afs/btv/data/softDevComp/PYTHON/Python-2.7.8/bin
+    Add that to your $PATH
+*** samples 
+    /afs/btv.ibm.com/u3/jengel/alacrite/couchAppTest
+*** push code 
+    couchapp push alacrite_config_db https://alacrite:Glat0riaN@gridlnx180.btv.ibm.com:6984/alacrite_config_db
+    couchapp push couchapp-docs-master https://alacrite:Glat0riaN@gridlnx180.btv.ibm.com:6984/couchapp-docs-master
+*** To access a couchapp
+    https://gridlnx045.btv.ibm.com:6984/alacrite_config_db/_design/alacrite_config_db/index.html
+** couch stats info
+*** Changes on a database
+curl -vk -X GET https://alacrite:Glat0riaN@methlnx002.btv.ibm.com:6984/alacrite_config_db_jengel1/_changes | jq '.'
+*** Server stats
+curl -vk -X GET https://alacrite:Glat0riaN@methlnx002.btv.ibm.com:6984/_stats | jq '.'
+*** Get views
+curl -vk -X GET https://alacrite:Glat0riaN@methlnx002.btv.ibm.com:6984/alacrite_config_db_jengel1/_design/alacrite_config_db_jengel.ang4 | jq '.' | grep views 
+*** Get database stats
+curl -vk -X GET https://alacrite:Glat0riaN@methlnx002.btv.ibm.com:6984/alacrite_config_db_jengel1 | jq '.'
+** view indexing
+   http://gridl115.pok.ibm.com:5984/_active_tasks
+* Angular.js
+** Expressions
+   Expressions are things between {{ }}
+   http://docs.angulatjs.org/guide/expression
+   Use filters in expressions by piping them list  {{xxx | currency}}
+   General form is {{ data | filter:options}}
+** Modules
+   Where application components live.
+** Controllers
+   Where we define the application behavior. The code that actually does the work.
+** Directives
+   HTML annotations that trigger javascript behaviors
+   <html ng-app="someAppName"/>
+   <body ng-controller = "someController as someCont"/>
+   <h1 ng-hide/show="var name that is either true or false"/>
+   <img ng-src="{{product.images[0].full}}"/>
+* refactor variables across files
+  Wgrep - This package enables one to apply changes done in grep buffer
+  to respective files. This is useful when I have to replace a word 
+  across many files, in such situations use rgrep to search the word in 
+  multiple files. Then enable wgrep in the resulting grep buffer, mark 
+  the word to replaced with multiple-cursors (you can also use query-replace), 
+  make the changes and then do wgrep-save-all-buffers and all my changes are saved!
+
+* Protractor testing
+** First start the webdriver
+   export PATH=/afs/btv/data/alacriteCloud/webSupport/node/node-v0.10.30/bin:$PATH
+   webdriver-manager start
+** Then you can run protractor
+   export PATH=/afs/btv/data/alacriteCloud/webSupport/node/node-v0.10.30/bin:$PATH
+   procractor ./conf.js
+** conf.js
+   This is a configuration file to drive protractor
+   It contains info on the server name. 
+   The name of the specs (code for the actual tests)
+   The selected browsers to actually run
+   More info on this file can be had at
+    https://github.com/angular/protractor/blob/master/docs/referenceConf.js
+    http://angular.github.io/protractor/#/browser-setup
+** specs.js
+   This file ontains the actual tests 
+   http://angular.github.io/protractor/#/tutorial
+
+* alacrite cloud v1
+** getting info over
+  Use tar and gzip then sftp it to the particular machine
+** vnc
+   vncviewer -via edauser@169.53.131.196 localhost:1
+   vncviewer -via edauser@169.53.131.201 localhost:1
+** ssh for executing a remote command
+*** On alacriteclient
+   ssh 169.53.131.201 "sh -c 'nohup /home/edauser/runIt > /dev/null 2>&1 &'"
+*** on alacriteServer
+   ssh 169.53.131.196 "sh -c 'nohup /home/edauser/runIt > /dev/null 2>&1 &'"
+
+* Machines to return
+** MT-M6217-1NU A-PRO
+*** SN KQZ6934   Merlin
+*** SN KQZ6934   jfpaul
+** MT 6866-274  Z-PRO
+*** SN 23FF192
+* SSL
+** to determine SSL use
+   openssl s_client -ssl3 -connect edautil1.fishkill.ibm.com:8100
+* Crontab
+** Pok crontab machines
+   cronjob1.pok.ibm.com 	AIX 7.1
+   cronjob2.pok.ibm.com 	AIX.7.1
+* Convert msgcat 
+  /afs/eda/prod/tools/14.1/bin/catcomp  xxx_msg.msgcat
+* Check ports used
+  netstat -lnptu
+* Alacrite V2 commands
+** prove -r -v */t/testNetlist.t :: --uri http://gridl100.pok.ibm.com:5984 --db my_test 
+** couchapp push /afs/apd.pok.ibm.com/u/jengel/alacrite/code/alacriteCloud/web/couchApp/alacrite_config_db http://alacrite:Glat0riaN@gridl100.pok.ibm.com:5984/my_test
+** /afs/apd.pok.ibm.com/u/jengel/alacrite/code/alacriteCloud/utils/couchDB/primeCouchDb -server http://alacrite:Glat0riaN@gridl100.pok.ibm.com:5984 -database my_test -jsonDir /afs/apd.pok.ibm.com/u/jengel/alacrite/code/alacriteCloud/utils/initialCouchDbDocs/json -couchAppDir /afs/apd.pok.ibm.com/u/jengel/alacrite/code/alacriteCloud/web/couchApp/alacrite_config_db
+* AppScan
+** Do the following on the source
+   You run it like so:
+   $ /afs/eda/u/fwalling/public/preproc/cc_preproc_trace -b /afs/eda/u/fwalling/public/preproc/bin -o <your_output_dir> make <your make flags>
+   
+   Be sure you are doing a clean build (it will only trace files that get compiled). You can pass whatever normal make flags you usually use (or if you don't use make, you can use something else).
+ 
+   It works by overriding gcc/g++ in your PATH, so you need two things:
+   
+  1) You need your current PATH to include the gcc/g++ you want to use
+  2) You need to have your build call gcc/g++ using the PATH
+     
+  For example, I've had to do this for some of my projects:
+  
+  $ export PATH=/afs/eda/prod/tools/14.1/bin:$PATH
+  $ /afs/eda/u/fwalling/public/preproc/cc_preproc_trace -b /afs/eda/u/fwalling/public/preproc/bin -o <your_output_dir> make CC=gcc CXX=g++
+  
+  When the build is done, the "your_output_dir" you specified will have a mirror of the files compiled, but they will be preprocessed and ready to tar up and scan.
+
+
+** In the appscan tool, for each C/C++ file we need to make a definition.
+   I did this with a script and gave it to Rick Chapman.
+
+
+http://pogopixels.com/blog/dumping-a-svn-repository-from-a-remote-url/
+
+* COO
+** location
+   /afs/apd/projects/alacrite/alacriteCloud/COOpackAndLic
+
+* vBox
+Re: Anyone Virtualboxing Fedora?
+Ignore my VPN complaint... VBoxManage modifyvm "Fedora" --natdnshostresolver1 on fixed that.
+https://w3-connections.ibm.com/wikis/home?lang=en-us#!/wiki/Wb11b2804ab3b_4f4f_b25e_381f20766659/page/VirtualBox%20and%20RHEL%20on%20IBM%20Mac
+
+https://w3-connections.ibm.com/forums/html/topic?id=1d835563-eefa-4a0d-84b8-e930d18d99a8&ps=25
+
+* node
+** Location
+   /afs/apd/projects/alacrite/alacriteCloud/webSupport/couchDB2/node-v6.9.1-linux-x64/bin
+** Path
+   export PATH=/afs/apd/projects/alacrite/alacriteCloud/webSupport/couchDB2/node-v6.9.1-linux-x64/bin:$PATH
+** Node Env var
+   export NODE_PATH=/afs/apd/projects/alacrite/alacriteCloud/webSupport/couchDB2/node-v6.9.1-linux-x64/lib/node_modules
+   Do this export. If you don't then you will need to load a lot of the node modules locally. Stupid I know but that
+    is the way node works.
+* bower
+** Intro
+   Is installed under node. It is a tool to grab dependencies from git or a url.
+   Main use is package management
+** Setup
+   Make sure you export the NODE_PATH to the location of the global node_modules.
+   If you do not then you will need to install the modules locally.
+   All packages will be installed in bower_components directory based off off the
+    directory you are running in. Same location as the bower.json file.
+** Commands
+*** bower init
+     Create the bower.json file. Do not do this under an emacs shell will fail.
+     You may then edit the bower.json file with your depencies.
+*** bower install
+     Will install all the packages specified in your bower.json file.
+*** bower list 
+     Will list all the install packages
+*** bower list --path
+     Will show the path location of the installed packages
+*** bower uninstall <packageName>
+
+* gulp
+** Intro
+   Gulp is a build system that can improve how you develop websites by automating common tasks,
+   such as compiling preprocessed CSS, minifying JavaScript and reloading the browser. 
+** Useful gulp packages
+   gulp
+   gulp-bower2
+   gulp-download
+   gulp-plumber
+   gulp-rename
+   gulp-uglify
+   browser-sync
+   del
+** Running tool
+   gulp --gulpfile <someJsonFile>
+
+* Jenkins
+** To start up jenkins
+   /afs/apd/u/alacchar/launchJenkins1.6
+   Then enter the password.
+** To shutdown jenkins
+   /afs/apd/u/alacchar/killJenkins
+   Then enter the password
+
+** Config theme  /userContent/style.css
+** my api token
+   11e537a4f514a26cbc1add2a6d60500dac
+* GIT
+** convert svn to git
+  create the svn.commiters file do
+  cd to a working copy of you svn directory
+  svn log -q | awk -F '|' '/^r/ {sub("^ ", "", $2); sub(" $", "", $2); print $2" = "$2" <"$2">"}' | sort -u > svn.commiters
+  Edit the file and add a nice version of the users name.
+   Like    engelj@us.ibm.com = James J Engel <engelj@us.ibm.com>
+
+
+  cd <some working directory>
+  mkdir temp
+  git svn clone https://greenjiffy.fishkill.ibm.com/eda/tk/alacriteCloud --no-metadata -A gitInfo/svn.commiters --stdlayout ./temp
+  
+  cd temp
+  git log    <You should see you history>
+  cd ..
+  
+  git init --bare ./new-bare.git
+  cd new-bare.git/
+  git symbolic-ref HEAD refs/heads/trunk
+  
+  cd ../temp
+  git remote add bare ../new-bare.git/
+  git config remote.bare.push 'refs/remotes/*:refs/heads/*'
+  git push bare
+  
+  cd ../new-bare.git/
+  under refs/heads/origin/* move all directories to refs/heads and delete origin
+  git branch -m trunk master
+  
+  git show-branch you should see your branches
+  
+  Now you can clone from "bare" to a working copy.
+  git clone new-bare.git alacriteCloud
+  
+  # Now remove any files graeater than 50M
+  cd alacriteClone
+  git filter-branch --force --index-filter 'git rm --cached --ignore-unmatch perl/Engines/netlistSplitter/sampleNetlists/ALL.sp' --prune-empty --tag-name-filter cat -- --all
+  git filter-branch --force --index-filter 'git rm --cached --ignore-unmatch perl/Engines/netlistSplitter/sampleNetlists/s10_c14_primitives.sp' --prune-empty --tag-name-filter cat -- --all
+  git filter-branch --force --index-filter 'git rm --cached --ignore-unmatch perl/Engines/netlistSplitter/sampleNetlists/s10_c14_primitives1.sp' --prune-empty --tag-name-filter cat -- --all
+  git filter-branch --force --index-filter 'git rm --cached --ignore-unmatch perl/Engines/netlistSplitter/sampleNetlists/s10_c14_primitives2.sp' --prune-empty --tag-name-filter cat -- --all
+  
+  git remote add origin git@github.ibm.com:engelj/eda-alacrite-test1.git
+  git push -u origin master
+** svn.commiters
+  ajaykrishnan@in.ibm.com = Ajay Krishnan Gopalakrishnan <ajaykrishnan@in.ibm.com>
+  junkumar@in.ibm.com = Manoj Juturu <junkumar@in.ibm.com>
+  ravikak1@in.ibm.com = Ravikanth K <ravikak1@in.ibm.com>
+  suriyatskariah@in.ibm.com = Suriya Skariah <suriyatskariah@in.ibm.com>
+  alacrite@us.ibm.com = alacrite <alacrite@us.ibm.com>
+  cwgraf@us.ibm.com = Collin Graf <cwgraf@us.ibm.com>
+  davbwhit@us.ibm.com = Dave B White <davbwhit@us.ibm.com>
+  engelj@us.ibm.com = James J Engel <engelj@us.ibm.com>
+  jsundqui@us.ibm.com = James E Sundquist <jsundqui@us.ibm.com>
+  jwcolem@us.ibm.com = Jody W Coleman <jwcolem@us.ibm.com>
+** .gitignore
+  Makefile*
+  .lib*
+  .bin*
+  .dll*
+  lib
+  lib-64
+  bin
+  bin-64
+  dll
+  dll-64
+  build_warnings.*
+  build_errors.*
+  nutscript
+  testcases
+  include
+  html
+  compile.*.log
+  Arch-*
+  *.~
+
+** GIT commands
+*** svn status
+    git fetch
+    git log --name-status ..origin/master
+     or
+    git log --oneline master..origin/master
+*** svn commit 
+    git commit -m "some comment"    <only commit to local repo>
+    git push -u origin master 
+*** svn update
+    git fetch
+      git fetch origin
+    git merge
+      or
+    git pull 
+*** git remote
+    Look at remote connections
+    git remote -v
+*** branches
+    git branch -v   show all branches and which is current
+*** Move to a different commit
+    git reset --hard <commit number>
+*** Find local commits not in github
+    git cherry -v origin/master master
+** magit
+*** kill change and remove it from git control. Use K
+*** revert changes to file but keep it under version control Use k
+** Personal access token github
+   dff41bb3e49ec5fdac56810880cd3d478d9edc56
+
+f304cd388f1f37e5f6982ee9c927e167817ec5b2
+
+New token
+f2c6fbfc970bd8c7ac2ebbb9a675ccaff84dc86c
+** Personal access token zenhub
+   How to get key https://zenhub.innovate.ibm.com/setup/howto/api   must use Chrome browser
+   4e81e22172e3b456df9fc213250481c8ddb40f20878a6d5f6d13f333b61045e6dfc93cca8e5bb02a
+
+new token because of scanner
+How to get key https://zenhub.innovate.ibm.com/app/dashboard/tokens
+84a5e5eeb8e6d4b832572db82d366418de5afc4ae862850886ddf0cd73f5f63c706e5b7479ca2d62
+
+** github
+*** api access
+**** create issue
+     curl -X POST 'https://github.ibm.com/api/v3/repos/EDA/alacriteCloudTrial/issues' -H 'authorization: Basic dff41bb3e49ec5fdac56810880cd3d478d9edc56' -H 'cache-control: no-cache' -d '{ "title": "Found a bug", "body": "Im having a problem with this.", "assignees": [ "engelj" ], "milestone": 1, "labels": [ "Alacrite Gui" ]}'
+**** Add comment
+     curl -X POST 'https://github.ibm.com/api/v3/repos/EDA/alacriteCloudTrial/issues/1/comments' -H 'authorization: Basic dff41bb3e49ec5fdac56810880cd3d478d9edc56' -H 'cache-control: no-cache' -d '{ "body": "Some new comment."}'
+**** get specific comment
+     curl -X GET 'https://github.ibm.com/api/v3/repos/EDA/alacriteCloud/issues/comments/4320922' -H 'authorization: Basic dff41bb3e49ec5fdac56810880cd3d478d9edc56' -H 'cache-control: no-cache'
+**** get specific issue
+     curl -X GET 'https://github.ibm.com/api/v3/repos/EDA/alacriteCloudTrial/issues/4' -H 'authorization: Basic dff41bb3e49ec5fdac56810880cd3d478d9edc56' -H 'cache-control: no-cache'
+**** get all comments in issue
+     curl -X GET 'https://github.ibm.com/api/v3/repos/EDA/alacriteCloud/issues/1/comments' -H 'authorization: Basic dff41bb3e49ec5fdac56810880cd3d478d9edc56' -H 'cache-control: no-cache'
+**** get all issues
+     curl -X GET 'https://github.ibm.com/api/v3/repos/EDA/alacriteCloudTrial/issues' -H 'authorization: Basic f2c6fbfc970bd8c7ac2ebbb9a675ccaff84dc86c' -H 'cache-control: no-cache'
+**** get all issues so many per page
+     curl -X GET 'https://github.ibm.com/api/v3/repos/EDA/alacriteCloudTrial/issues?per_page=3' -H 'authorization: Basic dff41bb3e49ec5fdac56810880cd3d478d9edc56' -H 'cache-control: no-cache'
+**** get repo id
+     curl -X GET 'https://github.ibm.com/api/v3/repos/EDA/alacriteCloudTrial' -H 'authorization: Basic dff41bb3e49ec5fdac56810880cd3d478d9edc56' -H 'cache-control: no-cache'
+**** get issues matching label
+     curl -X GET 'https://github.ibm.com/api/v3/repos/EDA/alacriteCloudTrial/issues?labels=Alacrite%20Gui' -H 'authorization: Basic dff41bb3e49ec5fdac56810880cd3d478d9edc56' -H 'cache-control: no-cache'
+**** get all labels
+     curl -X GET 'https://github.ibm.com/api/v3/repos/EDA/alacriteCloudTrial/labels' -H 'authorization: Basic dff41bb3e49ec5fdac56810880cd3d478d9edc56' -H 'cache-control: no-cache'
+**** get issues for a particular milestone and person
+     curl -X GET 'https://github.ibm.com/api/v3/repos/EDA/alacriteCloudTrial/issues?milestone=2&assignee=jsundqui' -H 'authorization: Basic dff41bb3e49ec5fdac56810880cd3d478d9edc56' -H 'cache-control: no-cache'
+**** get specific milestone
+     curl -X GET 'https://github.ibm.com/api/v3/repos/EDA/alacriteCloudTrial/issues?milestone=2' -H 'authorization: Basic dff41bb3e49ec5fdac56810880cd3d478d9edc56' -H 'cache-control: no-cache'
+**** get all milestomes
+     curl -X GET 'https://github.ibm.com/api/v3/repos/EDA/alacriteCloudTrial/milestones' -H 'authorization: Basic dff41bb3e49ec5fdac56810880cd3d478d9edc56' -H 'cache-control: no-cache'
+** zenhub
+*** api access
+**** specific issue
+     curl -k -X GET 'https://zenhub.innovate.ibm.com/p1/repositories/204642/issues/2' -H 'X-Authentication-Token: 4e81e22172e3b456df9fc213250481c8ddb40f20878a6d5f6d13f333b61045e6dfc93cca8e5bb02a'
+**** epics
+     curl -k -X GET 'https://zenhub.innovate.ibm.com/p1/repositories/204642/epics' -H 'X-Authentication-Token: 4e81e22172e3b456df9fc213250481c8ddb40f20878a6d5f6d13f333b61045e6dfc93cca8e5bb02a'
+**** boards
+     curl -k -X GET 'https://zenhub.innovate.ibm.com/p1/repositories/204642/board' -H 'X-Authentication-Token: 4e81e22172e3b456df9fc213250481c8ddb40f20878a6d5f6d13f333b61045e6dfc93cca8e5bb02a'
+**** convert issue to epic
+     curl -k -X POST 'https://zenhub.innovate.ibm.com/p1/repositories/204642/issues/4/convert_to_epic' -H 'X-Authentication-Token: 4e81e22172e3b456df9fc213250481c8ddb40f20878a6d5f6d13f333b61045e6dfc93cca8e5bb02a'
+**** convert epic back to issue 
+     curl -k -X POST 'https://zenhub.innovate.ibm.com/p1/repositories/204642/epics/4/convert_to_issue' -H 'X-Authentication-Token: 4e81e22172e3b456df9fc213250481c8ddb40f20878a6d5f6d13f333b61045e6dfc93cca8e5bb02a'
+**** move issues to/from eppic
+     curl -k -X POST 'https://zenhub.innovate.ibm.com/p1/repositories/204642/epics/4/update_issues' -H 'X-Authentication-Token: 4e81e22172e3b456df9fc213250481c8ddb40f20878a6d5f6d13f333b61045e6dfc93cca8e5bb02a' -H 'Content-Type: application/json' -d '{ "remove_issues": [], "add_issues": [ { "repo_id": 204642, "issue_number": 1} ]}'
+* TODO
+  1 -add support for measruremtn setup on Config GUI
+  2- add support for  "s_maxCapSamples_id"  on OpCond GUI ( forgot to add this one on Frisay)
+  3 -Create temp support for VIM
+  4 - create meas and limits DB if needed
+
+
+http://mur.al/m1Qxnq56
+
+cd /afs/apd.pok.ibm.com/u/jengel/alacrite/cqIssues/demo
+/afs/apd/u/jengel/alacrite/code/alacriteCloud/utils/bin/runAlacrite -cdbLoc . -configDbName demo_config -firefox -withFuton -initialConfig initialCouchDbDocsRegression -noRefreshConfig -runRegressions web -testType INT -createRegression -stop
+* V18 stuff
+** font location
+   https://1.www.s81c.com/common/fonts
+
+bsub -P EDA -G eda_verif -q imagetest -M 10 -n 1 -R "select[osname==linux && cputype==power8]"  -W 168:0 -Is ksh  
+
+
+IN9538586
+* R stuff
+** Lang info
+*** Create
+*** Sizes
+    nrow (dataFrame)   number of rows
+    ncol (dataFrame)   number of cols
+    length (dataFrame)   number of cols
+    names (dataFrame)   names of the columns
+** Useful web sites
+   http://zoonek2.free.fr/UNIX/48_R/02.html
+   https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/00Index.html
+   https://csgillespie.github.io/efficientR/index.html#building-the-book   
+** compile and install packages
+   http://kbroman.org/pkg_primer/pages/build.html
+** Using a different library
+*** to show paths for libraries
+    .libPaths()
+*** to set a new library path
+    .libPaths( "full path to where you libraries will exist")  Must be in quotes and MUST exist.
+** R options
+   https://stat.ethz.ch/R-manual/R-devel/library/base/html/options.html
+** Packages
+*** Creation info
+    https://cran.r-project.org/doc/manuals/r-release/R-exts.html
+    https://cran.r-project.org/doc/contrib/Leisch-CreatingPackages.pdf
+    http://r-pkgs.had.co.nz/
+*** Create skeleton
+    package.skeleton(name = "anRpackage", list,
+    environment = .GlobalEnv,
+    path = ".", force = FALSE,
+    code_files = character(), encoding = "unknown")
+      or
+    devtools::create("path/to/package/pkgname")
+*** Install
+    install.packages("packageName")
+        or
+    R CMD INSTALL ./sofa_0.2.0.tar.gz
+    install.packages("/myPath/", type = "source", repos=NULL)   from source
+    install.packages("/afs/apd.pok.ibm.com/u/jengel/Rstuff/nabel.fromTar", type = "source", repos=NULL, lib = "/afs/apd.pok.ibm.com/u/jengel/Rstuff/libraryFromSource")
+    R CMD INSTALL nabel_1.1.tar.gz --library=/afs/apd.pok.ibm.com/u/jengel/Rstuff/library  to different library location
+*** Remove
+    remove.packages(pkgs, lib)
+*** Check install packages and versions
+    ip <- as.data.frame(installed.packages()[,c(1,3:4)])
+    rownames(ip) <- NULL
+    ip <- ip[is.na(ip$Priority),1:2,drop=FALSE]
+    print(ip, row.names=FALSE)
+      Also
+      library()
+*** Building a package with documentation
+    R CMD build sofa     in the directory where sofa exits
+**** To build your full package follow these steps.
+     1. Create a top level R file for your package. Name it something like <packageName>-package.R
+     2. Create all your documentation in your R source files in the R directory.
+     3. In the vignettes directory create a top level vignette for your package. It is in markdown.
+     4. After you create your documentation enter the R interpreter in the package directory
+	Then execute devtools::document()   This will create the xxx.Rd files in the man directory.
+     5. Then execute devtools::build_vignettes()  This will build the documents in .../inst/doc this will get installed
+     6. Next build your tar file use devtools::build()
+     7. install.packages(".", type = "source", repos=NULL, lib = "/afs/apd/u/jengel/alacrite/code1/alacriteCloudGit/R/internal/testInstall")
+     8. pack <- "name_of_your_package"
+        path <- find.package(pack)
+        system(paste(shQuote(file.path(R.home("bin"), "R")), "CMD", "Rd2pdf", shQuote(path)))
+
+**** Top level package file skeleton
+#+BEGIN_SRC R
+#' @title ibmInterp
+#'
+#' @description  A package for interpolation and extrapolation.
+#'
+#' @section About ibmInterp:
+#' \pkg{ibmInterp} provides an set of function to all for the interpolationinterface to the NoSQL database CouchDB
+#' and extrapolation of numeric data in either 1, 2, or 3 dimension
+#' #'
+#' @section Input data type:
+#' Input data is in the form of 3 vectors. 
+#' #'
+#' #' @importFrom jsonlite fromJSON toJSON
+#'
+#' 
+#' @name ibmInterp-package
+#' @aliases ibmInterp
+#' @docType package
+#' @title Ibm interpolation package
+#' @author Jim Engel \email{engelj@us.ibm.com}
+#' @keywords package
+NULL
+#+END_SRC
+**** Function documentation on R files skeleton
+#+BEGIN_SRC R
+#' interpolate in 1 dimension.
+#'
+#' @export
+#' @param p0 point0
+#' @param p1 point1
+#' @param val0 value for point1
+#' @param val1 value for point2
+#' @param targetP target point to find value for
+#' @examples \dontrun{
+#' ( x <- interp1d( p0, p1, val0, val1, i ))
+#'
+#' 
+#' ## see if its there now
+#' print( x )
+#' }
+#+END_SRC
+** Hash
+*** hash package on cran
+*** usage/examples
+    
+    library(hash)              load hash libaray
+    myHash <- hash()           create a new hash
+    myHash                     dump content of hash
+    myHash$a <- 1000           set hash with key a to 1000
+    myHash                     dump content of hash
+    keys( myHash )             dump keys of hash
+    myHash$someText <- 10      create another key
+    keys( myHash )             dump keys
+    length( myHash )           dump kength
+    values( myHash )           dump all values
+    has.key( "a", myHash)      is TRUE    check if hash has key
+    has.key( "b", myHash)      is FALSE   check if hash has key
+    myHash$a <- 20000          overwrite existing key
+*** Performance
+    https://blog.dominodatalab.com/a-quick-benchmark-of-hashtable-implementations-in-r/
+    In R, if you need to store key value pairs, and your keys are always going to be valid R symbols, 
+    the built in new.env(hash=TRUE) is the clear winner! If you are going to need complex keys,
+    the ht package provides somewhat similar performance to hash, with the added ability to use complex keys.
+** Cheat sheets
+   https://www.rstudio.com/resources/cheatsheets/
+** engineering format
+   from docxtools
+   format_engr()
+** opencpu
+*** Info
+    https://www.opencpu.org/posts/getting-started-with-opencpu.js/
+*** locations
+    Loading config from /afs/apd.pok.ibm.com/projects/alacrite/alacriteCloud/webSupport/R/R-3.4.0/library/opencpu/config/defaults.conf
+    Loading config from /afs/apd.pok.ibm.com/u/jengel/.local/share/opencpu/user.conf
+** add widgets for R can be used by shiny
+   http://www.htmlwidgets.org/index.html
+** Pitfalls
+   http://www.burns-stat.com/pages/Tutor/R_inferno.pdf
+
+
+TAT
+real	11m21.72s
+user	7m55.16s
+sys	0m19.49s
+** JS packages
+   https://stackoverflow.com/questions/32977877/using-angularjs-scope-within-opencpu
+** env var for startup
+   export R_LIBS_USER=/afs/apd.pok.ibm.com/u/jengel/Rstuff/library
+** opencpu.js info
+   http://biba.etsii.upm.es/web/tiki-view_blog_post.php?postId=54
+   https://www.opencpu.org/jslib.html
+
+aaa <- readRDS( "~/Downloads/sim_timing.rds")
+bbb <- readRDS( "~/Downloads/sim_power.rds")
+options( width = 256 )
+options( max.print = 200000)
+* LUCI
+** general info web page
+   https://w3-connections.ibm.com/wikis/home?lang=en-us#!/wiki/LUCI%20-%20ID%2C%20Password%2C%20and%20Volume%20Management%20Tool%20-%20Documentation/page/Command%20Line%20Help
+** query your volumes
+   /afs/apd.pok.ibm.com/project/luci/bin/luci_cmd -o query -c apd -a AFS -u jengel
+** create a volume
+   /afs/apd.pok.ibm.com/project/luci/bin/luci_cmd -o create -u jengel -c apd -v luci.edaSuppTstLrg -q 12g -m /afs/apd.pok.ibm.com/projects/alacrite/alacriteCloud/edaSupport/testLarge -e -w 60 -R
+* xargs
+  cat ~/JobList | xargs -I {} /afs/apd/u/jengel/alacrite/code1/alacriteCloudGit1/utils/couchDB/changeJobState -server "http://alacrite:Glat0riaN@gridl056.pok.ibm.com:5986" -database "regression_job_config" -newStatus "created" -jobName {}
+* scaleLibs
+  /afs/apd/u/jengel/alacrite/code/scaleLib
+  /afs/apd/u/jengel/alacrite/code/ravi
+* testcase information
+  https://www.npmjs.com/package/protractor-flake
+  http://docs.busterjs.org/en/latest/#
+
+Your redemption request processed successfully. Your order number is: 56468830. Please make a note so you can check your order status later if needed. Please allow 2-3 weeks for your order to arrive. 
+* https://w3id.sso.ibm.com/auth/sps/samlidp2/saml20/logininitial?RequestBinding=HTTPPost&PartnerId=https://apps.na.collabserv.com/sps/sp/saml/v2_0&NameIdFormat=email&Target=https://apps.na.collabserv.com

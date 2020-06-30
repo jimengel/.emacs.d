@@ -6,8 +6,8 @@ bottom.
 
 * Set up package system
 
-  Emacs 24 ships with a package system, which is great.
-  Let's enable it:
+ Emacs 24 ships with a package system, which is great.
+ let's enable it:
 
 #+begin_src emacs-lisp
 (package-initialize)
@@ -16,13 +16,22 @@ bottom.
    and add some more repositories:
 
 #+begin_src emacs-lisp
-(add-to-list 'package-archives
-             '("marmalade" . "http://marmalade-repo.org/packages/"))
+(add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/"))
+(add-to-list 'package-archives '("melpa"     . "http://melpa.milkbox.net/packages/"))
+(add-to-list 'package-archives '("SC"        . "http://joseito.republika.pl/sunrise-commander/") t)
+(add-to-list 'package-archives '("user42"    . "http://download.tuxfamily.org/user42/elpa/packages/") t)
 
-(add-to-list 'package-archives
-             '("melpa"     . "http://melpa.milkbox.net/packages/"))
 #+end_src
+* Set up loads and load-path
+#+BEGIN_SRC emacs-lisp
+;;(load-file "~/.emacs.d/svnRepo/svnRepo.el")
+;;(load-file "~/.emacs.d/rtc/rtc.el")
+;;(load-file "~/.emacs.d/evernote/evernote-mode.el")
+(setq load-path
+      (append load-path
+             '("~/.emacs.d/elpa/adoc-extension")))
 
+#+END_SRC
 * Set up the theme
 ** Emacs solarize theme
 
@@ -36,8 +45,8 @@ bottom.
    Unless, of course, it's already running.
 
 #+begin_src emacs-lisp
-(require 'server)
-(unless (server-running-p) (server-start))
+;;(require 'server)
+;;(unless (server-running-p) (server-start))
 #+end_src
 
 ** Web-mode
@@ -88,21 +97,854 @@ Make yasnippet play nice with org-mode
                         (define-key yas/keymap [tab] 'yas/next-field)))
 #+end_src
 
+** AutoComplete
+#+BEGIN_SRC emacs-lisp
+
+;;(global-auto-complete-mode t)
+; Start auto-completion after 2 characters of a word
+(setq ac-auto-start 2)
+; case sensitivity is important when finding matches
+(setq ac-ignore-case nil)
+
+#+END_SRC
+** My exit from emacs
+#+BEGIN_SRC emacs-lisp
+(defun my-exit-from-emacs ()
+  (interactive)
+  (if (yes-or-no-p "Are you sure you want to exit ")
+      (save-buffers-kill-emacs)))
+
+(global-set-key "\C-x\C-c" 'my-exit-from-emacs)
+#+END_SRC
+** Epoch
+#+BEGIN_SRC emacs-lisp
+;; 
+;; Customize EMACS/EPOCH window
+;;
+;;
+
+;; Running-epoch is a better name for the variable that tells us is we are
+;; in epoch or not
+
+(defvar running-epoch (boundp 'epoch::version))
+
+(if running-epoch (setq term-file-prefix nil)) ; don't load xterm stuff!
+(setq target-buffer (get-buffer "*scratch*"))
+
+(put 'eval-expression 'disabled nil)
+
+#+END_SRC
+** auto save
+#+BEGIN_SRC emacs-lisp 
+(setq auto-save-default 0) ;; Auto save eat shit
+(setq auto-save-interval 100000)
+#+END_SRC
+** ido mode
+#+BEGIN_SRC emacs-list
+(setq ido-mode t)
+#+END_SRC
+* Settings
+** parens
+#+begin_src emacs-lisp
+(show-paren-mode 1)
+#+end_src
+** large file warnings
+#+begin_src emacs-lisp
+(setq large-file-warning-threshold nil)
+#+end_src
+** scroll on left
+#+BEGIN_SRC emacs-lisp
+(put 'scroll-left 'disabled nil)
+#+END_SRC
+** misc
+#+BEGIN_SRC emacs-lisp 
+(setq Info-enable-edit t)
+;; Enable recursive commands in the minibuffer
+(setq enable-recursive-minibuffers t)
+
+;; Enable numbered backups
+(setq version-control nil)
+#+END_SRC
+* Languages
+** Erlang
+*** setup
+#+BEGIN_SRC emacs-lisp 
+
+(setq load-path (cons  "/afs/apd.pok.ibm.com/u/jengel/.emacs.d/elpa/erlang"
+		       load-path))
+(setq erlang-root-dir "/afs/apd/projects/alacrite/alacriteCloud/webSupport/erlang/otp_src_17.1")
+(setq exec-path (cons "/afs/apd/projects/alacrite/alacriteCloud/webSupport/erlang/otp_src_17.1/bin" exec-path))
+;;(require 'erlang-start)
+
+#+END_SRC
+** javaScript
+*** jslint
+#+BEGIN_SRC emacs-lisp
+
+;;(add-to-list 'load-path "~/.emacs.d/lintnode")
+;;(require 'flymake-jslint)
+;;(add-hook 'js-mode-hook 'flymake-jslint-load)
+;; Make sure we can find the lintnode executable
+;;(setq lintnode-location "~/.emacs.d/lintnode")
+;; JSLint can be... opinionated
+;;(setq lintnode-jslint-excludes (list 'nomen 'undef 'plusplus 'onevar 'white))
+;; Start the server when we first open a js file and start checking
+;;(add-hook 'js-mode-hook
+;;          (lambda ()
+;;            (lintnode-hook)))
+
+
+;;(require 'flymake-jslint)
+(add-hook 'js-mode-hook 'flymake-jslint-load)
+
+#+END_SRC
+** C
+#+BEGIN_SRC emacs-lisp
+;; Sets up the indent level for C mode
+(setq c-auto-newline '0)
+(setq c-indent-level '0)
+(setq c-brace-imaginary-offset '4)
+(setq c-continued-statement-offset '4)
+(setq c-brace-offset '0)
+(setq c-label-offset '0)
+(setq c-argdecl-indent '0)
+#+END_SRC
+** GDB
+#+BEGIN_SRC emacs-lisp
+;; gdb stuff
+(setq gdb-many-windows 1)	       
+;;(setq gdb-command-name "/usr/local/bin/gdb")
+#+END_SRC
+* Setup modeline
+** Time
+#+begin_src emacs-lisp
+(display-time)
+#+end_src
+** Line number mode
+
 * Keybindings
-** Misc custom keybindings
-I try to just use custom keybindings as far as possible, so I won't be
-completely lost when I have to sit down in a non-/differently
-configured Emacs session. Some personal convenience keybindings,
-however:
+** Window sizing
+
+#+begin_src emacs-lisp
+(define-key  global-map [C-up] 'enlarge-window)
+(define-key  global-map [C-down] 'shrink-window)
+(define-key  global-map [C-left] 'enlarge-window-horizontally)
+(define-key  global-map [C-right] 'shrink-window-horizontally)
+#+end_src
+
+(setq-default inhibit-eol-conversion t)
 
 
+** Because I always type it wrong and never us list dired
 
+#+begin_src emacs-lisp
+(global-set-key "\C-x\C-d" 'dired)
+#+end_src
+
+** Top/bottom of window and buffer
+
+#+begin_src emacs-lisp
+
+(defun beg-window ()
+  (interactive)
+  (move-to-window-line 0))
+(defun end-window ()
+  (interactive)
+  (move-to-window-line -1))
+
+(define-key  global-map [C-home] 'beg-window)
+(define-key  global-map [C-end] 'end-window)
+(define-key  global-map [home] 'beginning-of-buffer)
+(define-key  global-map [end] 'end-of-buffer)
+;;(global-set-key [f1] 'other-window)
+(global-set-key [f1] 'window-number-switch)
+
+(global-set-key [f10] 'scroll-left)
+(global-set-key [S-f10] 'scroll-right)
+(global-set-key [f11] 'toggle-truncate-lines)
+
+(global-set-key [C-S-up] 'text-scale-increase)
+(global-set-key [C-S-down] 'text-scale-decrease)
+
+
+#+end_src
+
+** Scrolling
+#+begin_src emacs-lisp
+
+(defun up10 ()
+  (interactive)
+  (previous-line 10))
+(defun dn10 ()
+  (interactive)
+  (next-line 10))
+
+(define-key  global-map [S-up] 'up10)
+(define-key  global-map [S-down] 'dn10)
+
+#+end_src
+
+** recenter current line
+#+begin_src emacs-lisp
+(global-set-key (kbd "C-S-l") 'recenter-top-bottom)
+#+end_src
+** Buffer swapping
 #+begin_src emacs-lisp
 (global-set-key [S-f1] 'switch-to-next-buffer)
 (global-set-key [C-f1] 'switch-to-previous-buffer)
+#+end_src
+** Duplicate current line
+#+begin_src emacs-lisp
+(fset 'dup-line
+   [1 11 25 return 25])
+(global-set-key [f2] 'dup-line)
+#+end_src
+
+** Dired keys
+#+begin_src emacs-lisp
+;;(define-key dired-mode-map (kbd "ESC <delete>") 'dired-unmark-all-marks)
+(define-key dired-mode-map [S-up] 'dired-up-directory)
+
+#+end_src
+
+** Misc custom keybindings
+
+#+begin_src emacs-lisp
+
+(defun kill-buffer-no-query (&optional buffer)
+  "Kill BUFFER without querying."
+  (interactive)
+  (unless buffer (setq buffer  (current-buffer)))
+  (let ((kill-buffer-query-functions ())
+        (buffer-save-without-query   t)
+        (buffer-modified-p           (buffer-modified-p)))
+    (unwind-protect
+        (progn (set-buffer-modified-p nil)
+               (kill-buffer buffer))
+      (when (get-buffer buffer)
+        (set-buffer-modified-p buffer-modified-p)))))
+
 (global-set-key [\e c] 'copy-region-as-kill)
 
 (fset 'kill-buffer-noprompt
    [24 107 return])
-(global-set-key [f3] 'kill-buffer-noprompt)
+(global-set-key [f3] 'kill-buffer-no-query)
+;;(global-set-key [f3] 'kill-buffer-noprompt)
+;;(global-set-key [f3] 'kill-buffer)
+
+
+(fset 'bring-to-top
+   "\C-u1\C-l")
+(global-set-key [S-mouse-1] 'bring-to-top)
+
+
+(setq transient-mark-mode 1)	       
+(setq scroll-step 1)	       
+;;(setq key-translation-map nil)  ;;causes speedbar in gdb not to work
+
+;;(split-window-vertically) 
+;;(split-window-horizontally) 
+(global-set-key [delete] 'delete-char)
+(substitute-key-definition 'capitalize-word 'copy-region-as-kill esc-map )
+(substitute-key-definition 'back-to-indentation 'kill-region esc-map )
+(define-key  esc-map [C] 'capitalize-word)
+
+(setq message-log-max nil)
+;;(kill-buffer "*Messages*")
+
+
+(fset 'file
+   [24 19 24 107 return])
+(global-set-key [f4] 'file)
+(global-set-key [f5] 'desktop-save)
+
+
+
 #+end_src
+
+** Some mouse binding
+#+BEGIN_SRC emacs-lisp
+(global-set-key [vertical-scroll-bar C-down-mouse-1] 'mldrag-drag-vertical-line)
+(global-set-key [mode-line C-down-mouse-1] 'mouse-drag-mode-line)
+(global-set-key [mode-line C-mouse-3] 'mouse-delete-window)
+(global-set-key [mode-line double-mouse-1] 'bury-buffer)
+(global-set-key [mode-line mouse-1] 'mouse-select-window)
+(global-set-key [mode-line mouse-2] 'mouse-select-window)
+(global-set-key [mode-line mouse-3] 'mouse-select-window)
+(global-set-key [mode-line down-mouse-1] 'mouse-select-window)
+(global-set-key [C-down-mouse-1] 'mouse-buffer-menu)
+(global-set-key [C-down-mouse-3] 'mouse-set-font)
+#+END_SRC
+
+* Keyboard macros
+** Different shortcuts in dired
+*** ~/alacrite/code
+#+BEGIN_SRC emacs-lisp 
+;; ~/alacrite/code
+(fset 'code
+   [?\C-x ?\C-d ?\C-a ?\C-k ?/ ?a ?f ?s ?/ ?a ?p ?d ?/ ?u ?/ ?j ?e ?n ?g ?e ?l ?/ ?a ?l ?a ?c ?r ?i ?t ?e ?/ ?c ?o ?d ?e return])
+#+END_SRC
+
+*** ~/alacrite/code1
+#+BEGIN_SRC emacs-lisp 
+;; ~/alacrite/code
+(fset 'code1
+   [?\C-x ?\C-d ?\C-a ?\C-k ?/ ?a ?f ?s ?/ ?a ?p ?d ?/ ?u ?/ ?j ?e ?n ?g ?e ?l ?/ ?a ?l ?a ?c ?r ?i ?t ?e ?/ ?c ?o ?d ?e ?1 return])
+#+END_SRC
+
+*** ~/alacrite/code2
+#+BEGIN_SRC emacs-lisp 
+;; ~/alacrite/code
+(fset 'code2
+   [?\C-x ?\C-d ?\C-a ?\C-k ?/ ?a ?f ?s ?/ ?a ?p ?d ?/ ?u ?/ ?j ?e ?n ?g ?e ?l ?/ ?a ?l ?a ?c ?r ?i ?t ?e ?/ ?c ?o ?d ?e ?2 return])
+#+END_SRC
+
+*** ~/alacrite/code3
+#+BEGIN_SRC emacs-lisp 
+;; ~/alacrite/code
+(fset 'code3
+   [?\C-x ?\C-d ?\C-a ?\C-k ?/ ?a ?f ?s ?/ ?a ?p ?d ?/ ?u ?/ ?j ?e ?n ?g ?e ?l ?/ ?a ?l ?a ?c ?r ?i ?t ?e ?/ ?c ?o ?d ?e ?3 return])
+#+END_SRC
+
+*** ~/alacrite/code4
+#+BEGIN_SRC emacs-lisp 
+;; ~/alacrite/code
+(fset 'code4
+   [?\C-x ?\C-d ?\C-a ?\C-k ?/ ?a ?f ?s ?/ ?a ?p ?d ?/ ?u ?/ ?j ?e ?n ?g ?e ?l ?/ ?a ?l ?a ?c ?r ?i ?t ?e ?/ ?c ?o ?d ?e ?4 return])
+#+END_SRC
+
+*** ~/alacrite/code5
+#+BEGIN_SRC emacs-lisp 
+;; ~/alacrite/code
+(fset 'code5
+   [?\C-x ?\C-d ?\C-a ?\C-k ?/ ?a ?f ?s ?/ ?a ?p ?d ?/ ?u ?/ ?j ?e ?n ?g ?e ?l ?/ ?a ?l ?a ?c ?r ?i ?t ?e ?/ ?c ?o ?d ?e ?5 return])
+#+END_SRC
+
+*** ~/alacrite/code6
+#+BEGIN_SRC emacs-lisp 
+;; ~/alacrite/code
+(fset 'code6
+   [?\C-x ?\C-d ?\C-a ?\C-k ?/ ?a ?f ?s ?/ ?a ?p ?d ?/ ?u ?/ ?j ?e ?n ?g ?e ?l ?/ ?a ?l ?a ?c ?r ?i ?t ?e ?/ ?c ?o ?d ?e ?6 return])
+#+END_SRC
+
+*** ~/alacrite/code7
+#+BEGIN_SRC emacs-lisp 
+;; ~/alacrite/code
+(fset 'code7
+   [?\C-x ?\C-d ?\C-a ?\C-k ?/ ?a ?f ?s ?/ ?a ?p ?d ?/ ?u ?/ ?j ?e ?n ?g ?e ?l ?/ ?a ?l ?a ?c ?r ?i ?t ?e ?/ ?c ?o ?d ?e ?7 return])
+#+END_SRC
+
+*** ~/alacrite/code/alacriteCloud
+#+BEGIN_SRC emacs-lisp
+;; ~/alacrite/code/alacriteCloud
+(fset 'ac
+   [?\C-x ?\C-d ?\C-a ?\C-k ?/ ?a ?f ?s ?/ ?a ?p ?d ?/ ?u ?/ ?j ?e ?n ?g ?e ?l ?/ ?a ?l ?a ?c ?r ?i ?t ?e ?/ ?c ?o ?d ?e ?/ ?a ?l ?a ?c ?r ?i ?t ?e ?C ?l ?o ?u ?d return])
+#+END_SRC
+
+*** ~/alacrite/cqissues
+#+BEGIN_SRC emacs-lisp
+;; ~/alacrite/cqIssues
+(fset 'cq
+   [?\C-x ?\C-d ?\C-a ?\C-k ?/ ?a ?f ?s ?/ ?a ?p ?d ?/ ?u ?/ ?j ?e ?n ?g ?e ?l ?/ ?a ?l ?a ?c ?r ?i ?t ?e ?/ ?c ?q ?I ?s ?s ?u ?e ?s return])
+#+END_SRC
+
+*** /afs/apd/projects/alacrite/alacriteCloud
+#+BEGIN_SRC emacs-lisp
+;; /afs/apd/projects/alacrite/alacriteCloud
+(fset 'acp
+   [?\C-x ?\C-d ?\C-a ?\C-k ?/ ?a ?f ?s ?/ ?a ?p ?d ?/ ?p ?r ?o ?j ?e ?c ?t ?s ?/ ?a ?l ?a ?c ?r ?i ?t ?e ?/ ?a ?l ?a ?c ?r ?i ?t ?e ?C ?l ?o ?u ?d return])
+#+END_SRC
+
+*** /afs/apd/projects/alacrite/alacriteCloud/development
+#+BEGIN_SRC emacs-lisp
+;; /afs/apd/projects/alacrite/alacriteCloud
+(fset 'dev
+   [?\C-x ?\C-d ?\C-a ?\C-k ?/ ?a ?f ?s ?/ ?a ?p ?d ?/ ?p ?r ?o ?j ?e ?c ?t ?s ?/ ?a ?l ?a ?c ?r ?i ?t ?e ?/ ?d ?e ?v ?e ?l ?o ?p ?m ?e ?n ?t return])
+#+END_SRC
+*** /afs/apd/u/jengel/.emacs.d/elpa
+#+BEGIN_SRC emacs-lisp
+;; /afs/apd/u/jengel/.emacs.d/elpa
+(fset 'elpa
+   [?\C-x ?\C-d ?\C-a ?\C-k ?/ ?a ?f ?s ?/ ?a ?p ?d ?/ ?u ?/ ?j ?e ?n ?g ?e ?l ?/ ?. ?e ?m ?a ?c ?s ?. ?d ?/ ?e ?l ?p ?a return])
+#+END_SRC
+*** /afs/apd/projects/IBMelpa
+#+BEGIN_SRC emacs-lisp
+;; /afs/apd/projects/IBMelpa
+(fset 'ielpa
+   [?\C-x ?\C-d ?\C-a ?\C-k ?/ ?a ?f ?s ?/ ?a ?p ?d ?/ ?p ?r ?o ?j ?e ?c ?t ?s ?/ ?I ?B ?M ?e ?l ?p ?a return])
+#+END_SRC
+* Databases
+** sqlite
+#+BEGIN_SRC emacs-lisp
+(autoload 'sqlite-dump "sqlite-dump" nil t)
+#+END_SRC
+* Frame stuff
+** Rename a frame
+#+begin_src emacs-lisp
+(defun rename-frame (name)
+  (interactive "sNew name of frame: ")
+  (setq frame-title-format name)
+)
+#+end_src
+** Set frame title
+#+begin_src emacs-lisp
+(setq frame-title-format (list "emacs  - " (getenv "LOGNAME") "@" (getenv "HOSTNAME") "  -  " (number-to-string (emacs-pid))))
+#+end_src
+** Get the PID
+#+begin_src emacs-lisp
+(defun display-pid ()
+  (interactive)
+  (message "The PID of emacs is %d" (emacs-pid))
+)
+#+end_src
+** Frame resizing
+#+begin_src emacs-lisp
+(defun set-frame-work ( ) 
+  "Sets the frame size to my work monitor 1500x1035"
+  (interactive)
+  (setq char-height (frame-char-height))
+  (setq char-width  (frame-char-width))
+  (setq lines (/ 1035 char-height))
+  (setq width  (/ 1500 char-width))
+  (set-frame-position (selected-frame) 3 3)
+  ;;( set-frame-height 20)
+  ;;( set-frame-width 40)
+  ( set-frame-size (selected-frame) width lines)
+
+)
+
+(defun set-frame-work-hp ( ) 
+  "Sets the frame size to my hp monitor 1830x1060"
+  (interactive)
+  (setq char-height (frame-char-height))
+  (setq char-width  (frame-char-width))
+  (setq lines (/ 1060 char-height))
+  (setq width  (/ 1830 char-width))
+  (set-frame-position (selected-frame) 3 3)
+  ;;( set-frame-height 20)
+  ;;( set-frame-width 40)
+  ( set-frame-size (selected-frame) width lines)
+
+)
+
+(defun set-frame-mac ( ) 
+  "Sets the frame size to my imac monitor 2400x1300"
+  (interactive)
+  (setq char-height (frame-char-height))
+  (setq char-width  (frame-char-width))
+  (setq lines (/ 1300 char-height))
+  (setq width  (/ 2400 char-width))
+  (set-frame-position (selected-frame) 3 3)
+  ;;( set-frame-height 20)
+  ;;( set-frame-width 40)
+  ( set-frame-size (selected-frame) width lines)
+
+)
+
+
+(global-set-key [f7]   'set-frame-work)
+(global-set-key [S-f7] 'set-frame-mac)
+(global-set-key [C-f7] 'set-frame-work-hp)
+#+end_src
+** Remove stupid menu icons
+#+BEGIN_SRC emacs-lisp
+ ;;(tool-bar-mode nil nil (tool-bar))
+ (tool-bar-mode -1)
+ (menu-bar-mode nil)
+#+END_SRC
+* Fonts
+** Numeriuos font definitions
+#+begin_src emacs-lisp
+(setq x-fixed-font-alist
+   '("Font menu"
+     ("Mine"
+      ("Small-1" "-misc-fixed-*-*-*-*-*-60-*-*-*-*-*-*")
+      ("Small-2" "-misc-fixed-*-*-*-*-*-70-*-*-*-*-*-*")
+      ("Small-3" "-misc-fixed-*-*-*-*-*-80-*-*-*-*-*-*")
+      ("Small-4" "-misc-fixed-*-*-*-*-*-90-*-*-*-*-*-*")
+      ("Small-5" "-misc-fixed-*-*-*-*-*-100-*-*-*-*-*-*")
+      ("Small-6" "-misc-fixed-*-*-*-*-*-110-*-*-*-*-*-*")
+     )
+     ("Misc"
+      ("Default" "-Adobe-Courier-Medium-R-Normal--12-120-75-75-M-70-ISO8859-1")
+      ("fixed" "fixed")
+      ("6x10" "-misc-fixed-medium-r-normal--10-*-*-*-c-60-iso8859-1" "6x10")
+      ("6x12" "-misc-fixed-medium-r-semicondensed--12-*-*-*-c-60-iso8859-1" "6x12")
+      ("6x13" "-misc-fixed-medium-r-semicondensed--13-*-*-*-c-60-iso8859-1" "6x13")
+      ("7x13" "-misc-fixed-medium-r-normal--13-*-*-*-c-70-iso8859-1" "7x13")
+      ("7x14" "-misc-fixed-medium-r-normal--14-*-*-*-c-70-iso8859-1" "7x14")
+      ("8x13" "-misc-fixed-medium-r-normal--13-*-*-*-c-80-iso8859-1" "8x13")
+      ("9x15" "-misc-fixed-medium-r-normal--15-*-*-*-c-90-iso8859-1" "9x15")
+      ("10x20" "-misc-fixed-medium-r-normal--20-*-*-*-c-100-iso8859-1" "10x20")
+      ("11x18" "-misc-fixed-medium-r-normal--18-*-*-*-c-110-iso8859-1" "11x18")
+      ("12x24" "-misc-fixed-medium-r-normal--24-*-*-*-c-120-iso8859-1" "12x24")
+      ("")
+      ("clean 5x8" "-schumacher-clean-medium-r-normal--8-*-*-*-c-50-iso8859-1")
+      ("clean 6x8" "-schumacher-clean-medium-r-normal--8-*-*-*-c-60-iso8859-1")
+      ("clean 8x8" "-schumacher-clean-medium-r-normal--8-*-*-*-c-80-iso8859-1")
+      ("clean 8x10" "-schumacher-clean-medium-r-normal--10-*-*-*-c-80-iso8859-1")
+      ("clean 8x14" "-schumacher-clean-medium-r-normal--14-*-*-*-c-80-iso8859-1")
+      ("clean 8x16" "-schumacher-clean-medium-r-normal--16-*-*-*-c-80-iso8859-1")
+      ("")
+      ("sony 8x16" "-sony-fixed-medium-r-normal--16-*-*-*-c-80-iso8859-1")
+      ("lucidasanstypewriter-12" "-b&h-lucidatypewriter-medium-r-normal-sans-*-120-*-*-*-*-iso8859-1")
+      ("lucidasanstypewriter-bold-14" "-b&h-lucidatypewriter-bold-r-normal-sans-*-140-*-*-*-*-iso8859-1")
+      ("lucidasanstypewriter-bold-24" "-b&h-lucidatypewriter-bold-r-normal-sans-*-240-*-*-*-*-iso8859-1"))
+     ("Courier"
+      ("8" "-adobe-courier-medium-r-normal--*-80-*-*-m-*-iso8859-1")
+      ("10" "-adobe-courier-medium-r-normal--*-100-*-*-m-*-iso8859-1")
+      ("12" "-adobe-courier-medium-r-normal--*-120-*-*-m-*-iso8859-1")
+      ("14" "-adobe-courier-medium-r-normal--*-140-*-*-m-*-iso8859-1")
+      ("18" "-adobe-courier-medium-r-normal--*-180-*-*-m-*-iso8859-1")
+      ("24" "-adobe-courier-medium-r-normal--*-240-*-*-m-*-iso8859-1")
+      ("8 bold" "-adobe-courier-bold-r-normal--*-80-*-*-m-*-iso8859-1")
+      ("10 bold" "-adobe-courier-bold-r-normal--*-100-*-*-m-*-iso8859-1")
+      ("12 bold" "-adobe-courier-bold-r-normal--*-120-*-*-m-*-iso8859-1")
+      ("14 bold" "-adobe-courier-bold-r-normal--*-140-*-*-m-*-iso8859-1")
+      ("18 bold" "-adobe-courier-bold-r-normal--*-180-*-*-m-*-iso8859-1")
+      ("24 bold" "-adobe-courier-bold-r-normal--*-240-*-*-m-*-iso8859-1")
+      ("8 slant" "-adobe-courier-medium-o-normal--*-80-*-*-m-*-iso8859-1")
+      ("10 slant" "-adobe-courier-medium-o-normal--*-100-*-*-m-*-iso8859-1")
+      ("12 slant" "-adobe-courier-medium-o-normal--*-120-*-*-m-*-iso8859-1")
+      ("14 slant" "-adobe-courier-medium-o-normal--*-140-*-*-m-*-iso8859-1")
+      ("18 slant" "-adobe-courier-medium-o-normal--*-180-*-*-m-*-iso8859-1")
+      ("24 slant" "-adobe-courier-medium-o-normal--*-240-*-*-m-*-iso8859-1")
+      ("8 bold slant" "-adobe-courier-bold-o-normal--*-80-*-*-m-*-iso8859-1")
+      ("10 bold slant" "-adobe-courier-bold-o-normal--*-100-*-*-m-*-iso8859-1")
+      ("12 bold slant" "-adobe-courier-bold-o-normal--*-120-*-*-m-*-iso8859-1")
+      ("14 bold slant" "-adobe-courier-bold-o-normal--*-140-*-*-m-*-iso8859-1")
+      ("18 bold slant" "-adobe-courier-bold-o-normal--*-180-*-*-m-*-iso8859-1")
+      ("24 bold slant" "-adobe-courier-bold-o-normal--*-240-*-*-m-*-iso8859-1"))))
+#+end_src
+
+* Face mods
+** Some highlighting
+#+begin_src emacs-lisp
+(set-face-background 'region "black")               
+(set-face-foreground 'region "cadetblue")                
+(set-face-background 'highlight "black")            
+(set-face-foreground 'highlight "gray")             
+(set-face-background 'secondary-selection "gray")    
+(set-face-foreground 'secondary-selection "black")   
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(ediff-fine-diff-B ((t (:background "blue"))))
+ '(org-table ((((class color) (min-colors 88) (background dark)) (:foreground "gray16"))))
+ '(region ((t (:foreground "firebrick4" :inverse-video t :slant italic :weight extra-bold :height 1.1))))
+ '(web-mode-html-tag-face ((t (:foreground "cyan")))))
+#+end_src
+* Ediff
+#+BEGIN_SRC emacs-lisp
+(setq ediff-grab-mouse t)
+(setq ediff-split-window-function (quote split-window-horizontally))
+(setq ediff-window-setup-function (quote ediff-setup-windows-plain))
+(winner-mode)
+(add-hook 'ediff-after-quit-hook-internal 'winner-undo)
+#+END_SRC
+* File system
+** Find quota
+#+BEGIN_SRC emacs-lisp
+(defun lq ()
+  (interactive)
+  (get-buffer-create "*LIST-QUOTA*")
+  (if (string-equal (substring (expand-file-name default-directory) 0 4) "/afs") 
+	(progn 
+	  (call-process "fs" nil "*LIST-QUOTA*" nil "lq")
+	  (switch-to-buffer "*LIST-QUOTA*")
+	  )
+	(progn 
+	  (call-process "gsa" nil "*LIST-QUOTA*" nil "quota" "list" "--path" ".")
+	  (switch-to-buffer "*LIST-QUOTA*")
+	  )
+        )
+)
+
+#+END_SRC
+
+** List ACLs
+#+BEGIN_SRC emacs-lisp
+(defun la ()
+  (interactive)
+  (get-buffer-create "*LIST-ACL*")
+  (if (string-equal (substring (expand-file-name default-directory) 0 4) "/afs") 
+	(progn 
+	  (call-process "fs" nil "*LIST-ACL*" nil "la")
+	  (switch-to-buffer "*LIST-ACL*")
+	  )
+	(progn 
+	  (call-process "gsa" nil "*LIST-ACL*" nil "acl" "list" "--path" ".")
+	  (switch-to-buffer "*LIST-ACL*")
+	  )
+        )
+)
+#+END_SRC
+
+** Make afs dir write able
+#+BEGIN_SRC emacs-lisp
+(defun saw ()
+  (interactive)
+  (get-buffer-create "*SET-ACL*")
+  (call-process "fs" nil "*SET-ACL*" nil "setacl" "-dir" "." "-acl" "jengel" "write")
+  (switch-to-buffer "*SET-ACL*")
+)
+#+END_SRC
+** Make afs dir read only
+#+BEGIN_SRC emacs-lisp
+(defun san ()
+  (interactive)
+  (get-buffer-create "*SET-ACL*")
+  (call-process "fs" nil "*SET-ACL*" nil "setacl" "-dir" "." "-acl" "jengel" "none")
+  (switch-to-buffer "*SET-ACL*")
+)
+#+END_SRC
+
+* Useful functions
+** uniq lines
+#+BEGIN_SRC emacs-lisp
+
+(defun uniq-lines (beg end)
+  "Unique lines in region.
+Called from a program, there are two arguments:
+BEG and END (region to sort)."
+  (interactive "r")
+  (save-excursion
+    (save-restriction
+     (narrow-to-region beg end)
+      (goto-char (point-min))
+      (while (not (eobp))
+        (kill-line 1)
+        (yank)
+        (let ((next-line (point)))
+          (while
+              (re-search-forward
+               (format "^%s" (regexp-quote (car kill-ring))) nil t)
+            (replace-match "" nil nil))
+          (goto-char next-line))))))
+
+#+END_SRC
+** Some word char counting functions
+#+BEGIN_SRC emacs-lisp
+(defun count-words-region (start end)
+  "Print number of words in the region."
+  (interactive "r")
+  (message "Region has %d words" (count-words start end)))
+
+
+(defun count-words (start end)
+  "Return number of words between START and END."
+  (save-excursion
+    (save-restriction
+      (narrow-to-region start end)
+      (goto-char (point-min))
+      (setq temp 0)
+      (while (forward-word 1)
+	(setq temp (+ 1 temp)))))
+  temp)
+
+(defun count-chars-region (start end)
+  "Print number of chars in the region."
+  (interactive "r")
+  (message "Region has %d chars" (count-chars start end)))
+
+(defun count-chars (start end)
+  "Return number of words between START and END."
+  (save-excursion
+    (save-restriction
+      (narrow-to-region start end)
+      (goto-char (point-min))
+      (setq temp 0)
+      (while (forward-char 1)
+	(setq temp (+ 1 temp)))))
+  temp)
+#+END_SRC
+* Adoc extensions
+#+BEGIN_SRC emacs-lisp
+
+(require 'adoc-mode)
+(add-to-list
+  'auto-mode-alist (cons "\\.adoc\\'" 'adoc-mode))
+(add-to-list
+  'auto-mode-alist (cons "\\.db\\'" 'sqlite-dump))
+
+
+(autoload 'my-adoc-additions "adoc-extension")
+(add-hook 'adoc-mode-hook 'my-adoc-additions)
+
+#+END_SRC
+* Helm
+** helm dash
+#+BEGIN_SRC emacs-lisp
+
+(setq helm-dash-common-docsets '(Emacs_Lisp))
+(setq helm-dash-docsets '(Emacs_Lisp))
+;;(setq helm-dash-docsets-path "~/.emacs.d/docsets")
+
+#+END_SRC
+* Shell options
+** Keep shell in same window
+#+BEGIN_SRC emacs-lisp
+;; Needed to keep shell opening in same window
+(push (cons "\\*shell\\*" display-buffer--same-window-action) display-buffer-alist)
+(push (cons "\\*lsf-shell\\*" display-buffer--same-window-action) display-buffer-alist)
+#+END_SRC
+
+* CTE shell
+#+BEGIN_SRC emacs-lisp
+(defun buffer-exists (bufname)  
+  (not (eq nil (get-buffer bufname)))
+)
+
+(defun shell-cte ( cte-win-name )
+  (interactive "sEnter the cte window you wish to open: ")
+  (setq buff-name (concat "*" cte-win-name "-cte-shell*"))
+  (if (buffer-exists buff-name)
+      (switch-to-buffer buff-name)
+    (progn
+     (shell buff-name)
+     (let* ((proc (get-buffer-process (current-buffer)))
+	    (pmark (process-mark proc))
+	    (started-at-pmark (= (point) (marker-position pmark))))
+       (save-excursion
+	 (comint-send-string proc "~/bin/cteWin " )
+	 (comint-send-string proc  cte-win-name)
+	 (comint-send-string proc "\n")
+	 (comint-send-string proc "cteAlac")
+	 (comint-send-string proc "\n")
+	 )
+       )
+     )
+    )
+)
+
+#+END_SRC
+* Tweak shell C-up and C-down
+#+BEGIN_SRC emacs-lisp 
+(progn
+  ;; "change keybindings for shell related modes."
+  (require 'shell)
+  ;;  (define-key comint-mode-map (kbd "M-p") 'recenter) ; was comint-previous-input
+  ;;  (define-key comint-mode-map (kbd "M-n") 'nil) ; was comint-next-input
+  ;;  (define-key comint-mode-map (kbd "M-r") 'kill-word) ; was comint-previous-matching-input
+  ;;  (define-key comint-mode-map (kbd "M-s") 'other-window) ; was comint-next-matching-input
+
+   ;; rebind displaced commands that i still want a key
+  (define-key comint-mode-map [S-up] 'comint-previous-input)
+  (define-key comint-mode-map [S-down] 'comint-next-input)
+  (define-key comint-mode-map [C-up] nil)
+  (define-key comint-mode-map [C-down] nil)
+      
+  ;; (define-key comint-mode-map (kbd "S-<f11>") 'comint-previous-matching-input)
+  ;; (define-key comint-mode-map (kbd "S-<f12>") 'comint-next-matching-input)
+)
+#+END_SRC
+
+* Org mode
+** Paths and such
+#+begin_src emacs-lisp
+(setq org-ditaa-jar-path "~/.emacs.d/org_support/ditaa.jar")
+(setq org-plantuml-jar-path "~/.emacs.d/org_support/plantuml.jar")
+
+(add-hook 'org-babel-after-execute-hook 'bh/display-inline-images 'append)
+
+; Make babel results blocks lowercase
+(setq org-babel-results-keyword "results")
+
+(defun bh/display-inline-images ()
+  (condition-case nil
+      (org-display-inline-images)
+    (error nil)))
+
+;; had to comment these for emacs 27
+;;(org-babel-do-load-languages
+;; (quote org-babel-load-languages)
+;; (quote ((emacs-lisp . t)
+;;         (dot . t)
+;;         (ditaa . t)
+;;         (R . t)
+;;         (python . t)
+;;         (ruby . t)
+;;         (gnuplot . t)
+;;         (clojure . t)
+;;         (sh . t)
+;;         (ledger . t)
+;;         (org . t)
+;;         (plantuml . t)
+;;         (latex . t))))
+;;
+
+(org-babel-do-load-languages
+ 'org-babel-load-languages 
+ '((C . t)
+   (emacs-lisp . t)
+   (dot . t)
+   (ditaa . t)
+   (R . t)
+   (python . t)
+   (gnuplot . t)
+   (perl . t)
+   (org . t)
+   (plantuml . t)
+   (latex . t)  ))
+
+; Do not prompt to confirm evaluation
+; This may be dangerous - make sure you understand the consequences
+; of setting this -- see the docstring for details
+(setq org-confirm-babel-evaluate nil)
+
+
+
+
+#+end_src
+* LSF commands/mode
+** key mapping
+#+BEGIN_SRC emacs-lisp 
+(define-prefix-command 'lsf-command-map)
+(global-set-key (kbd "C-l") 'lsf-command-map)
+(define-key lsf-command-map (kbd "j") 'lsf-jobs)
+(define-key lsf-command-map (kbd "c") 'lsf-configs)
+(define-key lsf-command-map (kbd "m") 'lsf-machines)
+#+END_SRC
+
+* Perspective mode
+#+BEGIN_SRC emacs-lisp 
+(with-eval-after-load "persp-mode-autoloads"
+  (setq wg-morph-on nil)
+  ;; switch off the animation of restoring window configuration
+  (setq persp-autokill-buffer-on-remove 'kill-weak)
+  (add-hook 'after-init-hook #'(lambda () (persp-mode 1))))
+
+
+(persp-def-buffer-save/load
+ :mode 'shell-mode
+ :mode-restore-function #'(lambda (_mode) (shell)) ; or #'identity if you do not want to start shell process
+ :tag-symbol 'def-shell
+ :save-vars '(major-mode default-directory))
+#+END_SRC
+* Test stuff
+#+BEGIN_SRC emacs-lisp 
+(line-number-mode)
+#+END_SRC
+
+#+BEGIN_SRC js
+console.log("This is a test");
+#+END_SRC
+* My Notes
+#+BEGIN_SRC emacs-lisp 
+(defun open-notes ( ) 
+  "open the file generalInfo.org"
+  (interactive)
+  (find-file "~/.emacs.d/notes/generalInfo.org")
+)
+(global-set-key [f9] 'open-notes)
+
+#+END_SRC
+
+* Window number mode
+#+BEGIN_SRC emacs-lisp 
+(require 'window-number)
+(window-number-mode 1)
+#+END_SRC
+

@@ -1,0 +1,3 @@
+[submodule "elpa/adoc-extension"]
+	path = elpa/adoc-extension
+	url = https://github.com/jimengel/adoc-extension.git
