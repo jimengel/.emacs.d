@@ -212,7 +212,7 @@ Make yasnippet play nice with org-mode
 ** GDB
 #+BEGIN_SRC emacs-lisp
 ;; gdb stuff
-(setq gdb-many-windows 1)	       
+(gdb-many-windows)
 ;;(setq gdb-command-name "/usr/local/bin/gdb")
 #+END_SRC
 * Setup modeline
@@ -231,9 +231,6 @@ Make yasnippet play nice with org-mode
 (define-key  global-map [C-left] 'enlarge-window-horizontally)
 (define-key  global-map [C-right] 'shrink-window-horizontally)
 #+end_src
-
-(setq-default inhibit-eol-conversion t)
-
 
 ** Because I always type it wrong and never us list dired
 
@@ -256,17 +253,9 @@ Make yasnippet play nice with org-mode
 (define-key  global-map [C-end] 'end-window)
 (define-key  global-map [home] 'beginning-of-buffer)
 (define-key  global-map [end] 'end-of-buffer)
-;;(global-set-key [f1] 'other-window)
-(global-set-key [f1] 'window-number-switch)
-
+(global-set-key [f1] 'other-window)
 (global-set-key [f10] 'scroll-left)
-(global-set-key [S-f10] 'scroll-right)
-(global-set-key [f11] 'toggle-truncate-lines)
-
-(global-set-key [C-S-up] 'text-scale-increase)
-(global-set-key [C-S-down] 'text-scale-decrease)
-
-
+(global-set-key [f11] 'scroll-right)
 #+end_src
 
 ** Scrolling
@@ -284,15 +273,12 @@ Make yasnippet play nice with org-mode
 
 #+end_src
 
-** recenter current line
-#+begin_src emacs-lisp
-(global-set-key (kbd "C-S-l") 'recenter-top-bottom)
-#+end_src
 ** Buffer swapping
 #+begin_src emacs-lisp
 (global-set-key [S-f1] 'switch-to-next-buffer)
 (global-set-key [C-f1] 'switch-to-previous-buffer)
 #+end_src
+
 ** Duplicate current line
 #+begin_src emacs-lisp
 (fset 'dup-line
@@ -303,8 +289,6 @@ Make yasnippet play nice with org-mode
 ** Dired keys
 #+begin_src emacs-lisp
 ;;(define-key dired-mode-map (kbd "ESC <delete>") 'dired-unmark-all-marks)
-;;(define-key dired-mode-map [S-up] 'dired-up-directory)
-
 #+end_src
 
 ** Misc custom keybindings
@@ -340,11 +324,10 @@ Make yasnippet play nice with org-mode
 
 (setq transient-mark-mode 1)	       
 (setq scroll-step 1)	       
-;;(setq key-translation-map nil)  ;;causes speedbar in gdb not to work
-
 ;;(split-window-vertically) 
 ;;(split-window-horizontally) 
 (global-set-key [delete] 'delete-char)
+(setq key-translation-map nil)
 (substitute-key-definition 'capitalize-word 'copy-region-as-kill esc-map )
 (substitute-key-definition 'back-to-indentation 'kill-region esc-map )
 (define-key  esc-map [C] 'capitalize-word)
@@ -375,7 +358,6 @@ Make yasnippet play nice with org-mode
 (global-set-key [C-down-mouse-1] 'mouse-buffer-menu)
 (global-set-key [C-down-mouse-3] 'mouse-set-font)
 #+END_SRC
-
 * Keyboard macros
 ** Different shortcuts in dired
 *** ~/alacrite/code
@@ -383,55 +365,6 @@ Make yasnippet play nice with org-mode
 ;; ~/alacrite/code
 (fset 'code
    [?\C-x ?\C-d ?\C-a ?\C-k ?/ ?a ?f ?s ?/ ?a ?p ?d ?/ ?u ?/ ?j ?e ?n ?g ?e ?l ?/ ?a ?l ?a ?c ?r ?i ?t ?e ?/ ?c ?o ?d ?e return])
-#+END_SRC
-
-*** ~/alacrite/code1
-#+BEGIN_SRC emacs-lisp 
-;; ~/alacrite/code
-(fset 'code1
-   [?\C-x ?\C-d ?\C-a ?\C-k ?/ ?a ?f ?s ?/ ?a ?p ?d ?/ ?u ?/ ?j ?e ?n ?g ?e ?l ?/ ?a ?l ?a ?c ?r ?i ?t ?e ?/ ?c ?o ?d ?e ?1 return])
-#+END_SRC
-
-*** ~/alacrite/code2
-#+BEGIN_SRC emacs-lisp 
-;; ~/alacrite/code
-(fset 'code2
-   [?\C-x ?\C-d ?\C-a ?\C-k ?/ ?a ?f ?s ?/ ?a ?p ?d ?/ ?u ?/ ?j ?e ?n ?g ?e ?l ?/ ?a ?l ?a ?c ?r ?i ?t ?e ?/ ?c ?o ?d ?e ?2 return])
-#+END_SRC
-
-*** ~/alacrite/code3
-#+BEGIN_SRC emacs-lisp 
-;; ~/alacrite/code
-(fset 'code3
-   [?\C-x ?\C-d ?\C-a ?\C-k ?/ ?a ?f ?s ?/ ?a ?p ?d ?/ ?u ?/ ?j ?e ?n ?g ?e ?l ?/ ?a ?l ?a ?c ?r ?i ?t ?e ?/ ?c ?o ?d ?e ?3 return])
-#+END_SRC
-
-*** ~/alacrite/code4
-#+BEGIN_SRC emacs-lisp 
-;; ~/alacrite/code
-(fset 'code4
-   [?\C-x ?\C-d ?\C-a ?\C-k ?/ ?a ?f ?s ?/ ?a ?p ?d ?/ ?u ?/ ?j ?e ?n ?g ?e ?l ?/ ?a ?l ?a ?c ?r ?i ?t ?e ?/ ?c ?o ?d ?e ?4 return])
-#+END_SRC
-
-*** ~/alacrite/code5
-#+BEGIN_SRC emacs-lisp 
-;; ~/alacrite/code
-(fset 'code5
-   [?\C-x ?\C-d ?\C-a ?\C-k ?/ ?a ?f ?s ?/ ?a ?p ?d ?/ ?u ?/ ?j ?e ?n ?g ?e ?l ?/ ?a ?l ?a ?c ?r ?i ?t ?e ?/ ?c ?o ?d ?e ?5 return])
-#+END_SRC
-
-*** ~/alacrite/code6
-#+BEGIN_SRC emacs-lisp 
-;; ~/alacrite/code
-(fset 'code6
-   [?\C-x ?\C-d ?\C-a ?\C-k ?/ ?a ?f ?s ?/ ?a ?p ?d ?/ ?u ?/ ?j ?e ?n ?g ?e ?l ?/ ?a ?l ?a ?c ?r ?i ?t ?e ?/ ?c ?o ?d ?e ?6 return])
-#+END_SRC
-
-*** ~/alacrite/code7
-#+BEGIN_SRC emacs-lisp 
-;; ~/alacrite/code
-(fset 'code7
-   [?\C-x ?\C-d ?\C-a ?\C-k ?/ ?a ?f ?s ?/ ?a ?p ?d ?/ ?u ?/ ?j ?e ?n ?g ?e ?l ?/ ?a ?l ?a ?c ?r ?i ?t ?e ?/ ?c ?o ?d ?e ?7 return])
 #+END_SRC
 
 *** ~/alacrite/code/alacriteCloud
@@ -461,18 +394,44 @@ Make yasnippet play nice with org-mode
 (fset 'dev
    [?\C-x ?\C-d ?\C-a ?\C-k ?/ ?a ?f ?s ?/ ?a ?p ?d ?/ ?p ?r ?o ?j ?e ?c ?t ?s ?/ ?a ?l ?a ?c ?r ?i ?t ?e ?/ ?d ?e ?v ?e ?l ?o ?p ?m ?e ?n ?t return])
 #+END_SRC
-*** /afs/apd/u/jengel/.emacs.d/elpa
-#+BEGIN_SRC emacs-lisp
-;; /afs/apd/u/jengel/.emacs.d/elpa
-(fset 'elpa
-   [?\C-x ?\C-d ?\C-a ?\C-k ?/ ?a ?f ?s ?/ ?a ?p ?d ?/ ?u ?/ ?j ?e ?n ?g ?e ?l ?/ ?. ?e ?m ?a ?c ?s ?. ?d ?/ ?e ?l ?p ?a return])
-#+END_SRC
-*** /afs/apd/projects/IBMelpa
-#+BEGIN_SRC emacs-lisp
-;; /afs/apd/projects/IBMelpa
-(fset 'ielpa
-   [?\C-x ?\C-d ?\C-a ?\C-k ?/ ?a ?f ?s ?/ ?a ?p ?d ?/ ?p ?r ?o ?j ?e ?c ?t ?s ?/ ?I ?B ?M ?e ?l ?p ?a return])
-#+END_SRC
+* Setup afs funcs
+** list quota
+#+begin_src emacs-lisp
+(defun lq ()
+  (interactive)
+  (get-buffer-create "*LIST-QUOTA*")
+  (call-process "fs" nil "*LIST-QUOTA*" nil "lq")
+  (switch-to-buffer "*LIST-QUOTA*")
+)
+#+end_src
+** list acl
+#+begin_src emacs-lisp
+(defun la ()
+  (interactive)
+  (get-buffer-create "*LIST-ACL*")
+  (call-process "fs" nil "*LIST-ACL*" nil "la")
+  (switch-to-buffer "*LIST-ACL*")
+)
+#+end_src
+** set acl write
+#+begin_src emacs-lisp
+(defun saw ()
+  (interactive)
+  (get-buffer-create "*SET-ACL*")
+  (call-process "fs" nil "*SET-ACL*" nil "setacl" "-dir" "." "-acl" "jengel" "write")
+  (switch-to-buffer "*SET-ACL*")
+)
+#+end_src
+** set acl none
+#+begin_src emacs-lisp
+(defun san ()
+  (interactive)
+  (get-buffer-create "*SET-ACL*")
+  (call-process "fs" nil "*SET-ACL*" nil "setacl" "-dir" "." "-acl" "jengel" "none")
+  (switch-to-buffer "*SET-ACL*")
+)
+#+end_src
+
 * Databases
 ** sqlite
 #+BEGIN_SRC emacs-lisp
@@ -664,25 +623,6 @@ Make yasnippet play nice with org-mode
 
 #+END_SRC
 
-** List tokens
-#+BEGIN_SRC emacs-lisp
-(defun lq ()
-  (interactive)
-  (get-buffer-create "*LIST-QUOTA*")
-  (if (string-equal (substring (expand-file-name default-directory) 0 4) "/afs") 
-	(progn 
-	  (call-process "fs" nil "*LIST-QUOTA*" nil "lq")
-	  (switch-to-buffer "*LIST-QUOTA*")
-	  )
-	(progn 
-	  (call-process "gsa" nil "*LIST-QUOTA*" nil "quota" "list" "--path" ".")
-	  (switch-to-buffer "*LIST-QUOTA*")
-	  )
-        )
-)
-
-#+END_SRC
-
 ** List ACLs
 #+BEGIN_SRC emacs-lisp
 (defun la ()
@@ -710,6 +650,7 @@ Make yasnippet play nice with org-mode
   (switch-to-buffer "*SET-ACL*")
 )
 #+END_SRC
+
 ** Make afs dir read only
 #+BEGIN_SRC emacs-lisp
 (defun san ()
@@ -802,14 +743,6 @@ BEG and END (region to sort)."
 ;;(setq helm-dash-docsets-path "~/.emacs.d/docsets")
 
 #+END_SRC
-* Shell options
-** Keep shell in same window
-#+BEGIN_SRC emacs-lisp
-;; Needed to keep shell opening in same window
-(push (cons "\\*shell\\*" display-buffer--same-window-action) display-buffer-alist)
-(push (cons "\\*lsf-shell\\*" display-buffer--same-window-action) display-buffer-alist)
-#+END_SRC
-
 * CTE shell
 #+BEGIN_SRC emacs-lisp
 (defun buffer-exists (bufname)  
@@ -845,9 +778,9 @@ BEG and END (region to sort)."
   ;; "change keybindings for shell related modes."
   (require 'shell)
   ;;  (define-key comint-mode-map (kbd "M-p") 'recenter) ; was comint-previous-input
-  ;;  (define-key comint-mode-map (kbd "M-n") 'nil) ; was comint-next-input
-  ;;  (define-key comint-mode-map (kbd "M-r") 'kill-word) ; was comint-previous-matching-input
-  ;;  (define-key comint-mode-map (kbd "M-s") 'other-window) ; was comint-next-matching-input
+ ;;  (define-key comint-mode-map (kbd "M-n") 'nil) ; was comint-next-input
+ ;;  (define-key comint-mode-map (kbd "M-r") 'kill-word) ; was comint-previous-matching-input
+ ;;  (define-key comint-mode-map (kbd "M-s") 'other-window) ; was comint-next-matching-input
 
    ;; rebind displaced commands that i still want a key
   (define-key comint-mode-map [S-up] 'comint-previous-input)
@@ -855,93 +788,11 @@ BEG and END (region to sort)."
   (define-key comint-mode-map [C-up] nil)
   (define-key comint-mode-map [C-down] nil)
       
-  ;; (define-key comint-mode-map (kbd "S-<f11>") 'comint-previous-matching-input)
-  ;; (define-key comint-mode-map (kbd "S-<f12>") 'comint-next-matching-input)
+   ;;   (define-key comint-mode-map (kbd "S-<f11>") 'comint-previous-matching-input)
+;;   (define-key comint-mode-map (kbd "S-<f12>") 'comint-next-matching-input)
 )
 #+END_SRC
 
-* Org mode
-** Paths and such
-#+begin_src emacs-lisp
-(setq org-ditaa-jar-path "~/.emacs.d/org_support/ditaa.jar")
-(setq org-plantuml-jar-path "~/.emacs.d/org_support/plantuml.jar")
-
-(add-hook 'org-babel-after-execute-hook 'bh/display-inline-images 'append)
-
-; Make babel results blocks lowercase
-(setq org-babel-results-keyword "results")
-
-(defun bh/display-inline-images ()
-  (condition-case nil
-      (org-display-inline-images)
-    (error nil)))
-
-;; had to comment these for emacs 27
-;;(org-babel-do-load-languages
-;; (quote org-babel-load-languages)
-;; (quote ((emacs-lisp . t)
-;;         (dot . t)
-;;         (ditaa . t)
-;;         (R . t)
-;;         (python . t)
-;;         (ruby . t)
-;;         (gnuplot . t)
-;;         (clojure . t)
-;;         (sh . t)
-;;         (ledger . t)
-;;         (org . t)
-;;         (plantuml . t)
-;;         (latex . t))))
-;;
-
-(org-babel-do-load-languages
- 'org-babel-load-languages 
- '((C . t)
-   (emacs-lisp . t)
-   (dot . t)
-   (ditaa . t)
-   (R . t)
-   (python . t)
-   (gnuplot . t)
-   (perl . t)
-   (org . t)
-   (plantuml . t)
-   (latex . t)  ))
-
-; Do not prompt to confirm evaluation
-; This may be dangerous - make sure you understand the consequences
-; of setting this -- see the docstring for details
-(setq org-confirm-babel-evaluate nil)
-
-
-
-
-#+end_src
-* LSF commands/mode
-** key mapping
-#+BEGIN_SRC emacs-lisp 
-(define-prefix-command 'lsf-command-map)
-(global-set-key (kbd "C-l") 'lsf-command-map)
-(define-key lsf-command-map (kbd "j") 'lsf-jobs)
-(define-key lsf-command-map (kbd "c") 'lsf-configs)
-(define-key lsf-command-map (kbd "m") 'lsf-machines)
-#+END_SRC
-
-* Perspective mode
-#+BEGIN_SRC emacs-lisp 
-(with-eval-after-load "persp-mode-autoloads"
-  (setq wg-morph-on nil)
-  ;; switch off the animation of restoring window configuration
-  (setq persp-autokill-buffer-on-remove 'kill-weak)
-  (add-hook 'after-init-hook #'(lambda () (persp-mode 1))))
-
-
-(persp-def-buffer-save/load
- :mode 'shell-mode
- :mode-restore-function #'(lambda (_mode) (shell)) ; or #'identity if you do not want to start shell process
- :tag-symbol 'def-shell
- :save-vars '(major-mode default-directory))
-#+END_SRC
 * Test stuff
 #+BEGIN_SRC emacs-lisp 
 (line-number-mode)
@@ -949,21 +800,5 @@ BEG and END (region to sort)."
 
 #+BEGIN_SRC js
 console.log("This is a test");
-#+END_SRC
-* My Notes
-#+BEGIN_SRC emacs-lisp 
-(defun open-notes ( ) 
-  "open the file generalInfo.org"
-  (interactive)
-  (find-file "~/.emacs.d/notes/generalInfo.org")
-)
-(global-set-key [f9] 'open-notes)
-
-#+END_SRC
-
-* Window number mode
-#+BEGIN_SRC emacs-lisp 
-(require 'window-number)
-(window-number-mode 1)
 #+END_SRC
 

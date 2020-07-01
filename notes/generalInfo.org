@@ -82,6 +82,43 @@ Y PROJECTS -*- mode: org; -*-
 	calculate_power -file "/afs/btv/u/jenricgel/epic1/einstimer/test.pw.all" -switch_file "/afs/btv/u/jengel/epic1/einstimer/test.sw" -detail "ON"
 ** To compare checks reports
    /afs/eda/u/gmschaef/bin/checks_rpt_compare.pl TEST.checks.flat TEST.checks.LBModLib > flatVsLbModLib.checks.diff
+** New user
+*** Access
+    Talk to Ravi Ledalla and get access to 
+    /afs/eda/project/einstimer/regression/1701/results/  for running regressions
+    Also /gsa/pokgsa/projects/t/timing_regressions(01-08)
+*** Create development environment
+    1. Get some afs space in APD.                                 
+          I got 12GB off my HOME
+    2. git clone git@github.ibm.com:EDA/einstimer 17.1
+    3. cd ....../17.1
+    4. git branch 
+          To see what branches there are
+    5. git branch master_<afsId>    
+          Like git branch master_jengel
+    6. git remote add upstream git@github.ibm.com:EDA/einstimer;
+          make it easier for when we need to sync with master
+    7. git remote set-url --push upstream DISABLE             
+          this prevents accidentally pushing to master (instead update EDA/master with a pull request, see below)
+    8. cd <your sandbox>/17.1; /afs/eda/prod/tools/17.1/bin/setup_dirs --makefiles; make generated
+    9. cd private; make
+    10. cd <your sandbox>/17.1/bin; make opt; cd ++
+    11. cd <your sandbox>/17.1; make -j8 opt  
+           this can take 30 mins or so since you will be performing a full compile
+    12. Link your sandbox/17.1/dll-64 to <HOME>/dll17.1-64   You'll need this to run regression locally.
+*** Running regressions
+    If you have not linked your sandbox dll-64 directory to your home it will not run your
+    newely compiled code.
+    It pulls all code from one of the either build, dev, prod
+**** Build
+     /afs/eda/project/EinsTimer/regression/1701/bin/runregS -v kalafala apply_slack
+        The last two are the user that created the testcase and the testcase name
+**** Dev
+     /afs/eda/project/EinsTimer/regression/1701/bin/runreg -v kalafala apply_slack
+        The last two are the user that created the testcase and the testcase name
+**** Prod
+     /afs/eda/project/EinsTimer/regression/1701/bin/runregP -v kalafala apply_slack
+        The last two are the user that created the testcase and the testcase name
 * General system stuff
 ** Map an afs directory in windows
    net use x: \\samba.btv\afshome * /user:"jengel"
@@ -1348,6 +1385,9 @@ prog=${0##*/} echo "2- $prog"
 #+results:
 : TestThis1
 
+** Learning
+*** Emergency Lisp
+    http://steve-yegge.blogspot.com/2008/01/emergency-elisp.html?m=1
 * C++
 ** Good video
    Caleb Curry https://eee.youtube.com/watch?v=_bYfu9mBnr4

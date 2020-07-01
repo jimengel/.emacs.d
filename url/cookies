@@ -2,13 +2,27 @@
 ;; Automatically generated file!!! DO NOT EDIT!!!
 
 (setq url-cookie-storage
- '(("en.wikipedia.org"
-  [url-cookie "WMF-Last-Access" "25-Jun-2015" "Mon, 27 Jul 2015 00:00:00 GMT" "/" "en.wikipedia.org" nil]
-  [url-cookie "HttpOnly" nil "Mon, 27 Jul 2015 00:00:00 GMT" "/" "en.wikipedia.org" nil])
- (".google.com"
-  [url-cookie "PREF" "ID=1111111111111111:FF=0:TM=1395198128:LM=1435199957:V=1:S=92q3RG3K2CIGjPaZ" "24-Jun-2017 02:39:17.00 GMT" "/" ".google.com" nil]
-  [url-cookie "NID" "68=LNWrHC8VwOib8KRuYXRYVo2ocfdM3v_-hp09ktP-1gfajTMZWsnExwWXyLeIQSDFJGQQDFsR7Lf9qJetS7BZP4MVNe1sbitW9HGT3sYPahaPyfHb6hcRWBXMKUFg7qUZ" "25-Dec-2015 02:39:17.00 GMT" "/" ".google.com" nil]
-  [url-cookie "HttpOnly" nil "25-Dec-2015 02:39:17.00 GMT" "/" ".google.com" nil]))
+ '(("joseito.republika.pl"
+  [url-cookie "acc_segment" "53" "Wed Jul 08 13:30:03 2020 GMT" "/" "joseito.republika.pl" nil])
+ ("www.onet.pl"
+  [url-cookie "aureus-cache-key-onet-gamesonline" "-729744440" "Wed Jul 01 14:30:06 2020 GMT" "/" "www.onet.pl" nil]
+  [url-cookie "aureus-browser-cache" "YofcUKIRpBSks6Z0A8F6nQ==" "Wed Jul 01 14:30:06 2020 GMT" "/" "www.onet.pl" nil]
+  [url-cookie "aureus-cache-key-onet-vod" "356747073" "Wed Jul 01 14:30:05 2020 GMT" "/" "www.onet.pl" nil]
+  [url-cookie "aureus-cache-key-onet-wiadomosci" "-597335662" "Wed Jul 01 14:30:06 2020 GMT" "/" "www.onet.pl" nil]
+  [url-cookie "aureus-cache-key-onet-moto" "-346568912" "Wed Jul 01 14:30:06 2020 GMT" "/" "www.onet.pl" nil]
+  [url-cookie "aureus-cache-key-onet-noizz" "1660533013" "Wed Jul 01 14:30:06 2020 GMT" "/" "www.onet.pl" nil]
+  [url-cookie "aureus-cache-key-onet-podroze" "-2101885636" "Wed Jul 01 14:30:06 2020 GMT" "/" "www.onet.pl" nil]
+  [url-cookie "aureus-cache-key-onet-sport" "727579623" "Wed Jul 01 14:30:06 2020 GMT" "/" "www.onet.pl" nil]
+  [url-cookie "aureus-cache-key-onet-best" "-432824021" "Wed Jul 01 14:30:06 2020 GMT" "/" "www.onet.pl" nil]
+  [url-cookie "aureus-cache-key-onet-hplive_replacement" "269340099" "Wed Jul 01 14:30:06 2020 GMT" "/" "www.onet.pl" nil]
+  [url-cookie "aureus-cache-key-onet-technologie" "1115766784" "Wed Jul 01 14:30:05 2020 GMT" "/" "www.onet.pl" nil]
+  [url-cookie "aureus-cache-key-onet-film" "1747422596" "Wed Jul 01 14:30:06 2020 GMT" "/" "www.onet.pl" nil]
+  [url-cookie "aureus-cache-key-onet-aggregator1" "753369407" "Wed Jul 01 14:30:06 2020 GMT" "/" "www.onet.pl" nil]
+  [url-cookie "aureus-cache-key-onet-biznes" "1698343284" "Wed Jul 01 14:30:06 2020 GMT" "/" "www.onet.pl" nil]
+  [url-cookie "aureus-cache-key-onet-inspiracje" "-1381637078" "Wed Jul 01 14:30:06 2020 GMT" "/" "www.onet.pl" nil]
+  [url-cookie "aureus-cache-key-onet-breakingNews" "-2104247891" "Wed Jul 01 14:30:06 2020 GMT" "/" "www.onet.pl" nil]
+  [url-cookie "aureus-cache-key-onet-oferty2" "-1314043481" "Wed Jul 01 14:30:06 2020 GMT" "/" "www.onet.pl" nil]
+  [url-cookie "acc_segment" "71" "Wed Jul 08 13:30:06 2020 GMT" "/" "www.onet.pl" nil]))
 )
 (setq url-cookie-secure-storage
  'nil)

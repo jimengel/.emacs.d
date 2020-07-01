@@ -56,39 +56,14 @@ code blocks which can be tangled"
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(org-babel-C++-compiler "g++ -std=c++11")
-
- '(auto-compression-mode t nil (jka-compr))
- '(bmkp-last-as-first-bookmark-file "~/.emacs.bmk")
- '(doc-view-ghostscript-options
- '("-dNOPAUSE" "-sDEVICE=png16m" "-dTextAlphaBits=4" "-dBATCH" "-dGraphicsAlphaBits=4" "-dQUIET" "-r050"))
- '(ediff-grab-mouse t)
- '(ediff-split-window-function 'split-window-horizontally)
- '(ediff-window-setup-function 'ediff-setup-windows-plain)
- '(ispell-dictionary "en_US")
- '(ispell-program-name "/usr/bin/hunspell")
- '(magit-commit-arguments '("--verbose"))
- '(minimap-always-recenter t)
- '(scroll-bar-mode 'right)
- '(show-paren-mode t nil (paren))
- '(ssh-program "/usr/bin/ssh")
- '(tab-stop-list '(4 11 13 25 30 38 46 54 62 70 78 86 94 102 110 118))
- '(tool-bar-mode nil nil (tool-bar))
- '(tools-bar-mode nil)
- '(window-adjust-process-window-size-function 'ignore)
-
  '(package-selected-packages
-   '(window-number restart-emacs magit-gh-pulls magit ztree yasnippet workgroups2 workgroups web-mode w3m solarized-theme pdf-tools neotree muse moz-controller info+ helm-swoop helm-dash google-maps esup e2wm dash-at-point color-theme-sanityinc-solarized auto-complete adoc-mode ac-js2))
- )
+   '(markdown-mode restart-emacs magit-gh-pulls magit ztree yasnippet workgroups2 workgroups web-mode w3m solarized-theme pdf-tools neotree muse moz-controller jabber info+ helm-swoop helm-dash google-maps esup e2wm dash-at-point color-theme-sanityinc-solarized auto-complete adoc-mode ac-js2)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(ediff-current-diff-C ((t (:background "#474747"))))
- '(magit-blame-heading ((t (:background "gray50" :foreground "black"))))
- '(magit-blame-summary ((t (:inherit magit-blame-heading))))
  '(ediff-fine-diff-B ((t (:background "blue"))))
- '(org-table ((t (:foreground "navajo white"))))
+ '(org-table ((((class color) (min-colors 88) (background dark)) (:foreground "gray16"))))
  '(region ((t (:foreground "firebrick4" :inverse-video t :slant italic :weight extra-bold :height 1.1))))
  '(web-mode-html-tag-face ((t (:foreground "cyan")))))

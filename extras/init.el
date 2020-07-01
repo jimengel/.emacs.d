@@ -178,7 +178,7 @@
 (global-set-key [f2] 'dup-line)
 
 ;;(define-key dired-mode-map (kbd "ESC <delete>") 'dired-unmark-all-marks)
-(define-key dired-mode-map [S-up] 'dired-up-directory)
+;;(define-key dired-mode-map [S-up] 'dired-up-directory)
 
 (defun kill-buffer-no-query (&optional buffer)
   "Kill BUFFER without querying."
@@ -441,6 +441,21 @@
 (setq ediff-window-setup-function (quote ediff-setup-windows-plain))
 (winner-mode)
 (add-hook 'ediff-after-quit-hook-internal 'winner-undo)
+
+(defun lq ()
+  (interactive)
+  (get-buffer-create "*LIST-QUOTA*")
+  (if (string-equal (substring (expand-file-name default-directory) 0 4) "/afs") 
+	(progn 
+	  (call-process "fs" nil "*LIST-QUOTA*" nil "lq")
+	  (switch-to-buffer "*LIST-QUOTA*")
+	  )
+	(progn 
+	  (call-process "gsa" nil "*LIST-QUOTA*" nil "quota" "list" "--path" ".")
+	  (switch-to-buffer "*LIST-QUOTA*")
+	  )
+        )
+)
 
 (defun lq ()
   (interactive)

@@ -1,0 +1,6 @@
+(setq lsf-form-project "EDA")
+(setq lsf-form-group "eda_libchar")
+(setq lsf-form-queue "desktop")
+(setq lsf-form-options "(osname==linux) && (type==POWER) && (htstate==smt8) && (cputype==power8)")
+(setq lsf-form-cpus "1")
+(setq lsf-form-memory "1")

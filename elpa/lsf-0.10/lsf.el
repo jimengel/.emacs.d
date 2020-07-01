@@ -60,7 +60,7 @@
 (defvar lsf-default-project	 "EDA"
   "The default lsf project"
   )
-(defvar lsf-default-group	 "eda_libchar"
+(defvar lsf-default-group	 "eda_timing"
   "The default lsf group"
   )
 (defvar lsf-default-numProc	 "1"
