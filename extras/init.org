@@ -290,6 +290,46 @@ Make yasnippet play nice with org-mode
 #+end_src
 ** Buffer swapping
 #+begin_src emacs-lisp
+(global-set-key "\C-x\C-d" 'dired)
+#+end_src
+
+** Top/bottom of window and buffer
+
+#+begin_src emacs-lisp
+
+(defun beg-window ()
+  (interactive)
+  (move-to-window-line 0))
+(defun end-window ()
+  (interactive)
+  (move-to-window-line -1))
+
+(define-key  global-map [C-home] 'beg-window)
+(define-key  global-map [C-end] 'end-window)
+(define-key  global-map [home] 'beginning-of-buffer)
+(define-key  global-map [end] 'end-of-buffer)
+(global-set-key [f1] 'other-window)
+(global-set-key [f10] 'scroll-left)
+(global-set-key [f11] 'scroll-right)
+#+end_src
+
+** Scrolling
+#+begin_src emacs-lisp
+
+(defun up10 ()
+  (interactive)
+  (previous-line 10))
+(defun dn10 ()
+  (interactive)
+  (next-line 10))
+
+(define-key  global-map [S-up] 'up10)
+(define-key  global-map [S-down] 'dn10)
+
+#+end_src
+
+** Buffer swapping
+#+begin_src emacs-lisp
 (global-set-key [S-f1] 'switch-to-next-buffer)
 (global-set-key [C-f1] 'switch-to-previous-buffer)
 #+end_src
